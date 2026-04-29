@@ -150,6 +150,9 @@ img { max-width: 100%; display: block; }
 .hero h1 .accent {
   color: var(--accent);
   font-weight: 900;
+  display: inline-block;
+  transform: skewX(-10deg);
+  margin-right: 0.12em;
 }
 .hero h1 .stroke {
   -webkit-text-stroke: 2px var(--ink);
@@ -210,7 +213,7 @@ img { max-width: 100%; display: block; }
   border-top: 1px solid var(--line-light);
   max-width: 900px;
 }
-.hero-meta div {
+.hero-meta > div {
   display: flex;
   flex-direction: column;
   gap: 4px;
