@@ -984,6 +984,98 @@ body.review-mode [data-rv-target][data-rv-has="1"] {
   .rv-bar { right: 12px; bottom: 84px; padding: 12px; }
 }
 
+/* Screenshot / send modal */
+.rv-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+.rv-modal.open { display: flex; }
+.rv-modal-card {
+  background: white;
+  color: var(--ink);
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 30px 100px rgba(0,0,0,0.5);
+}
+.rv-modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.rv-modal-head strong { font-size: 17px; font-weight: 800; }
+.rv-modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  color: var(--ink-mute);
+  cursor: pointer;
+}
+.rv-modal-close:hover { background: var(--bg-paper); }
+.rv-modal-help {
+  font-size: 12px;
+  color: var(--ink-mute);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+.rv-modal-preview {
+  background: #f0f0ed;
+  border-radius: 10px;
+  margin-bottom: 14px;
+  max-height: 50vh;
+  overflow-y: auto;
+  padding: 6px;
+}
+.rv-modal-preview canvas,
+.rv-modal-preview img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 6px;
+}
+.rv-modal-preview:empty {
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-mute);
+  font-size: 13px;
+}
+.rv-modal-preview:empty::after { content: 'スクリーンショット作成中…'; }
+.rv-modal-comments {
+  background: var(--bg-paper);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  font-size: 12px;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  max-height: 200px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+.rv-modal-comments:empty { display: none; }
+.rv-modal-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.rv-modal-actions .rv-btn { flex: 1; min-width: 140px; }
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -1369,12 +1461,33 @@ body.review-mode [data-rv-target][data-rv-has="1"] {
 </button>
 <div class="rv-bar" id="rvBar" aria-hidden="true">
   <span class="rv-count"><span id="rvCount">0</span> 件のコメント</span>
-  <button class="rv-btn rv-btn-primary" id="rvCopy">コピーして送信</button>
+  <button class="rv-btn rv-btn-primary" id="rvSnapshot">📷 スクショ＋送信準備</button>
+  <button class="rv-btn rv-btn-primary" id="rvCopy">コメントだけコピー</button>
   <button class="rv-btn rv-btn-ghost" id="rvClear">クリア</button>
   <span class="rv-hint" id="rvHint"></span>
 </div>
 
+<div class="rv-modal" id="rvModal" aria-hidden="true">
+  <div class="rv-modal-card">
+    <div class="rv-modal-head">
+      <strong>送信パッケージが完成しました</strong>
+      <button class="rv-modal-close" id="rvModalClose" aria-label="閉じる">×</button>
+    </div>
+    <p class="rv-modal-help">下のスクリーンショットとコメント一覧を、メールやチャットに貼り付けて送信してください。</p>
+    <div class="rv-modal-preview" id="rvModalPreview"></div>
+    <div class="rv-modal-comments" id="rvModalComments"></div>
+    <div class="rv-modal-actions">
+      <button class="rv-btn rv-btn-primary" id="rvDownloadImg">画像をダウンロード</button>
+      <button class="rv-btn rv-btn-primary" id="rvCopyImg">画像をコピー</button>
+      <button class="rv-btn rv-btn-ghost" id="rvCopyText">テキストをコピー</button>
+      <button class="rv-btn rv-btn-ghost" id="rvOpenMail">メールを下書き</button>
+    </div>
+    <p class="rv-hint" id="rvModalHint"></p>
+  </div>
+</div>
+
 <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const isCoarse = window.matchMedia('(pointer: coarse)').matches;
@@ -1527,7 +1640,7 @@ function initHero3D() {
   const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
   camera.position.z = 7;
 
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, preserveDrawingBuffer: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
   function resize() {
@@ -1645,27 +1758,32 @@ else window.addEventListener('load', initHero3D);
   if (!toggle) return;
   const KEY = 'goody-inline-comments';
 
-  // Selectors for elements that get an inline comment box
-  const SELECTORS = [
-    '.hero-eyebrow',
-    '.hero h1',
-    '.hero-sub',
-    '.about-text p',
-    '.about-image-quote',
-    '.section-title',
-    '.section-lead',
-    '.service-title',
-    '.service-desc',
-    '.step-title',
-    '.step-desc',
-    '.why-content h3',
-    '.why-content p',
-    '.voice-text',
-    '.voice-info .name',
-    '.cta-title',
-    '.cta-sub',
-    '.footer-brand p',
-    '.footer h4'
+  // [selector, insert mode] — 'after' = sibling, 'append' = inside (for grid/flex-row parents)
+  const TARGETS = [
+    ['.hero-eyebrow', 'after'],
+    ['.hero h1', 'after'],
+    ['.hero-sub', 'after'],
+    ['.hero-ctas', 'after'],
+    ['.hero-meta > div', 'append'],
+    ['.marquee', 'after'],
+    ['.about-text p', 'after'],
+    ['.about-image-quote', 'after'],
+    ['.section-title', 'after'],
+    ['.section-lead', 'after'],
+    ['.service-media', 'after'],
+    ['.service-title', 'after'],
+    ['.service-desc', 'after'],
+    ['.service-tags', 'after'],
+    ['.step-title', 'after'],
+    ['.step-desc', 'after'],
+    ['.why-content h3', 'after'],
+    ['.why-content p', 'after'],
+    ['.voice-text', 'after'],
+    ['.voice-author', 'after'],
+    ['.cta-title', 'after'],
+    ['.cta-sub', 'after'],
+    ['.footer-brand p', 'after'],
+    ['.footer h4', 'after']
   ];
 
   // Load saved comments
@@ -1674,7 +1792,7 @@ else window.addEventListener('load', initHero3D);
 
   // Inject comment boxes
   let counter = 0;
-  SELECTORS.forEach(sel => {
+  TARGETS.forEach(([sel, mode]) => {
     document.querySelectorAll(sel).forEach(el => {
       counter++;
       const id = 'rv-' + counter;
@@ -1687,7 +1805,8 @@ else window.addEventListener('load', initHero3D);
       ta.value = store[id] || '';
       if (ta.value.trim()) el.dataset.rvHas = '1';
       box.appendChild(ta);
-      el.insertAdjacentElement('afterend', box);
+      if (mode === 'append') el.appendChild(box);
+      else el.insertAdjacentElement('afterend', box);
       ta.addEventListener('input', () => {
         const v = ta.value;
         if (v.trim()) {
@@ -1752,6 +1871,140 @@ else window.addEventListener('load', initHero3D);
     document.querySelectorAll('[data-rv-has]').forEach(el => delete el.dataset.rvHas);
     updateCount();
     flash('クリアしました', 2000);
+  });
+
+  /* ----- Screenshot + send package ----- */
+  const snapBtn = document.getElementById('rvSnapshot');
+  const modal = document.getElementById('rvModal');
+  const modalClose = document.getElementById('rvModalClose');
+  const modalPreview = document.getElementById('rvModalPreview');
+  const modalComments = document.getElementById('rvModalComments');
+  const modalHint = document.getElementById('rvModalHint');
+  const dlBtn = document.getElementById('rvDownloadImg');
+  const copyImgBtn = document.getElementById('rvCopyImg');
+  const copyTextBtn = document.getElementById('rvCopyText');
+  const mailBtn = document.getElementById('rvOpenMail');
+  let lastBlob = null;
+
+  function buildCommentText() {
+    const entries = Object.entries(store).filter(([_, v]) => (v || '').trim());
+    if (!entries.length) return '';
+    const stamp = new Date().toLocaleString('ja-JP');
+    const lines = ['[Goody フィードバック]', '日時: ' + stamp, 'URL : ' + location.href, ''];
+    entries.forEach(([id, txt], i) => {
+      const el = document.querySelector('[data-rv-target="' + id + '"]');
+      const ctx = el ? el.textContent.replace(/\s+/g, ' ').trim().slice(0, 100) : '(不明)';
+      lines.push((i + 1) + '. 対象テキスト: 「' + ctx + '」');
+      lines.push('   修正コメント: ' + txt.replace(/\n/g, '\n              '));
+      lines.push('');
+    });
+    return lines.join('\n');
+  }
+
+  function modalFlash(msg, ms) {
+    modalHint.textContent = msg;
+    clearTimeout(modalFlash._t);
+    modalFlash._t = setTimeout(() => { modalHint.textContent = ''; }, ms || 3000);
+  }
+
+  snapBtn.addEventListener('click', async () => {
+    if (typeof html2canvas === 'undefined') {
+      flash('スクリーンショットライブラリの読み込みに失敗しました', 4000);
+      return;
+    }
+    flash('スクリーンショット作成中...', 8000);
+    // Hide UI controls during capture
+    toggle.style.visibility = 'hidden';
+    bar.style.visibility = 'hidden';
+    await new Promise(r => setTimeout(r, 80));
+    try {
+      const canvas = await html2canvas(document.body, {
+        backgroundColor: '#fafaf7',
+        scale: Math.min(window.devicePixelRatio || 1, 2),
+        windowWidth: document.documentElement.scrollWidth,
+        windowHeight: document.documentElement.scrollHeight,
+        useCORS: true,
+        allowTaint: true,
+        logging: false,
+        ignoreElements: (el) => el.classList && (el.classList.contains('rv-toggle') || el.classList.contains('rv-bar') || el.classList.contains('rv-modal') || el.classList.contains('cursor') || el.classList.contains('cursor-ring') || el.classList.contains('scroll-progress'))
+      });
+      toggle.style.visibility = '';
+      bar.style.visibility = '';
+      modalPreview.innerHTML = '';
+      modalPreview.appendChild(canvas);
+      modalComments.textContent = buildCommentText();
+      canvas.toBlob(b => { lastBlob = b; }, 'image/png');
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      flash('', 0);
+    } catch (e) {
+      toggle.style.visibility = '';
+      bar.style.visibility = '';
+      flash('スクリーンショットに失敗しました', 4000);
+      console.error(e);
+    }
+  });
+
+  modalClose.addEventListener('click', () => {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    modalPreview.innerHTML = '';
+    lastBlob = null;
+  });
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) modalClose.click();
+  });
+
+  dlBtn.addEventListener('click', () => {
+    const canvas = modalPreview.querySelector('canvas');
+    if (!canvas) return;
+    canvas.toBlob(blob => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const stamp = new Date().toISOString().slice(0,10);
+      a.href = url;
+      a.download = `goody-feedback-${stamp}.png`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      modalFlash('ダウンロードしました', 3000);
+    }, 'image/png');
+  });
+
+  copyImgBtn.addEventListener('click', async () => {
+    const canvas = modalPreview.querySelector('canvas');
+    if (!canvas) return;
+    if (!navigator.clipboard || !window.ClipboardItem) {
+      modalFlash('このブラウザは画像コピーに非対応です。ダウンロードをご利用ください', 5000);
+      return;
+    }
+    canvas.toBlob(async blob => {
+      try {
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+        modalFlash('画像をクリップボードにコピーしました', 3000);
+      } catch (e) {
+        modalFlash('コピーに失敗しました: ' + e.message, 4000);
+      }
+    }, 'image/png');
+  });
+
+  copyTextBtn.addEventListener('click', async () => {
+    const txt = buildCommentText();
+    if (!txt) { modalFlash('コメントがありません', 2000); return; }
+    try {
+      await navigator.clipboard.writeText(txt);
+      modalFlash('テキストをコピーしました', 3000);
+    } catch (e) {
+      modalFlash('コピーに失敗しました', 3000);
+    }
+  });
+
+  mailBtn.addEventListener('click', () => {
+    const txt = buildCommentText() || '(コメントはまだありません)';
+    const subject = encodeURIComponent('Goody ランディングページへのフィードバック');
+    const body = encodeURIComponent(txt + '\n\n※ スクリーンショット画像を添付してください。');
+    location.href = `mailto:?subject=${subject}&body=${body}`;
   });
 })();
 </script>
