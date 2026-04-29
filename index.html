@@ -839,6 +839,122 @@ body.cursor-hover .cursor-ring { width: 70px; height: 70px; background: rgba(255
 
 /* Hero shape blob (kept hidden, replaced by canvas) */
 
+/* ============ FEEDBACK WIDGET ============ */
+.fb-toggle {
+  position: fixed;
+  bottom: 24px; right: 24px;
+  background: var(--ink);
+  color: white;
+  padding: 14px 20px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  z-index: 9990;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+  transition: transform 0.25s, background 0.25s;
+  border: none;
+}
+.fb-toggle:hover { background: var(--accent); transform: translateY(-2px); }
+.fb-toggle svg { display: block; }
+
+.fb-panel {
+  position: fixed;
+  bottom: 24px; right: 24px;
+  width: min(380px, calc(100vw - 32px));
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 24px 70px rgba(0,0,0,0.3);
+  padding: 22px;
+  z-index: 9991;
+  transform: translateY(20px) scale(0.96);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.3s cubic-bezier(0.2,0.8,0.2,1), opacity 0.3s;
+  color: var(--ink);
+}
+.fb-panel.open {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+.fb-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.fb-head strong { font-size: 15px; font-weight: 700; }
+.fb-close {
+  background: none;
+  border: none;
+  font-size: 22px;
+  width: 30px; height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--ink-mute);
+  line-height: 1;
+}
+.fb-close:hover { background: var(--bg-paper); color: var(--ink); }
+.fb-help {
+  font-size: 12px;
+  color: var(--ink-mute);
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+.fb-text {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--line-light);
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.7;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s;
+  background: #fafaf7;
+  color: var(--ink);
+  cursor: text;
+  min-height: 180px;
+}
+.fb-text:focus { border-color: var(--accent); background: white; }
+.fb-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+.fb-btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 999px;
+  border: none;
+  font-weight: 600;
+  font-size: 13px;
+  font-family: inherit;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+.fb-btn-primary { background: var(--ink); color: white; }
+.fb-btn-primary:hover { background: var(--accent); }
+.fb-btn-ghost { background: transparent; color: var(--ink-mute); border: 1px solid var(--line-light); }
+.fb-btn-ghost:hover { background: var(--bg-paper); color: var(--ink); }
+.fb-hint {
+  font-size: 12px;
+  color: var(--accent);
+  text-align: center;
+  margin-top: 10px;
+  min-height: 16px;
+  font-weight: 500;
+}
+@media (max-width: 600px) {
+  .fb-toggle span { display: none; }
+  .fb-toggle { padding: 14px; }
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -1217,6 +1333,25 @@ body.cursor-hover .cursor-ring { width: 70px; height: 70px; background: rgba(255
   </div>
 </footer>
 
+<!-- Feedback widget -->
+<button class="fb-toggle" id="fbToggle" aria-label="フィードバック">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  <span>フィードバック</span>
+</button>
+<aside class="fb-panel" id="fbPanel" aria-hidden="true">
+  <div class="fb-head">
+    <strong>このページへのご意見</strong>
+    <button class="fb-close" id="fbClose" aria-label="閉じる">×</button>
+  </div>
+  <p class="fb-help">気になる点・修正したい箇所を自由にご記入ください。<br>入力内容はこのブラウザに自動保存されます。</p>
+  <textarea id="fbText" class="fb-text" placeholder="例：&#10;・ヒーローのコピーをもう少し短く&#10;・サービスカードの順番を変えたい&#10;・写真を差し替えたい …"></textarea>
+  <div class="fb-actions">
+    <button class="fb-btn fb-btn-primary" id="fbCopy">コピーして送信</button>
+    <button class="fb-btn fb-btn-ghost" id="fbClear">クリア</button>
+  </div>
+  <p class="fb-hint" id="fbHint"></p>
+</aside>
+
 <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
 <script>
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1475,6 +1610,66 @@ function initHero3D() {
 }
 if (document.readyState === 'complete') initHero3D();
 else window.addEventListener('load', initHero3D);
+
+/* ---------- 9. Feedback widget ---------- */
+(function(){
+  const toggle = document.getElementById('fbToggle');
+  const panel = document.getElementById('fbPanel');
+  const closeBtn = document.getElementById('fbClose');
+  const text = document.getElementById('fbText');
+  const copyBtn = document.getElementById('fbCopy');
+  const clearBtn = document.getElementById('fbClear');
+  const hint = document.getElementById('fbHint');
+  if (!toggle || !panel) return;
+  const KEY = 'goody-feedback-draft';
+
+  text.value = localStorage.getItem(KEY) || '';
+
+  function open() {
+    panel.classList.add('open');
+    panel.setAttribute('aria-hidden', 'false');
+    toggle.style.display = 'none';
+    setTimeout(() => text.focus(), 250);
+  }
+  function close() {
+    panel.classList.remove('open');
+    panel.setAttribute('aria-hidden', 'true');
+    setTimeout(() => { toggle.style.display = ''; }, 300);
+  }
+  toggle.addEventListener('click', open);
+  closeBtn.addEventListener('click', close);
+
+  text.addEventListener('input', () => {
+    localStorage.setItem(KEY, text.value);
+  });
+
+  function flash(msg, ms) {
+    hint.textContent = msg;
+    clearTimeout(flash._t);
+    flash._t = setTimeout(() => { hint.textContent = ''; }, ms || 3000);
+  }
+
+  copyBtn.addEventListener('click', async () => {
+    const v = text.value.trim();
+    if (!v) { flash('入力欄が空です', 2000); return; }
+    const stamp = new Date().toLocaleString('ja-JP');
+    const body = `[Goody フィードバック]\n日時: ${stamp}\nURL : ${location.href}\n\n${v}\n`;
+    try {
+      await navigator.clipboard.writeText(body);
+      flash('コピーしました! メール等に貼り付けて送信してください', 4500);
+    } catch (e) {
+      flash('コピーに失敗しました', 3000);
+    }
+  });
+
+  clearBtn.addEventListener('click', () => {
+    if (text.value && !confirm('入力内容を削除します。よろしいですか?')) return;
+    text.value = '';
+    localStorage.removeItem(KEY);
+    text.focus();
+    flash('クリアしました', 2000);
+  });
+})();
 </script>
 
 </body>
