@@ -984,97 +984,139 @@ body.review-mode [data-rv-target][data-rv-has="1"] {
   .rv-bar { right: 12px; bottom: 84px; padding: 12px; }
 }
 
-/* Screenshot / send modal */
-.rv-modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.85);
-  z-index: 9999;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  overflow-y: auto;
-}
-.rv-modal.open { display: flex; }
-.rv-modal-card {
+/* Edit-mode toggle (smaller, sits above the main toggle) */
+.rv-toggle-edit {
+  bottom: 80px;
   background: white;
   color: var(--ink);
-  border-radius: 16px;
-  padding: 24px;
-  max-width: 800px;
-  width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: 0 30px 100px rgba(0,0,0,0.5);
+  border: 1.5px solid var(--ink);
+  font-size: 12px;
+  padding: 10px 16px;
+  font-weight: 600;
 }
-.rv-modal-head {
+.rv-toggle-edit:hover { background: var(--ink); color: white; }
+.rv-toggle-edit.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+/* Edit panel (slide-in from right) */
+.rv-edit-panel {
+  position: fixed;
+  top: 0; right: 0;
+  height: 100vh;
+  width: 420px;
+  max-width: 100vw;
+  background: white;
+  color: var(--ink);
+  box-shadow: -16px 0 50px rgba(0,0,0,0.18);
+  z-index: 9992;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.2,0.8,0.2,1);
+  display: flex;
+  flex-direction: column;
+  padding: 22px;
+}
+.rv-edit-panel.open { transform: translateX(0); }
+.rv-edit-head {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line-light);
+  margin-bottom: 14px;
 }
-.rv-modal-head strong { font-size: 17px; font-weight: 800; }
-.rv-modal-close {
+.rv-edit-head strong { font-size: 15px; font-weight: 700; }
+.rv-edit-head strong span { color: var(--accent); }
+.rv-edit-close {
   background: none;
   border: none;
   font-size: 24px;
-  width: 30px; height: 30px;
+  width: 32px; height: 32px;
   border-radius: 50%;
   color: var(--ink-mute);
-  cursor: pointer;
+  line-height: 1;
 }
-.rv-modal-close:hover { background: var(--bg-paper); }
-.rv-modal-help {
-  font-size: 12px;
-  color: var(--ink-mute);
-  line-height: 1.7;
-  margin-bottom: 14px;
-}
-.rv-modal-preview {
-  background: #f0f0ed;
-  border-radius: 10px;
-  margin-bottom: 14px;
-  max-height: 50vh;
+.rv-edit-close:hover { background: var(--bg-paper); color: var(--ink); }
+.rv-edit-body {
+  flex: 1;
   overflow-y: auto;
-  padding: 6px;
+  margin-right: -8px;
+  padding-right: 8px;
 }
-.rv-modal-preview canvas,
-.rv-modal-preview img {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 6px;
-}
-.rv-modal-preview:empty {
-  min-height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.rv-edit-empty {
+  text-align: center;
   color: var(--ink-mute);
+  padding: 60px 20px;
   font-size: 13px;
+  line-height: 1.8;
 }
-.rv-modal-preview:empty::after { content: 'スクリーンショット作成中…'; }
-.rv-modal-comments {
-  background: var(--bg-paper);
-  border-radius: 10px;
-  padding: 14px 16px;
-  margin-bottom: 14px;
+.rv-edit-item {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  gap: 10px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line-light);
+}
+.rv-edit-item:last-child { border-bottom: none; }
+.rv-edit-num {
+  font-family: "Inter", sans-serif;
+  font-weight: 800;
+  color: var(--accent);
+  font-size: 14px;
+  padding-top: 2px;
+}
+.rv-edit-target {
+  font-size: 11px;
+  color: var(--ink-mute);
+  margin-bottom: 6px;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+}
+.rv-edit-target b {
+  display: block;
+  color: var(--ink);
+  font-weight: 600;
   font-size: 12px;
-  font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  max-height: 200px;
-  overflow-y: auto;
-  white-space: pre-wrap;
-  line-height: 1.7;
-  color: var(--ink-soft);
+  margin-top: 2px;
+  word-break: break-all;
 }
-.rv-modal-comments:empty { display: none; }
-.rv-modal-actions {
+.rv-edit-comment {
+  font-size: 13px;
+  color: var(--ink);
+  line-height: 1.7;
+  background: var(--bg-paper);
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  white-space: pre-wrap;
+}
+.rv-edit-jump {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 12px;
+  padding: 0;
+  font-weight: 600;
+  font-family: inherit;
+}
+.rv-edit-jump:hover { text-decoration: underline; }
+.rv-edit-actions {
   display: flex;
   gap: 8px;
-  flex-wrap: wrap;
+  padding-top: 14px;
+  border-top: 1px solid var(--line-light);
 }
-.rv-modal-actions .rv-btn { flex: 1; min-width: 140px; }
+.rv-edit-actions .rv-btn { flex: 1; }
+
+/* Highlight target on jump */
+[data-rv-target].rv-flash {
+  outline: 3px solid var(--accent) !important;
+  outline-offset: 6px;
+  border-radius: 4px;
+}
+
+@media (max-width: 600px) {
+  .rv-edit-panel { width: 100vw; }
+  .rv-toggle-edit { bottom: 78px; }
+}
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
@@ -1455,39 +1497,36 @@ body.review-mode [data-rv-target][data-rv-has="1"] {
 </footer>
 
 <!-- Inline review mode -->
+<button class="rv-toggle rv-toggle-edit" id="rvEditToggle" aria-label="編集モード">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 10v6M4.22 4.22l4.24 4.24m7.08 7.08l4.24 4.24M1 12h6m10 0h6M4.22 19.78l4.24-4.24m7.08-7.08l4.24-4.24"/></svg>
+  <span>編集モード</span>
+</button>
 <button class="rv-toggle" id="rvToggle" aria-label="コメントモードを切り替え">
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
   <span id="rvLabel">コメントモード</span>
 </button>
 <div class="rv-bar" id="rvBar" aria-hidden="true">
   <span class="rv-count"><span id="rvCount">0</span> 件のコメント</span>
-  <button class="rv-btn rv-btn-primary" id="rvSnapshot">📷 スクショ＋送信準備</button>
-  <button class="rv-btn rv-btn-primary" id="rvCopy">コメントだけコピー</button>
+  <button class="rv-btn rv-btn-primary" id="rvSave">コメントを保存</button>
+  <button class="rv-btn rv-btn-primary" id="rvCopy">コメントをコピー</button>
   <button class="rv-btn rv-btn-ghost" id="rvClear">クリア</button>
   <span class="rv-hint" id="rvHint"></span>
 </div>
 
-<div class="rv-modal" id="rvModal" aria-hidden="true">
-  <div class="rv-modal-card">
-    <div class="rv-modal-head">
-      <strong>送信パッケージが完成しました</strong>
-      <button class="rv-modal-close" id="rvModalClose" aria-label="閉じる">×</button>
-    </div>
-    <p class="rv-modal-help">下のスクリーンショットとコメント一覧を、メールやチャットに貼り付けて送信してください。</p>
-    <div class="rv-modal-preview" id="rvModalPreview"></div>
-    <div class="rv-modal-comments" id="rvModalComments"></div>
-    <div class="rv-modal-actions">
-      <button class="rv-btn rv-btn-primary" id="rvDownloadImg">画像をダウンロード</button>
-      <button class="rv-btn rv-btn-primary" id="rvCopyImg">画像をコピー</button>
-      <button class="rv-btn rv-btn-ghost" id="rvCopyText">テキストをコピー</button>
-      <button class="rv-btn rv-btn-ghost" id="rvOpenMail">メールを下書き</button>
-    </div>
-    <p class="rv-hint" id="rvModalHint"></p>
+<aside class="rv-edit-panel" id="rvEditPanel" aria-hidden="true">
+  <div class="rv-edit-head">
+    <strong>保存されたコメント (<span id="rvEditCount">0</span>件)</strong>
+    <button class="rv-edit-close" id="rvEditClose" aria-label="閉じる">×</button>
   </div>
-</div>
+  <div class="rv-edit-body" id="rvEditBody"></div>
+  <div class="rv-edit-actions">
+    <button class="rv-btn rv-btn-primary" id="rvEditCopyAll">全コメントをコピー</button>
+    <button class="rv-btn rv-btn-ghost" id="rvEditClearAll">すべて削除</button>
+  </div>
+  <p class="rv-hint" id="rvEditHint"></p>
+</aside>
 
 <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const isCoarse = window.matchMedia('(pointer: coarse)').matches;
@@ -1873,24 +1912,11 @@ else window.addEventListener('load', initHero3D);
     flash('クリアしました', 2000);
   });
 
-  /* ----- Screenshot + send package ----- */
-  const snapBtn = document.getElementById('rvSnapshot');
-  const modal = document.getElementById('rvModal');
-  const modalClose = document.getElementById('rvModalClose');
-  const modalPreview = document.getElementById('rvModalPreview');
-  const modalComments = document.getElementById('rvModalComments');
-  const modalHint = document.getElementById('rvModalHint');
-  const dlBtn = document.getElementById('rvDownloadImg');
-  const copyImgBtn = document.getElementById('rvCopyImg');
-  const copyTextBtn = document.getElementById('rvCopyText');
-  const mailBtn = document.getElementById('rvOpenMail');
-  let lastBlob = null;
-
   function buildCommentText() {
     const entries = Object.entries(store).filter(([_, v]) => (v || '').trim());
     if (!entries.length) return '';
     const stamp = new Date().toLocaleString('ja-JP');
-    const lines = ['[Goody フィードバック]', '日時: ' + stamp, 'URL : ' + location.href, ''];
+    const lines = ['[Goody フィードバック]', '日時: ' + stamp, 'URL : ' + location.origin + location.pathname, ''];
     entries.forEach(([id, txt], i) => {
       const el = document.querySelector('[data-rv-target="' + id + '"]');
       const ctx = el ? el.textContent.replace(/\s+/g, ' ').trim().slice(0, 100) : '(不明)';
@@ -1901,111 +1927,155 @@ else window.addEventListener('load', initHero3D);
     return lines.join('\n');
   }
 
-  function modalFlash(msg, ms) {
-    modalHint.textContent = msg;
-    clearTimeout(modalFlash._t);
-    modalFlash._t = setTimeout(() => { modalHint.textContent = ''; }, ms || 3000);
+  /* ----- Save (encode comments into URL) ----- */
+  function encodeComments(obj) {
+    const json = JSON.stringify(obj);
+    return btoa(unescape(encodeURIComponent(json)));
+  }
+  function decodeComments(str) {
+    try {
+      const json = decodeURIComponent(escape(atob(str)));
+      const parsed = JSON.parse(json);
+      if (parsed && typeof parsed === 'object') return parsed;
+    } catch (e) { /* ignore */ }
+    return null;
   }
 
-  snapBtn.addEventListener('click', async () => {
-    if (typeof html2canvas === 'undefined') {
-      flash('スクリーンショットライブラリの読み込みに失敗しました', 4000);
-      return;
-    }
-    flash('スクリーンショット作成中...', 8000);
-    // Hide UI controls during capture
-    toggle.style.visibility = 'hidden';
-    bar.style.visibility = 'hidden';
-    await new Promise(r => setTimeout(r, 80));
-    try {
-      const canvas = await html2canvas(document.body, {
-        backgroundColor: '#fafaf7',
-        scale: Math.min(window.devicePixelRatio || 1, 2),
-        windowWidth: document.documentElement.scrollWidth,
-        windowHeight: document.documentElement.scrollHeight,
-        useCORS: true,
-        allowTaint: true,
-        logging: false,
-        ignoreElements: (el) => el.classList && (el.classList.contains('rv-toggle') || el.classList.contains('rv-bar') || el.classList.contains('rv-modal') || el.classList.contains('cursor') || el.classList.contains('cursor-ring') || el.classList.contains('scroll-progress'))
-      });
-      toggle.style.visibility = '';
-      bar.style.visibility = '';
-      modalPreview.innerHTML = '';
-      modalPreview.appendChild(canvas);
-      modalComments.textContent = buildCommentText();
-      canvas.toBlob(b => { lastBlob = b; }, 'image/png');
-      modal.classList.add('open');
-      modal.setAttribute('aria-hidden', 'false');
-      flash('', 0);
-    } catch (e) {
-      toggle.style.visibility = '';
-      bar.style.visibility = '';
-      flash('スクリーンショットに失敗しました', 4000);
-      console.error(e);
-    }
-  });
-
-  modalClose.addEventListener('click', () => {
-    modal.classList.remove('open');
-    modal.setAttribute('aria-hidden', 'true');
-    modalPreview.innerHTML = '';
-    lastBlob = null;
-  });
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) modalClose.click();
-  });
-
-  dlBtn.addEventListener('click', () => {
-    const canvas = modalPreview.querySelector('canvas');
-    if (!canvas) return;
-    canvas.toBlob(blob => {
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      const stamp = new Date().toISOString().slice(0,10);
-      a.href = url;
-      a.download = `goody-feedback-${stamp}.png`;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
-      modalFlash('ダウンロードしました', 3000);
-    }, 'image/png');
-  });
-
-  copyImgBtn.addEventListener('click', async () => {
-    const canvas = modalPreview.querySelector('canvas');
-    if (!canvas) return;
-    if (!navigator.clipboard || !window.ClipboardItem) {
-      modalFlash('このブラウザは画像コピーに非対応です。ダウンロードをご利用ください', 5000);
-      return;
-    }
-    canvas.toBlob(async blob => {
-      try {
-        await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-        modalFlash('画像をクリップボードにコピーしました', 3000);
-      } catch (e) {
-        modalFlash('コピーに失敗しました: ' + e.message, 4000);
+  // Auto-load comments from URL fragment if present
+  function checkUrlForComments() {
+    const hash = location.hash.slice(1);
+    if (!hash) return false;
+    const params = new URLSearchParams(hash);
+    if (!params.has('c')) return false;
+    const decoded = decodeComments(params.get('c'));
+    if (!decoded) return false;
+    // Merge with existing local comments (URL takes precedence)
+    Object.keys(decoded).forEach(k => { store[k] = decoded[k]; });
+    localStorage.setItem(KEY, JSON.stringify(store));
+    // Refresh textareas
+    document.querySelectorAll('.rv-box textarea').forEach(t => {
+      const id = t.dataset.rvId;
+      t.value = store[id] || '';
+      const target = document.querySelector('[data-rv-target="' + id + '"]');
+      if (target) {
+        if ((store[id] || '').trim()) target.dataset.rvHas = '1';
+        else delete target.dataset.rvHas;
       }
-    }, 'image/png');
+    });
+    updateCount();
+    return true;
+  }
+  const loadedFromUrl = checkUrlForComments();
+
+  const saveBtn = document.getElementById('rvSave');
+  saveBtn.addEventListener('click', async () => {
+    const entries = Object.entries(store).filter(([_, v]) => (v || '').trim());
+    if (!entries.length) { flash('保存するコメントがありません', 2500); return; }
+    const filtered = {};
+    entries.forEach(([k, v]) => { filtered[k] = v; });
+    const encoded = encodeComments(filtered);
+    const url = location.origin + location.pathname + '#c=' + encoded;
+    history.replaceState(null, '', '#c=' + encoded);
+    try {
+      await navigator.clipboard.writeText(url);
+      flash('保存URLをコピーしました! 開発者にこのURLを送ってください', 6000);
+    } catch (e) {
+      flash('URLコピー失敗。アドレスバーをコピーしてください', 5000);
+    }
   });
 
-  copyTextBtn.addEventListener('click', async () => {
+  /* ----- Edit mode (panel for the developer) ----- */
+  const editToggle = document.getElementById('rvEditToggle');
+  const editPanel = document.getElementById('rvEditPanel');
+  const editClose = document.getElementById('rvEditClose');
+  const editBody = document.getElementById('rvEditBody');
+  const editCount = document.getElementById('rvEditCount');
+  const editCopyAll = document.getElementById('rvEditCopyAll');
+  const editClearAll = document.getElementById('rvEditClearAll');
+  const editHint = document.getElementById('rvEditHint');
+
+  function escapeHtml(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  function renderEditList() {
+    const entries = Object.entries(store).filter(([_, v]) => (v || '').trim());
+    editCount.textContent = entries.length;
+    if (!entries.length) {
+      editBody.innerHTML = '<div class="rv-edit-empty">保存されたコメントはまだありません。<br>クライアントが「コメントを保存」を押した後、共有URLを開くと表示されます。</div>';
+      return;
+    }
+    editBody.innerHTML = '';
+    entries.forEach(([id, txt], i) => {
+      const el = document.querySelector('[data-rv-target="' + id + '"]');
+      const ctx = el ? el.textContent.replace(/\s+/g, ' ').trim().slice(0, 80) : '(不明な要素)';
+      const item = document.createElement('div');
+      item.className = 'rv-edit-item';
+      item.innerHTML =
+        '<div class="rv-edit-num">' + (i + 1) + '</div>' +
+        '<div>' +
+          '<div class="rv-edit-target">対象テキスト<b>「' + escapeHtml(ctx) + '」</b></div>' +
+          '<div class="rv-edit-comment">' + escapeHtml(txt) + '</div>' +
+          (el ? '<button class="rv-edit-jump" data-jump="' + id + '">この箇所へ移動 →</button>' : '') +
+        '</div>';
+      editBody.appendChild(item);
+    });
+    editBody.querySelectorAll('.rv-edit-jump').forEach(b => {
+      b.addEventListener('click', () => {
+        const t = document.querySelector('[data-rv-target="' + b.dataset.jump + '"]');
+        if (!t) return;
+        t.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        t.classList.add('rv-flash');
+        setTimeout(() => t.classList.remove('rv-flash'), 1800);
+      });
+    });
+  }
+
+  function editFlash(msg, ms) {
+    editHint.textContent = msg;
+    clearTimeout(editFlash._t);
+    editFlash._t = setTimeout(() => { editHint.textContent = ''; }, ms || 3000);
+  }
+
+  editToggle.addEventListener('click', () => {
+    const on = !editPanel.classList.contains('open');
+    editPanel.classList.toggle('open', on);
+    editToggle.classList.toggle('active', on);
+    editPanel.setAttribute('aria-hidden', on ? 'false' : 'true');
+    if (on) renderEditList();
+  });
+  editClose.addEventListener('click', () => editToggle.click());
+
+  editCopyAll.addEventListener('click', async () => {
     const txt = buildCommentText();
-    if (!txt) { modalFlash('コメントがありません', 2000); return; }
+    if (!txt) { editFlash('コメントがありません', 2000); return; }
     try {
       await navigator.clipboard.writeText(txt);
-      modalFlash('テキストをコピーしました', 3000);
+      editFlash('コピーしました', 2500);
     } catch (e) {
-      modalFlash('コピーに失敗しました', 3000);
+      editFlash('コピー失敗', 2500);
     }
   });
-
-  mailBtn.addEventListener('click', () => {
-    const txt = buildCommentText() || '(コメントはまだありません)';
-    const subject = encodeURIComponent('Goody ランディングページへのフィードバック');
-    const body = encodeURIComponent(txt + '\n\n※ スクリーンショット画像を添付してください。');
-    location.href = `mailto:?subject=${subject}&body=${body}`;
+  editClearAll.addEventListener('click', () => {
+    if (!Object.keys(store).length) { editFlash('コメントはありません', 2000); return; }
+    if (!confirm('保存されたすべてのコメントを削除します。よろしいですか?')) return;
+    store = {};
+    localStorage.removeItem(KEY);
+    document.querySelectorAll('.rv-box textarea').forEach(t => { t.value = ''; });
+    document.querySelectorAll('[data-rv-has]').forEach(el => delete el.dataset.rvHas);
+    updateCount();
+    renderEditList();
+    history.replaceState(null, '', location.pathname);
+    editFlash('全削除しました', 2500);
   });
+
+  // If we just loaded comments from a URL, gently prompt edit mode
+  if (loadedFromUrl) {
+    setTimeout(() => {
+      flash(Object.keys(store).length + '件のコメントが共有URLから読み込まれました', 5000);
+    }, 500);
+  }
 })();
 </script>
 
