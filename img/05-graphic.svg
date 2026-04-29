@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="600" height="450">
+  <defs>
+    <radialGradient id="g5-bg" cx="50%" cy="50%" r="80%">
+      <stop offset="0%" stop-color="#1a0a07"/>
+      <stop offset="100%" stop-color="#0a0a0a"/>
+    </radialGradient>
+    <linearGradient id="g5-shape" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff8a6a"/>
+      <stop offset="100%" stop-color="#ff5a3c"/>
+    </linearGradient>
+    <radialGradient id="g5-circle" cx="40%" cy="40%" r="70%">
+      <stop offset="0%" stop-color="#ffb29d"/>
+      <stop offset="100%" stop-color="#ff5a3c"/>
+    </radialGradient>
+  </defs>
+  <rect width="600" height="450" fill="url(#g5-bg)"/>
+
+  <!-- expanding rings -->
+  <g fill="none" stroke="#ff5a3c">
+    <circle cx="180" cy="225" r="120" stroke-width="1" opacity="0.25">
+      <animate attributeName="r" values="100;180;100" dur="6s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.4;0;0.4" dur="6s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="180" cy="225" r="170" stroke-width="1.5" opacity="0.35">
+      <animate attributeName="r" values="140;220;140" dur="6s" begin="2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.4;0;0.4" dur="6s" begin="2s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- main filled circle (slowly rotating gradient via group rotation) -->
+  <g transform="translate(220 220)">
+    <g>
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="30s" repeatCount="indefinite"/>
+      <circle cx="0" cy="0" r="110" fill="url(#g5-circle)"/>
+    </g>
+  </g>
+
+  <!-- abstract square -->
+  <g>
+    <animateTransform attributeName="transform" type="rotate" values="0 410 220; 25 410 220; 0 410 220" dur="12s" repeatCount="indefinite" calcMode="spline" keySplines="0.42 0 0.58 1; 0.42 0 0.58 1"/>
+    <rect x="320" y="130" width="180" height="180" rx="6" fill="none" stroke="url(#g5-shape)" stroke-width="3" transform="rotate(12 410 220)"/>
+  </g>
+
+  <!-- letterform G (gentle scale) -->
+  <g transform="translate(380 200)" fill="#ff5a3c">
+    <g>
+      <animateTransform attributeName="transform" type="scale" values="1;1.06;1" dur="4s" repeatCount="indefinite" calcMode="spline" keySplines="0.42 0 0.58 1; 0.42 0 0.58 1"/>
+      <path d="M-40 -50 Q-80 -50 -80 0 Q-80 50 -40 50 Q-10 50 0 30 L0 -5 L-30 -5 L-30 15 L-15 15 Q-20 30 -38 30 Q-58 30 -58 0 Q-58 -30 -38 -30 Q-22 -30 -16 -16 L0 -25 Q-12 -50 -40 -50 Z"/>
+    </g>
+  </g>
+
+  <!-- floating dots -->
+  <circle cx="120" cy="100" r="6" fill="#ff5a3c">
+    <animate attributeName="opacity" values="0.4;1;0.4" dur="2.8s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="100" cy="130" r="3" fill="#ff5a3c" opacity="0.7">
+    <animate attributeName="opacity" values="0.3;0.9;0.3" dur="3.5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="540" cy="100" r="4" fill="#ff5a3c" opacity="0.6">
+    <animate attributeName="opacity" values="0.3;0.9;0.3" dur="2.2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="80" cy="380" r="5" fill="#ff5a3c" opacity="0.5">
+    <animate attributeName="opacity" values="0.3;0.9;0.3" dur="3.2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="520" cy="380" r="3" fill="#ff5a3c">
+    <animate attributeName="opacity" values="0.4;1;0.4" dur="2.5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="500" cy="350" r="2" fill="#ff5a3c" opacity="0.6">
+    <animate attributeName="opacity" values="0.3;0.9;0.3" dur="3s" repeatCount="indefinite"/>
+  </circle>
+
+  <line x1="0" y1="50" x2="60" y2="0" stroke="#ff5a3c" stroke-width="2"/>
+  <line x1="540" y1="450" x2="600" y2="400" stroke="#ff5a3c" stroke-width="2"/>
+</svg>
