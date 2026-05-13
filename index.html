@@ -375,6 +375,66 @@ section { padding: clamp(80px, 12vw, 160px) 0; }
   z-index: 1;
 }
 
+/* ============ BUSINESS ============ */
+.business { background: var(--bg-light); position: relative; }
+.business-head { margin-bottom: clamp(48px, 7vw, 88px); max-width: 720px; }
+.business-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--line-light);
+  border-left: 1px solid var(--line-light);
+}
+@media (max-width: 900px) { .business-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .business-grid { grid-template-columns: 1fr; } }
+.biz {
+  background: var(--bg-light);
+  border-right: 1px solid var(--line-light);
+  border-bottom: 1px solid var(--line-light);
+  padding: 40px 32px 44px;
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: background 0.35s ease;
+  overflow: hidden;
+}
+.biz::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 3px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.biz:hover { background: #fff; }
+.biz:hover::after { transform: scaleX(1); }
+.biz:hover .biz-num { color: var(--accent); }
+.biz-num {
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-mute);
+  letter-spacing: 0.08em;
+  margin-bottom: 28px;
+  transition: color 0.3s;
+}
+.biz-title {
+  font-size: clamp(19px, 1.6vw, 22px);
+  font-weight: 800;
+  line-height: 1.45;
+  margin-bottom: 14px;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.biz-desc {
+  font-size: 14px;
+  color: var(--ink-soft);
+  line-height: 1.85;
+  margin-top: auto;
+}
+
 /* ============ SERVICES ============ */
 .services { background: var(--bg); color: white; }
 .services .section-title { color: white; }
@@ -1141,6 +1201,7 @@ body.review-mode [data-rv-target][data-rv-has="1"] {
     <a href="#" class="logo">Goody<span class="logo-dot"></span></a>
     <div class="nav-links">
       <a href="#about">About</a>
+      <a href="#business">Business</a>
       <a href="#services">Services</a>
       <a href="#how">How it works</a>
       <a href="#voice">Voice</a>
@@ -1221,6 +1282,49 @@ body.review-mode [data-rv-target][data-rv-has="1"] {
         <p>クリエイティブの学校を卒業しても。独学でスキルを磨いても。「実績がないから仕事がもらえない、仕事がないから実績ができない」— この壁の前で、多くの才能ある初心者が立ち止まっています。</p>
         <p>Goodyは、そんな <strong>「最初の一歩」</strong> を支えるためにつくられました。小さな案件からスタートし、メンターのサポートのもと、本物のクライアントワークを経験する。完成した仕事はあなたの実績となり、次の挑戦への扉を開きます。</p>
         <p>私たちは、<strong>才能の入り口を広げる</strong> ことを使命としています。経験ゼロのあなたが、明日にはプロの現場に立っている。Goodyが目指すのは、そんな未来です。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUSINESS -->
+<section class="business" id="business">
+  <div class="container">
+    <div class="business-head reveal">
+      <div class="section-label">Business</div>
+      <h2 class="section-title">事業<span class="accent">内容</span>。</h2>
+      <p class="section-lead">クリエイティブから人材育成、BPO、海外飲食まで。<br>企業の課題に応える6つの事業領域で、Goodyは社会と産業をつなぎます。</p>
+    </div>
+    <div class="business-grid">
+      <div class="biz reveal">
+        <div class="biz-num">01</div>
+        <div class="biz-title">クリエイティブ事業</div>
+        <div class="biz-desc">動画、グラフィック、ブランディング、Web制作まで。企業の表現を支える総合クリエイティブ。</div>
+      </div>
+      <div class="biz reveal delay-1">
+        <div class="biz-num">02</div>
+        <div class="biz-title">グローバル人材育成事業</div>
+        <div class="biz-desc">海外で活躍する人材を育成するプログラムと、現地キャリアまで伴走する一気通貫の支援。</div>
+      </div>
+      <div class="biz reveal delay-2">
+        <div class="biz-num">03</div>
+        <div class="biz-title">人材サービス事業</div>
+        <div class="biz-desc">採用支援、人材紹介、業務委託まで。企業の人材戦略を、必要な形で、必要なときに。</div>
+      </div>
+      <div class="biz reveal">
+        <div class="biz-num">04</div>
+        <div class="biz-title">BPO事業</div>
+        <div class="biz-desc">バックオフィスを中心に、企業のノンコア業務を一括受託。コア業務に集中できる環境を。</div>
+      </div>
+      <div class="biz reveal delay-1">
+        <div class="biz-num">05</div>
+        <div class="biz-title">海外飲食事業</div>
+        <div class="biz-desc">海外マーケットでの飲食店運営とブランド展開。現地に根ざした、日本発の食体験を世界へ。</div>
+      </div>
+      <div class="biz reveal delay-2">
+        <div class="biz-num">06</div>
+        <div class="biz-title">酒類マーケティング・<br>クリエイティブ事業</div>
+        <div class="biz-desc">酒類ブランドのマーケティング戦略から、ビジュアル・コピー・体験設計まで一気通貫で。</div>
       </div>
     </div>
   </div>
