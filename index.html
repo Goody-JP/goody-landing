@@ -375,64 +375,123 @@ section { padding: clamp(80px, 12vw, 160px) 0; }
   z-index: 1;
 }
 
-/* ============ BUSINESS ============ */
-.business { background: var(--bg-light); position: relative; }
+/* ============ BUSINESS (ORBIT) ============ */
+.business { background: var(--bg); color: white; position: relative; padding-bottom: 0; }
+.business .section-title { color: white; }
+.business .section-lead { color: #aaa; }
 .business-head { margin-bottom: clamp(48px, 7vw, 88px); max-width: 720px; }
-.business-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  border-top: 1px solid var(--line-light);
-  border-left: 1px solid var(--line-light);
-}
-@media (max-width: 900px) { .business-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 600px) { .business-grid { grid-template-columns: 1fr; } }
-.biz {
-  background: var(--bg-light);
-  border-right: 1px solid var(--line-light);
-  border-bottom: 1px solid var(--line-light);
-  padding: 40px 32px 44px;
-  min-height: 260px;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  transition: background 0.35s ease;
+.orbit-scroll { position: relative; height: 600vh; }
+.orbit-stage {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
   overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 55%, rgba(255, 90, 60, 0.10), transparent 55%),
+    var(--bg);
 }
-.biz::after {
-  content: "";
+.orbit-canvas {
   position: absolute;
-  left: 0; right: 0; bottom: 0;
-  height: 3px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
 }
-.biz:hover { background: #fff; }
-.biz:hover::after { transform: scaleX(1); }
-.biz:hover .biz-num { color: var(--accent); }
-.biz-num {
+.orbit-panels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.orbit-panel {
+  position: absolute;
+  left: 0; top: 0;
+  width: clamp(240px, 23vw, 320px);
+  padding: 26px 28px 28px;
+  background: rgba(15, 15, 15, 0.78);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  color: white;
+  transform-origin: center center;
+  transition: opacity 0.25s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform, opacity;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+}
+.orbit-panel.is-front {
+  border-color: rgba(255, 90, 60, 0.55);
+  box-shadow: 0 12px 50px rgba(255, 90, 60, 0.22), 0 0 0 1px rgba(255, 90, 60, 0.18) inset;
+}
+.orbit-panel .biz-num {
   font-family: "Inter", sans-serif;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
-  color: var(--ink-mute);
-  letter-spacing: 0.08em;
-  margin-bottom: 28px;
-  transition: color 0.3s;
+  color: var(--accent);
+  letter-spacing: 0.14em;
+  margin-bottom: 16px;
 }
-.biz-title {
-  font-size: clamp(19px, 1.6vw, 22px);
+.orbit-panel .biz-title {
+  font-size: 18px;
   font-weight: 800;
   line-height: 1.45;
-  margin-bottom: 14px;
-  color: var(--ink);
   letter-spacing: -0.01em;
+  margin-bottom: 10px;
 }
-.biz-desc {
-  font-size: 14px;
-  color: var(--ink-soft);
-  line-height: 1.85;
-  margin-top: auto;
+.orbit-panel .biz-desc {
+  font-size: 12.5px;
+  color: #b9b9b9;
+  line-height: 1.75;
+}
+.orbit-hud {
+  position: absolute;
+  left: 50%;
+  bottom: 36px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: rgba(255, 255, 255, 0.55);
+  pointer-events: none;
+}
+.orbit-hud-bar {
+  position: relative;
+  width: 220px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.18);
+  overflow: hidden;
+}
+.orbit-hud-bar span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0;
+  background: var(--accent);
+}
+.orbit-fallback { display: none; }
+@media (max-width: 820px) {
+  .orbit-scroll { height: auto; }
+  .orbit-stage { position: static; height: auto; padding: 24px 0 8px; background: var(--bg); }
+  .orbit-canvas, .orbit-hud { display: none; }
+  .orbit-panels {
+    position: static;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 0 20px 40px;
+  }
+  .orbit-panel {
+    position: static !important;
+    transform: none !important;
+    opacity: 1 !important;
+    width: 100%;
+  }
+  .orbit-panel.is-front {
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+  }
 }
 
 /* ============ SERVICES ============ */
@@ -1295,36 +1354,46 @@ body.review-mode [data-rv-target][data-rv-has="1"] {
       <h2 class="section-title">事業<span class="accent">内容</span>。</h2>
       <p class="section-lead">クリエイティブから人材育成、BPO、海外飲食まで。<br>企業の課題に応える6つの事業領域で、Goodyは社会と産業をつなぎます。</p>
     </div>
-    <div class="business-grid">
-      <div class="biz reveal">
-        <div class="biz-num">01</div>
-        <div class="biz-title">クリエイティブ事業</div>
-        <div class="biz-desc">動画、グラフィック、ブランディング、Web制作まで。企業の表現を支える総合クリエイティブ。</div>
+  </div>
+  <div class="orbit-scroll" id="orbit-scroll">
+    <div class="orbit-stage" id="orbit-stage">
+      <canvas class="orbit-canvas" id="orbit-canvas"></canvas>
+      <div class="orbit-panels" id="orbit-panels">
+        <div class="orbit-panel" data-orbit-index="0">
+          <div class="biz-num">01 / Creative</div>
+          <div class="biz-title">クリエイティブ事業</div>
+          <div class="biz-desc">動画、グラフィック、ブランディング、Web制作まで。企業の表現を支える総合クリエイティブ。</div>
+        </div>
+        <div class="orbit-panel" data-orbit-index="1">
+          <div class="biz-num">02 / Global Talent</div>
+          <div class="biz-title">グローバル人材育成事業</div>
+          <div class="biz-desc">海外で活躍する人材を育成するプログラムと、現地キャリアまで伴走する一気通貫の支援。</div>
+        </div>
+        <div class="orbit-panel" data-orbit-index="2">
+          <div class="biz-num">03 / HR Services</div>
+          <div class="biz-title">人材サービス事業</div>
+          <div class="biz-desc">採用支援、人材紹介、業務委託まで。企業の人材戦略を、必要な形で、必要なときに。</div>
+        </div>
+        <div class="orbit-panel" data-orbit-index="3">
+          <div class="biz-num">04 / BPO</div>
+          <div class="biz-title">BPO事業</div>
+          <div class="biz-desc">バックオフィスを中心に、企業のノンコア業務を一括受託。コア業務に集中できる環境を。</div>
+        </div>
+        <div class="orbit-panel" data-orbit-index="4">
+          <div class="biz-num">05 / F&B Overseas</div>
+          <div class="biz-title">海外飲食事業</div>
+          <div class="biz-desc">海外マーケットでの飲食店運営とブランド展開。現地に根ざした、日本発の食体験を世界へ。</div>
+        </div>
+        <div class="orbit-panel" data-orbit-index="5">
+          <div class="biz-num">06 / Spirits</div>
+          <div class="biz-title">酒類マーケティング・クリエイティブ事業</div>
+          <div class="biz-desc">酒類ブランドのマーケティング戦略から、ビジュアル・コピー・体験設計まで一気通貫で。</div>
+        </div>
       </div>
-      <div class="biz reveal delay-1">
-        <div class="biz-num">02</div>
-        <div class="biz-title">グローバル人材育成事業</div>
-        <div class="biz-desc">海外で活躍する人材を育成するプログラムと、現地キャリアまで伴走する一気通貫の支援。</div>
-      </div>
-      <div class="biz reveal delay-2">
-        <div class="biz-num">03</div>
-        <div class="biz-title">人材サービス事業</div>
-        <div class="biz-desc">採用支援、人材紹介、業務委託まで。企業の人材戦略を、必要な形で、必要なときに。</div>
-      </div>
-      <div class="biz reveal">
-        <div class="biz-num">04</div>
-        <div class="biz-title">BPO事業</div>
-        <div class="biz-desc">バックオフィスを中心に、企業のノンコア業務を一括受託。コア業務に集中できる環境を。</div>
-      </div>
-      <div class="biz reveal delay-1">
-        <div class="biz-num">05</div>
-        <div class="biz-title">海外飲食事業</div>
-        <div class="biz-desc">海外マーケットでの飲食店運営とブランド展開。現地に根ざした、日本発の食体験を世界へ。</div>
-      </div>
-      <div class="biz reveal delay-2">
-        <div class="biz-num">06</div>
-        <div class="biz-title">酒類マーケティング・<br>クリエイティブ事業</div>
-        <div class="biz-desc">酒類ブランドのマーケティング戦略から、ビジュアル・コピー・体験設計まで一気通貫で。</div>
+      <div class="orbit-hud">
+        <span>SCROLL</span>
+        <span class="orbit-hud-bar"><span id="orbit-progress"></span></span>
+        <span id="orbit-counter">01 / 06</span>
       </div>
     </div>
   </div>
@@ -2180,6 +2249,205 @@ else window.addEventListener('load', initHero3D);
       flash(Object.keys(store).length + '件のコメントが共有URLから読み込まれました', 5000);
     }, 500);
   }
+})();
+
+/* ============ ORBIT (Business / 事業内容) ============ */
+(function initOrbit() {
+  if (typeof THREE === 'undefined') return;
+  if (window.matchMedia('(max-width: 820px)').matches) return;
+
+  const scrollHost = document.getElementById('orbit-scroll');
+  const stage = document.getElementById('orbit-stage');
+  const canvas = document.getElementById('orbit-canvas');
+  const panels = Array.from(document.querySelectorAll('.orbit-panel'));
+  const progressBar = document.getElementById('orbit-progress');
+  const counter = document.getElementById('orbit-counter');
+  if (!canvas || panels.length === 0) return;
+
+  const PANEL_COUNT = panels.length;
+  const RING_RADIUS = 4.2;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(48, 1, 0.1, 100);
+  camera.position.set(0, 0.4, 8);
+  camera.lookAt(0, 0, 0);
+
+  const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+  function resize() {
+    const r = stage.getBoundingClientRect();
+    const w = Math.max(1, r.width);
+    const h = Math.max(1, r.height);
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Lights
+  scene.add(new THREE.AmbientLight(0xffffff, 0.28));
+  const coralLight = new THREE.PointLight(0xff5a3c, 3.4, 22);
+  coralLight.position.set(0, 0, 0);
+  scene.add(coralLight);
+  const warmFill = new THREE.PointLight(0xffaa88, 1.2, 28);
+  warmFill.position.set(4, 5, 6);
+  scene.add(warmFill);
+  const dir = new THREE.DirectionalLight(0xffffff, 0.55);
+  dir.position.set(-3, 4, 5);
+  scene.add(dir);
+
+  // Centerpiece: iridescent black ico + coral wireframe halo
+  const center = new THREE.Group();
+  const core = new THREE.Mesh(
+    new THREE.IcosahedronGeometry(1.05, 4),
+    new THREE.MeshStandardMaterial({ color: 0x0a0a0a, roughness: 0.16, metalness: 0.88, envMapIntensity: 1.2 })
+  );
+  center.add(core);
+
+  const halo = new THREE.Mesh(
+    new THREE.IcosahedronGeometry(1.42, 0),
+    new THREE.MeshBasicMaterial({ color: 0xff5a3c, wireframe: true, transparent: true, opacity: 0.55 })
+  );
+  center.add(halo);
+
+  const mist = new THREE.Mesh(
+    new THREE.IcosahedronGeometry(1.85, 0),
+    new THREE.MeshBasicMaterial({ color: 0xff8866, wireframe: true, transparent: true, opacity: 0.12 })
+  );
+  center.add(mist);
+  scene.add(center);
+
+  // Ring anchors (no meshes — panels are HTML)
+  const anchors = [];
+  for (let i = 0; i < PANEL_COUNT; i++) {
+    anchors.push({
+      baseAngle: (i / PANEL_COUNT) * Math.PI * 2,
+      vec: new THREE.Vector3()
+    });
+  }
+
+  // Subtle ring guide
+  const ringGuide = new THREE.Mesh(
+    new THREE.TorusGeometry(RING_RADIUS, 0.008, 6, 96),
+    new THREE.MeshBasicMaterial({ color: 0xff5a3c, transparent: true, opacity: 0.18 })
+  );
+  ringGuide.rotation.x = Math.PI / 2;
+  scene.add(ringGuide);
+
+  // Tiny orbital particles
+  const particleGeo = new THREE.BufferGeometry();
+  const pCount = 140;
+  const positions = new Float32Array(pCount * 3);
+  for (let i = 0; i < pCount; i++) {
+    const a = Math.random() * Math.PI * 2;
+    const r = 2 + Math.random() * 4.5;
+    const y = (Math.random() - 0.5) * 1.6;
+    positions[i * 3] = Math.cos(a) * r;
+    positions[i * 3 + 1] = y;
+    positions[i * 3 + 2] = Math.sin(a) * r;
+  }
+  particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  const particles = new THREE.Points(
+    particleGeo,
+    new THREE.PointsMaterial({ color: 0xff8c6e, size: 0.035, transparent: true, opacity: 0.6 })
+  );
+  scene.add(particles);
+
+  // Scroll progress through the .orbit-scroll element
+  let scrollProgress = 0;
+  function updateScroll() {
+    const rect = scrollHost.getBoundingClientRect();
+    const total = rect.height - window.innerHeight;
+    if (total <= 0) { scrollProgress = 0; return; }
+    const t = -rect.top / total;
+    scrollProgress = Math.max(0, Math.min(1, t));
+  }
+  window.addEventListener('scroll', updateScroll, { passive: true });
+  updateScroll();
+
+  // Pause rendering when section off-screen
+  let visible = false;
+  const io = new IntersectionObserver((entries) => {
+    visible = entries[0].isIntersecting;
+  }, { threshold: 0.01 });
+  io.observe(stage);
+
+  // Smoothed ring angle
+  let ringAngle = 0;
+  let targetAngle = 0;
+
+  const tmpVec = new THREE.Vector3();
+  function tick() {
+    requestAnimationFrame(tick);
+    if (!visible) return;
+
+    const now = performance.now() * 0.001;
+
+    // Center motion (subtle)
+    core.rotation.y = now * 0.28;
+    core.rotation.x = Math.sin(now * 0.4) * 0.18;
+    halo.rotation.y = -now * 0.16;
+    halo.rotation.z = now * 0.12;
+    mist.rotation.y = now * 0.07;
+    mist.rotation.x = now * 0.05;
+    particles.rotation.y = now * 0.04;
+
+    // Scroll → ring angle. Smooth toward target.
+    targetAngle = scrollProgress * Math.PI * 2;
+    ringAngle += (targetAngle - ringAngle) * 0.12;
+
+    const rect = canvas.getBoundingClientRect();
+    const w = rect.width;
+    const h = rect.height;
+
+    // Project each anchor and position the corresponding HTML panel.
+    // Front panel (closest to camera) = angle where cos(angle) = 1.
+    let frontIndex = 0;
+    let bestFront = -2;
+
+    for (let i = 0; i < PANEL_COUNT; i++) {
+      const a = anchors[i];
+      // Subtract ringAngle so the panel that started at angle=0 moves with scroll
+      const angle = a.baseAngle - ringAngle;
+      const sin = Math.sin(angle);
+      const cos = Math.cos(angle);
+
+      a.vec.set(sin * RING_RADIUS, Math.sin(now * 0.4 + i) * 0.05, cos * RING_RADIUS);
+
+      // Project to screen
+      tmpVec.copy(a.vec).project(camera);
+      const x = (tmpVec.x * 0.5 + 0.5) * w;
+      const y = (-tmpVec.y * 0.5 + 0.5) * h;
+
+      // closeness: 1 = directly in front, -1 = behind
+      const closeness = cos;
+      if (closeness > bestFront) { bestFront = closeness; frontIndex = i; }
+
+      // Visual weights
+      const front = Math.max(0, closeness);
+      // baseline 0.12 so the back panel is a faint ghost
+      const opacity = 0.12 + front * 0.88;
+      const scale = 0.72 + (closeness + 1) * 0.16;
+
+      const panel = panels[i];
+      panel.style.transform =
+        'translate3d(' + (x - panel.offsetWidth / 2) + 'px, ' + (y - panel.offsetHeight / 2) + 'px, 0) scale(' + scale.toFixed(3) + ')';
+      panel.style.opacity = opacity.toFixed(3);
+      panel.style.zIndex = String(Math.round(closeness * 100 + 100));
+      panel.classList.toggle('is-front', closeness > 0.86);
+    }
+
+    if (progressBar) progressBar.style.width = (scrollProgress * 100).toFixed(1) + '%';
+    if (counter) {
+      const n = String(frontIndex + 1).padStart(2, '0');
+      counter.textContent = n + ' / 06';
+    }
+
+    renderer.render(scene, camera);
+  }
+  tick();
 })();
 </script>
 
