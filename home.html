@@ -61,8 +61,10 @@ button { font: inherit; cursor: none; border: 0; background: none; }
   pointer-events: none;
   z-index: 9999;
   mix-blend-mode: multiply;
-  transition: transform 0.18s ease, width 0.18s ease, height 0.18s ease;
+  /* No transition on transform — instant pointer follow */
+  transition: width 0.18s ease, height 0.18s ease, background 0.18s ease, opacity 0.2s ease;
   transform: translate(-50%, -50%);
+  will-change: transform;
 }
 .cursor.is-link { width: 44px; height: 44px; background: var(--ink); }
 .cursor.is-hidden { opacity: 0; }
@@ -400,10 +402,12 @@ section { position: relative; }
 }
 .about-grid {
   display: grid;
-  grid-template-columns: minmax(260px, 0.9fr) 1.8fr 220px;
-  gap: clamp(40px, 6vw, 96px);
+  grid-template-columns: minmax(420px, 1.2fr) 1.4fr minmax(180px, 0.8fr);
+  gap: clamp(36px, 4.5vw, 72px);
   align-items: start;
 }
+/* Phrase-level line element — keeps Japanese text from wrapping mid-phrase */
+.ln { display: block; white-space: nowrap; }
 .about-left .label-en { margin-bottom: 28px; }
 .about-jp-label {
   font-family: var(--jp-serif);
@@ -415,8 +419,8 @@ section { position: relative; }
 .about-title {
   font-family: var(--jp-serif);
   font-weight: 700;
-  font-size: clamp(28px, 3.4vw, 48px);
-  line-height: 1.4;
+  font-size: clamp(26px, 2.6vw, 44px);
+  line-height: 1.5;
   letter-spacing: -0.01em;
   margin-bottom: 32px;
 }
@@ -499,11 +503,15 @@ section { position: relative; }
 .biz-head {
   padding: clamp(100px, 14vw, 180px) clamp(20px, 4vw, 56px) clamp(60px, 8vw, 100px);
   display: grid;
-  grid-template-columns: minmax(280px, 0.9fr) 1.8fr;
+  grid-template-columns: minmax(560px, 1.4fr) minmax(280px, 1fr);
   gap: clamp(40px, 6vw, 96px);
   max-width: 1400px;
   margin: 0 auto;
   align-items: end;
+}
+@media (max-width: 1100px) {
+  .biz-head { grid-template-columns: 1fr; }
+  .biz-head-lead { max-width: 640px; }
 }
 .biz-head .label-en { color: var(--paper-2); }
 .biz-head .label-en::before { background: var(--red); }
@@ -555,35 +563,103 @@ section { position: relative; }
   border-right: 1px solid rgba(245, 242, 235, 0.06);
 }
 .biz-slide:last-child { border-right: 0; }
+/* Left column now holds JUST the small tag; the giant number is positioned absolutely as a BG */
 .biz-slide-left {
-  display: flex;
-  flex-direction: column;
-  gap: 48px;
-  flex: 0 0 auto;
-  max-width: 380px;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  max-width: none;
+  z-index: 0;
 }
 .biz-slide-num {
+  position: absolute;
   font-family: var(--en);
   font-weight: 800;
-  font-size: clamp(80px, 14vw, 220px);
   line-height: 0.85;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.06em;
   color: transparent;
-  -webkit-text-stroke: 1.5px var(--paper);
-  position: relative;
-  display: inline-block;
+  white-space: nowrap;
+  user-select: none;
+  /* Defaults — overridden per .var-X variation below */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(280px, 48vw, 760px);
+  -webkit-text-stroke: 1.5px rgba(245, 242, 235, 0.14);
 }
 .biz-slide-num::before {
   content: attr(data-n);
   position: absolute;
   top: 0; left: 0;
-  color: var(--red);
   -webkit-text-stroke: 0;
-  clip-path: inset(60% 0 0 0);
-  transition: clip-path 0.8s cubic-bezier(0.7, 0, 0.3, 1);
+  background-image: var(--biz-img);
+  background-size: cover;
+  background-position: center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  opacity: 0;
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1s cubic-bezier(0.7, 0, 0.3, 1), opacity 0.7s ease;
 }
-.biz-slide.is-active .biz-slide-num::before { clip-path: inset(0% 0 0 0); }
+.biz-slide.is-active .biz-slide-num::before {
+  clip-path: inset(0% 0 0 0);
+  opacity: 0.5;
+}
+
+/* =====================================================
+   6 VARIATIONS — assign one class per slide while iterating;
+   the user picks their favorite then we apply that class
+   uniformly to all 6 slides.
+   ===================================================== */
+
+/* A — Massive Ghost (huge centered number, faded outline) */
+.biz-slide.var-a .biz-slide-num {
+  font-size: clamp(300px, 52vw, 820px);
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  -webkit-text-stroke: 1.5px rgba(245, 242, 235, 0.12);
+}
+
+/* B — Off-axis Big (right-of-center, slight tilt) */
+.biz-slide.var-b .biz-slide-num {
+  font-size: clamp(260px, 42vw, 680px);
+  top: 48%; left: 64%; transform: translate(-50%, -50%) rotate(-4deg);
+  -webkit-text-stroke: 1.5px rgba(245, 242, 235, 0.18);
+}
+
+/* C — Right Half-Bleed (number anchored to right edge, partially clipped) */
+.biz-slide.var-c .biz-slide-num {
+  font-size: clamp(380px, 64vw, 1040px);
+  top: 50%; right: -12vw; left: auto; transform: translateY(-50%);
+  -webkit-text-stroke: 1.5px rgba(245, 242, 235, 0.16);
+}
+
+/* D — Small Left (compact number anchored to left side) */
+.biz-slide.var-d .biz-slide-num {
+  font-size: clamp(110px, 14vw, 220px);
+  top: 50%; left: clamp(40px, 6vw, 100px); transform: translateY(-50%);
+  -webkit-text-stroke: 1.2px rgba(245, 242, 235, 0.22);
+}
+
+/* E — Stroke Bold (medium size, much heavier outline for stencil look) */
+.biz-slide.var-e .biz-slide-num {
+  font-size: clamp(280px, 44vw, 720px);
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  -webkit-text-stroke: 3px rgba(245, 242, 235, 0.32);
+}
+
+/* F — Overflow Giant (massive, partially off the top + bottom — pure texture) */
+.biz-slide.var-f .biz-slide-num {
+  font-size: clamp(560px, 86vw, 1400px);
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  -webkit-text-stroke: 1.5px rgba(245, 242, 235, 0.10);
+}
+.biz-slide.var-f.is-active .biz-slide-num::before { opacity: 0.4; }
 .biz-slide-tag {
+  position: absolute;
+  top: clamp(100px, 14vh, 140px);
+  left: clamp(40px, 6vw, 100px);
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -593,6 +669,8 @@ section { position: relative; }
   letter-spacing: 0.32em;
   text-transform: uppercase;
   color: var(--paper-2);
+  pointer-events: auto;
+  z-index: 3;
 }
 .biz-slide-tag::before {
   content: "";
@@ -600,7 +678,19 @@ section { position: relative; }
   background: var(--red);
   border-radius: 50%;
 }
-.biz-slide-right { display: flex; flex-direction: column; gap: 32px; padding-bottom: 20px; flex: 1 1 600px; max-width: 600px; }
+.biz-slide-right {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding-bottom: 20px;
+  flex: 0 1 720px;
+  max-width: 720px;
+  background: radial-gradient(ellipse at center, rgba(14, 14, 14, 0.55) 0%, rgba(14, 14, 14, 0) 75%);
+  padding: 40px 40px 48px;
+  border-radius: 16px;
+}
 .biz-slide-title {
   font-family: var(--jp-serif);
   font-weight: 900;
@@ -638,6 +728,26 @@ section { position: relative; }
   font-weight: 700;
   margin-top: -2px;
 }
+.biz-slide-cta {
+  align-self: flex-start;
+  margin-top: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 26px;
+  border: 1.5px solid rgba(245, 242, 235, 0.7);
+  border-radius: 999px;
+  color: var(--paper);
+  font-family: var(--en);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+.biz-slide-cta:hover { background: var(--red); border-color: var(--red); color: var(--paper); }
+.biz-slide-cta svg { width: 16px; height: 16px; }
 
 .biz-progress {
   position: absolute;
@@ -778,24 +888,13 @@ section { position: relative; }
   gap: 48px;
   margin-bottom: 80px;
 }
-.footer-wordmark {
-  font-family: var(--jp-serif);
-  font-weight: 900;
-  font-size: clamp(64px, 10vw, 140px);
-  line-height: 0.85;
-  letter-spacing: -0.04em;
-  color: var(--paper);
-  position: relative;
-  display: inline-block;
-  margin-bottom: 24px;
-}
-.footer-wordmark .dot {
-  display: inline-block;
-  width: 0.5em; height: 0.5em;
-  background: var(--red);
-  border-radius: 50%;
-  margin: 0 0.02em;
-  vertical-align: -0.05em;
+.footer-logo {
+  display: block;
+  width: clamp(220px, 22vw, 360px);
+  height: auto;
+  margin-bottom: 28px;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 .footer-tagline {
   font-family: var(--en);
@@ -901,8 +1000,8 @@ section { position: relative; }
   <div class="hero-inner">
     <div class="hero-eyebrow">Good Day Foreveryone</div>
     <h1 class="hero-title">
-      未経験でも、<br>
-      <span class="hero-title-2">つくる<span class="dot"></span>側へ。</span>
+      <span class="ln">未経験でも、</span>
+      <span class="ln hero-title-2">つくる<span class="dot"></span>側へ。</span>
     </h1>
     <p class="hero-sub">
       クリエイティブから、人材育成、BPO、海外飲食まで。<br>
@@ -943,9 +1042,9 @@ section { position: relative; }
       <div class="about-left">
         <div class="label-en reveal">About Us</div>
         <h2 class="about-title reveal delay-1">
-          「<em>つくる側</em>」を、<br>
-          もっと自由に、<br>
-          もっと<span class="red">多様</span>に。
+          <span class="ln">「<em>つくる側</em>」を、</span>
+          <span class="ln">もっと自由に、</span>
+          <span class="ln">もっと<span class="red">多様</span>に。</span>
         </h2>
         <p class="about-jp-label reveal delay-2">私たちについて</p>
       </div>
@@ -987,9 +1086,9 @@ section { position: relative; }
     <div>
       <div class="label-en reveal">Business · Content</div>
       <h2 class="biz-head-title reveal delay-1">
-        6つの<span class="red">領域</span>で、<br>
-        企業の課題に、<br>
-        答えを。
+        <span class="ln">6つの<span class="red">領域</span>で、</span>
+        <span class="ln">企業の課題に、</span>
+        <span class="ln">答えを。</span>
       </h2>
     </div>
     <p class="biz-head-lead reveal delay-2">
@@ -1002,7 +1101,7 @@ section { position: relative; }
     <div class="biz-stage">
       <div class="biz-track" id="bizTrack">
 
-        <article class="biz-slide" data-index="0">
+        <article class="biz-slide var-d" data-index="0" style="--biz-img: url('img/biz/biz-01-creative.jpg')">
           <div class="biz-slide-left">
             <span class="biz-slide-num" data-n="01">01</span>
             <span class="biz-slide-tag">Creative</span>
@@ -1019,10 +1118,14 @@ section { position: relative; }
               <span class="biz-slide-feat">Web/UI 制作</span>
               <span class="biz-slide-feat">グラフィック</span>
             </div>
+            <a class="biz-slide-cta" href="business/creative.html">
+              View More
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
           </div>
         </article>
 
-        <article class="biz-slide" data-index="1">
+        <article class="biz-slide var-d" data-index="1" style="--biz-img: url('img/biz/biz-02-global.jpg')">
           <div class="biz-slide-left">
             <span class="biz-slide-num" data-n="02">02</span>
             <span class="biz-slide-tag">Global Talent</span>
@@ -1039,10 +1142,14 @@ section { position: relative; }
               <span class="biz-slide-feat">現地就労支援</span>
               <span class="biz-slide-feat">越境メンタリング</span>
             </div>
+            <a class="biz-slide-cta" href="business/global.html">
+              View More
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
           </div>
         </article>
 
-        <article class="biz-slide" data-index="2">
+        <article class="biz-slide var-d" data-index="2" style="--biz-img: url('img/biz/biz-03-hr.jpg')">
           <div class="biz-slide-left">
             <span class="biz-slide-num" data-n="03">03</span>
             <span class="biz-slide-tag">HR Services</span>
@@ -1059,10 +1166,14 @@ section { position: relative; }
               <span class="biz-slide-feat">業務委託マッチ</span>
               <span class="biz-slide-feat">育成 × 採用</span>
             </div>
+            <a class="biz-slide-cta" href="business/hr.html">
+              View More
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
           </div>
         </article>
 
-        <article class="biz-slide" data-index="3">
+        <article class="biz-slide var-d" data-index="3" style="--biz-img: url('img/biz/biz-04-bpo.jpg')">
           <div class="biz-slide-left">
             <span class="biz-slide-num" data-n="04">04</span>
             <span class="biz-slide-tag">BPO</span>
@@ -1079,10 +1190,14 @@ section { position: relative; }
               <span class="biz-slide-feat">業務設計</span>
               <span class="biz-slide-feat">運用最適化</span>
             </div>
+            <a class="biz-slide-cta" href="business/bpo.html">
+              View More
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
           </div>
         </article>
 
-        <article class="biz-slide" data-index="4">
+        <article class="biz-slide var-d" data-index="4" style="--biz-img: url('img/biz/biz-05-food.jpg')">
           <div class="biz-slide-left">
             <span class="biz-slide-num" data-n="05">05</span>
             <span class="biz-slide-tag">F&amp;B Overseas</span>
@@ -1099,10 +1214,14 @@ section { position: relative; }
               <span class="biz-slide-feat">現地オペレーション</span>
               <span class="biz-slide-feat">ブランド海外展開</span>
             </div>
+            <a class="biz-slide-cta" href="business/food.html">
+              View More
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
           </div>
         </article>
 
-        <article class="biz-slide" data-index="5">
+        <article class="biz-slide var-d" data-index="5" style="--biz-img: url('img/biz/biz-06-spirits.jpg')">
           <div class="biz-slide-left">
             <span class="biz-slide-num" data-n="06">06</span>
             <span class="biz-slide-tag">Spirits</span>
@@ -1119,6 +1238,10 @@ section { position: relative; }
               <span class="biz-slide-feat">体験設計</span>
               <span class="biz-slide-feat">流通プロモ</span>
             </div>
+            <a class="biz-slide-cta" href="business/spirits.html">
+              View More
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
           </div>
         </article>
 
@@ -1139,9 +1262,9 @@ section { position: relative; }
       <div class="sus-teaser-left">
         <div class="label-en reveal">ESG · SDGs</div>
         <h2 class="sus-teaser-title reveal delay-1">
-          <span class="red">持続可能</span>な<br>
-          つくる場所を、<br>
-          みんなで。
+          <span class="ln"><span class="red">持続可能</span>な</span>
+          <span class="ln">つくる場所を、</span>
+          <span class="ln">みんなで。</span>
         </h2>
         <p class="sus-teaser-body reveal delay-2">
           Goodyは、国連の「持続可能な開発目標（SDGs）」に共感し、
@@ -1170,7 +1293,7 @@ section { position: relative; }
   <div class="container">
     <div class="footer-grid">
       <div>
-        <div class="footer-wordmark">GO<span class="dot"></span>DY</div>
+        <img class="footer-logo" src="img/goody-logo-light.png" alt="Goody — Good Day Foreveryone" />
         <div class="footer-tagline">Good Day Foreveryone</div>
         <div class="footer-jp-tagline">未経験でも、つくる側へ。</div>
       </div>
@@ -1213,25 +1336,20 @@ section { position: relative; }
 </footer>
 
 <script>
-/* ============ CUSTOM CURSOR ============ */
+/* ============ CUSTOM CURSOR (instant follow, no lerp) ============ */
 (function () {
-  if (window.matchMedia('(max-width: 900px)').matches) return;
+  if (window.matchMedia('(max-width: 900px)').matches || matchMedia('(pointer: coarse)').matches) return;
   const cursor = document.getElementById('cursor');
-  let tx = 0, ty = 0, cx = 0, cy = 0;
-  window.addEventListener('mousemove', (e) => { tx = e.clientX; ty = e.clientY; });
+  if (!cursor) return;
+  window.addEventListener('pointermove', (e) => {
+    cursor.style.transform = 'translate(' + e.clientX + 'px,' + e.clientY + 'px) translate(-50%,-50%)';
+  }, { passive: true });
   window.addEventListener('mouseleave', () => cursor.classList.add('is-hidden'));
   window.addEventListener('mouseenter', () => cursor.classList.remove('is-hidden'));
   document.querySelectorAll('a, button, [data-cursor-link]').forEach((el) => {
     el.addEventListener('mouseenter', () => cursor.classList.add('is-link'));
     el.addEventListener('mouseleave', () => cursor.classList.remove('is-link'));
   });
-  function loop() {
-    cx += (tx - cx) * 0.22;
-    cy += (ty - cy) * 0.22;
-    cursor.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
-    requestAnimationFrame(loop);
-  }
-  loop();
 })();
 
 /* ============ REVEAL ON SCROLL ============ */

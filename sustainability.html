@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>サステナビリティ — Goody</title>
+<meta name="description" content="持続可能なつくる場所を、みんなで。GoodyのESG・SDGsへの取り組み。" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='none' stroke='%230e0e0e' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23DC2626'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;700;900&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/business.css" />
+<style>
+.coming {
+  padding: 200px 0 160px;
+  text-align: center;
+  background: var(--paper);
+}
+.coming-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--en);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 32px;
+}
+.coming-eyebrow::before {
+  content: "";
+  width: 28px; height: 1px;
+  background: var(--red);
+}
+.coming-title {
+  font-family: var(--jp-serif);
+  font-weight: 900;
+  font-size: clamp(40px, 6vw, 96px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 32px;
+}
+.coming-title .red { color: var(--red); }
+.coming-body {
+  max-width: 540px;
+  margin: 0 auto 48px;
+  font-size: 16px;
+  line-height: 2.1;
+  color: var(--ink-soft);
+}
+.sdg-strip {
+  margin: 80px auto 0;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 14px;
+  max-width: 760px;
+  padding: 0 clamp(20px, 4vw, 56px);
+}
+.sdg-strip img {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  background: var(--paper-2);
+  padding: 10px;
+}
+@media (max-width: 700px) {
+  .sdg-strip { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-back" href="home.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Back
+  </a>
+  <div class="nav-links">
+    <a href="home.html#about">About</a>
+    <a href="home.html#business">Business</a>
+    <a href="sustainability.html">Sustainability</a>
+    <a href="home.html#contact">Contact</a>
+  </div>
+  <a href="home.html#contact" class="nav-cta">登録する</a>
+</nav>
+
+<section class="coming">
+  <div class="container">
+    <div class="coming-eyebrow">ESG · SDGs · Sustainability</div>
+    <h1 class="coming-title">
+      <span class="ln"><span class="red">持続可能</span>な</span>
+      <span class="ln">つくる場所を、</span>
+      <span class="ln">みんなで。</span>
+    </h1>
+    <p class="coming-body">
+      Goodyのサステナビリティページは、ただいま準備中です。<br>
+      働き方、人材育成、環境負荷、コミュニティへの取り組みを順次公開予定です。
+    </p>
+    <a href="home.html" class="hero-cta">
+      Back to Home
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
+    <div class="sdg-strip" aria-hidden="true">
+      <img src="img/sdg/sdg-03.webp" alt="" />
+      <img src="img/sdg/sdg-04.webp" alt="" />
+      <img src="img/sdg/sdg-08.webp" alt="" />
+      <img src="img/sdg/sdg-10.webp" alt="" />
+      <img src="img/sdg/sdg-13.webp" alt="" />
+      <img src="img/sdg/sdg-15.webp" alt="" />
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <img class="footer-logo" src="img/goody-logo-light.png" alt="Goody" />
+    <div class="footer-note">© 2026 Goody Inc.</div>
+  </div>
+</footer>
+
+</body>
+</html>
