@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>サステナビリティ — Goody</title>
+<meta name="description" content="持続可能なつくる場所を、みんなで。Goodyは、働き方・人材育成・環境負荷・コミュニティの4本柱で、創るを社会に開いていきます。" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='none' stroke='%230e0e0e' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23DC2626'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@500;700;900&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --paper: #f5f2eb;
+  --paper-2: #ece8de;
+  --ink: #0e0e0e;
+  --ink-soft: #1a1a1a;
+  --ink-mute: #6f6a60;
+  --line: rgba(14, 14, 14, 0.12);
+  --line-strong: rgba(14, 14, 14, 0.3);
+  --red: #dc2626;
+  --red-deep: #b8211f;
+  --jp-sans: "Noto Sans JP", -apple-system, BlinkMacSystemFont, sans-serif;
+  --jp-serif: "Noto Serif JP", "Times New Roman", serif;
+  --en: "Inter", -apple-system, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--jp-sans);
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+::selection { background: var(--red); color: var(--paper); }
+
+/* Grain overlay (matches home) */
+.grain {
+  position: fixed; inset: 0; pointer-events: none; z-index: 1;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.45'/></svg>");
+  opacity: 0.07;
+  mix-blend-mode: multiply;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 4vw, 56px);
+}
+
+/* Eyebrow label */
+.label-en {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--en);
+  font-weight: 700;
+  font-size: 11.5px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.label-en::before {
+  content: "";
+  width: 28px; height: 1px;
+  background: var(--red);
+}
+
+/* Reveal-on-scroll */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.9s cubic-bezier(0.2,0.7,0.2,1), transform 0.9s cubic-bezier(0.2,0.7,0.2,1); }
+.reveal.is-in { opacity: 1; transform: translateY(0); }
+.reveal.delay-1 { transition-delay: 0.08s; }
+.reveal.delay-2 { transition-delay: 0.16s; }
+.reveal.delay-3 { transition-delay: 0.24s; }
+.reveal.delay-4 { transition-delay: 0.32s; }
+
+/* =========================== NAV =========================== */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px clamp(20px, 4vw, 56px);
+  background: rgba(245, 242, 235, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line);
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 12px;
+  font-family: var(--en); font-weight: 800; font-size: 17px; letter-spacing: 0.06em;
+}
+.nav-logo-mark {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--red);
+}
+.nav-links {
+  display: flex; gap: clamp(20px, 3vw, 44px);
+  font-family: var(--en); font-weight: 600; font-size: 12.5px;
+  letter-spacing: 0.22em; text-transform: uppercase;
+}
+.nav-links a { color: var(--ink-mute); transition: color 0.2s ease; }
+.nav-links a:hover, .nav-links a.is-active { color: var(--ink); }
+.nav-links a.is-active { position: relative; }
+.nav-links a.is-active::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -8px;
+  height: 2px; background: var(--red);
+}
+.nav-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 12px 22px; border-radius: 999px;
+  border: 1.5px solid var(--ink);
+  font-family: var(--en); font-weight: 700; font-size: 12px;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+.nav-cta:hover { background: var(--ink); color: var(--paper); }
+@media (max-width: 900px) {
+  .nav-links { display: none; }
+}
+
+/* =========================== HERO =========================== */
+.sus-hero {
+  position: relative;
+  padding: clamp(160px, 22vh, 240px) 0 clamp(80px, 10vw, 140px);
+  background: var(--paper);
+  overflow: hidden;
+}
+.sus-hero::before {
+  /* big red disc echo of the home hero */
+  content: "";
+  position: absolute;
+  top: -240px; right: -260px;
+  width: 720px; height: 720px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ee3737 0%, var(--red) 45%, var(--red-deep) 100%);
+  filter: blur(2px);
+  opacity: 0.92;
+  z-index: 0;
+}
+.sus-hero-inner {
+  position: relative; z-index: 2;
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: clamp(40px, 6vw, 100px);
+  align-items: end;
+}
+.sus-hero-title {
+  font-family: var(--jp-serif);
+  font-weight: 900;
+  font-size: clamp(48px, 7.6vw, 132px);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  margin-top: 28px;
+}
+.sus-hero-title .red { color: var(--red); }
+.sus-hero-title .dot {
+  display: inline-block;
+  width: 0.62em; height: 0.62em;
+  background: var(--red);
+  border-radius: 50%;
+  vertical-align: middle;
+  margin: 0 0.04em -0.08em;
+}
+.ln { display: block; white-space: nowrap; }
+.sus-hero-aside {
+  font-size: 15px;
+  line-height: 2.1;
+  color: var(--ink-soft);
+  max-width: 380px;
+  padding-bottom: 20px;
+}
+.sus-hero-meta {
+  margin-top: clamp(60px, 8vw, 120px);
+  display: flex; flex-wrap: wrap;
+  gap: clamp(32px, 5vw, 80px);
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+  font-family: var(--en);
+  font-size: 11.5px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.sus-hero-meta b { color: var(--ink); font-weight: 700; }
+
+@media (max-width: 900px) {
+  .sus-hero-inner { grid-template-columns: 1fr; }
+  .sus-hero::before { width: 360px; height: 360px; top: -120px; right: -140px; }
+}
+
+/* =========================== MISSION =========================== */
+.sus-mission {
+  background: var(--ink);
+  color: var(--paper);
+  padding: clamp(100px, 14vw, 180px) 0;
+  position: relative;
+}
+.sus-mission-inner {
+  display: grid;
+  grid-template-columns: 0.9fr 1.5fr;
+  gap: clamp(40px, 6vw, 100px);
+  align-items: start;
+}
+.sus-mission-eyebrow { color: rgba(245,242,235,0.55); }
+.sus-mission-eyebrow::before { background: var(--red); }
+.sus-mission-head {
+  font-family: var(--jp-serif);
+  font-weight: 900;
+  font-size: clamp(32px, 4.4vw, 60px);
+  line-height: 1.18;
+  letter-spacing: -0.015em;
+  margin-top: 24px;
+}
+.sus-mission-head .red { color: #ff5e5e; }
+.sus-mission-body {
+  font-size: 16px;
+  line-height: 2.15;
+  color: rgba(245,242,235,0.78);
+}
+.sus-mission-body p + p { margin-top: 22px; }
+.sus-mission-quote {
+  margin-top: 56px;
+  padding: 32px 36px;
+  border-left: 3px solid var(--red);
+  background: rgba(245,242,235,0.04);
+  font-family: var(--jp-serif);
+  font-size: 19px;
+  line-height: 1.85;
+  font-weight: 500;
+}
+.sus-mission-quote cite {
+  display: block; margin-top: 18px;
+  font-style: normal;
+  font-family: var(--en); font-weight: 600;
+  font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase;
+  color: rgba(245,242,235,0.55);
+}
+@media (max-width: 900px) {
+  .sus-mission-inner { grid-template-columns: 1fr; }
+}
+
+/* =========================== PILLARS =========================== */
+.sus-pillars {
+  background: var(--paper);
+  padding: clamp(100px, 14vw, 180px) 0;
+}
+.sus-pillars-head {
+  display: grid;
+  grid-template-columns: minmax(420px, 1.2fr) 1fr;
+  gap: clamp(40px, 6vw, 96px);
+  align-items: end;
+  margin-bottom: clamp(60px, 8vw, 100px);
+}
+.sus-pillars-title {
+  font-family: var(--jp-serif);
+  font-weight: 900;
+  font-size: clamp(36px, 5.2vw, 78px);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin-top: 24px;
+}
+.sus-pillars-title .red { color: var(--red); }
+.sus-pillars-lead {
+  font-size: 15.5px;
+  line-height: 2.05;
+  color: var(--ink-soft);
+  max-width: 480px;
+  padding-bottom: 8px;
+}
+.sus-pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+}
+.sus-pillar {
+  padding: clamp(40px, 5vw, 64px);
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  display: flex; flex-direction: column;
+  gap: 22px;
+  background: var(--paper);
+  position: relative;
+  transition: background 0.3s ease;
+}
+.sus-pillar:hover { background: var(--paper-2); }
+.sus-pillar-num {
+  font-family: var(--en); font-weight: 800;
+  font-size: 13px; letter-spacing: 0.32em;
+  color: var(--red);
+}
+.sus-pillar-title {
+  font-family: var(--jp-serif);
+  font-weight: 900;
+  font-size: clamp(26px, 3.2vw, 42px);
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+}
+.sus-pillar-en {
+  font-family: var(--en); font-weight: 600;
+  font-size: 12px; letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-top: -10px;
+}
+.sus-pillar-body {
+  font-size: 15px;
+  line-height: 2;
+  color: var(--ink-soft);
+}
+.sus-pillar-list {
+  list-style: none;
+  display: flex; flex-direction: column; gap: 12px;
+  margin-top: 8px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+.sus-pillar-list li {
+  display: flex; gap: 14px; align-items: flex-start;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.sus-pillar-list li::before {
+  content: "+";
+  color: var(--red);
+  font-family: var(--en);
+  font-weight: 700;
+  font-size: 14px;
+  margin-top: -1px;
+}
+@media (max-width: 900px) {
+  .sus-pillars-head { grid-template-columns: 1fr; }
+  .sus-pillars-grid { grid-template-columns: 1fr; }
+}
+
+/* =========================== SDG =========================== */
+.sus-sdg {
+  background: var(--paper-2);
+  padding: clamp(100px, 14vw, 180px) 0;
+}
+.sus-sdg-head {
+  display: grid;
+  grid-template-columns: minmax(420px, 1.2fr) 1fr;
+  gap: clamp(40px, 6vw, 96px);
+  align-items: end;
+  margin-bottom: clamp(60px, 8vw, 100px);
+}
+.sus-sdg-title {
+  font-family: var(--jp-serif);
+  font-weight: 900;
+  font-size: clamp(36px, 5.2vw, 78px);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin-top: 24px;
+}
+.sus-sdg-title .red { color: var(--red); }
+.sus-sdg-lead {
+  font-size: 15.5px;
+  line-height: 2.05;
+  color: var(--ink-soft);
+  max-width: 480px;
+  padding-bottom: 8px;
+}
+.sus-sdg-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+.sus-sdg-card {
+  background: var(--paper);
+  padding: 32px;
+  border-radius: 18px;
+  display: flex;
+  gap: 22px;
+  align-items: flex-start;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.sus-sdg-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 48px -24px rgba(14,14,14,0.2);
+}
+.sus-sdg-icon {
+  flex: 0 0 84px;
+  aspect-ratio: 1;
+  background: var(--paper-2);
+  border-radius: 12px;
+  padding: 8px;
+  display: flex; align-items: center; justify-content: center;
+}
+.sus-sdg-icon img { width: 100%; height: 100%; object-fit: contain; }
+.sus-sdg-card-body { flex: 1; }
+.sus-sdg-num {
+  font-family: var(--en);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  color: var(--red);
+  margin-bottom: 8px;
+}
+.sus-sdg-card-title {
+  font-family: var(--jp-serif);
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 1.45;
+  margin-bottom: 10px;
+}
+.sus-sdg-card-desc {
+  font-size: 13.5px;
+  line-height: 1.85;
+  color: var(--ink-mute);
+}
+@media (max-width: 1100px) { .sus-sdg-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 700px) {
+  .sus-sdg-head { grid-template-columns: 1fr; }
+  .sus-sdg-grid { grid-template-columns: 1fr; }
+}
+
+/* =========================== TARGETS =========================== */
+.sus-targets {
+  background: var(--ink);
+  color: var(--paper);
+  padding: clamp(100px, 14vw, 180px) 0;
+  position: relative;
+  overflow: hidden;
+}
+.sus-targets-head { margin-bottom: clamp(60px, 8vw, 100px); max-width: 880px; }
+.sus-targets-eyebrow { color: rgba(245,242,235,0.55); }
+.sus-targets-title {
+  font-family: var(--jp-serif);
+  font-weight: 900;
+  font-size: clamp(36px, 5.2vw, 78px);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin-top: 24px;
+}
+.sus-targets-title .red { color: #ff5e5e; }
+.sus-targets-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+.sus-target {
+  padding: 36px 28px;
+  border: 1px solid rgba(245,242,235,0.14);
+  border-radius: 18px;
+  background: rgba(245,242,235,0.025);
+  display: flex; flex-direction: column;
+  gap: 14px;
+  position: relative;
+  overflow: hidden;
+}
+.sus-target::before {
+  content: "";
+  position: absolute; left: 0; top: 0;
+  width: 3px; height: 100%;
+  background: var(--red);
+}
+.sus-target-year {
+  font-family: var(--en);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  color: rgba(245,242,235,0.55);
+}
+.sus-target-num {
+  font-family: var(--en);
+  font-weight: 800;
+  font-size: clamp(44px, 5vw, 68px);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+.sus-target-num small {
+  font-size: 0.42em;
+  font-weight: 600;
+  margin-left: 4px;
+  color: rgba(245,242,235,0.6);
+}
+.sus-target-label {
+  font-family: var(--jp-sans);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(245,242,235,0.92);
+}
+.sus-target-note {
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: rgba(245,242,235,0.55);
+  margin-top: 8px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(245,242,235,0.12);
+}
+@media (max-width: 1100px) { .sus-targets-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .sus-targets-grid { grid-template-columns: 1fr; } }
+
+/* =========================== STATEMENT =========================== */
+.sus-statement {
+  background: var(--paper);
+  padding: clamp(120px, 16vw, 200px) 0;
+}
+.sus-statement-inner { max-width: 980px; margin: 0 auto; text-align: left; }
+.sus-statement-quote {
+  font-family: var(--jp-serif);
+  font-weight: 500;
+  font-size: clamp(26px, 3.4vw, 46px);
+  line-height: 1.65;
+  letter-spacing: -0.005em;
+  margin-top: 32px;
+  margin-bottom: 48px;
+}
+.sus-statement-quote .red { color: var(--red); }
+.sus-statement-sig {
+  display: flex; align-items: center; gap: 20px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+  font-family: var(--en);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.sus-statement-sig b { color: var(--ink); font-weight: 700; }
+.sus-statement-sig .dot {
+  width: 8px; height: 8px;
+  background: var(--red);
+  border-radius: 50%;
+}
+
+/* =========================== CTA =========================== */
+.sus-cta-band {
+  background: var(--paper-2);
+  padding: clamp(80px, 10vw, 140px) 0;
+}
+.sus-cta-inner {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: clamp(40px, 6vw, 96px);
+  align-items: center;
+}
+.sus-cta-title {
+  font-family: var(--jp-serif);
+  font-weight: 900;
+  font-size: clamp(28px, 3.8vw, 52px);
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+}
+.sus-cta-title .red { color: var(--red); }
+.sus-cta-actions {
+  display: flex; flex-direction: column; gap: 14px; align-items: flex-start;
+}
+.sus-cta-actions .btn-primary,
+.sus-cta-actions .btn-secondary {
+  display: inline-flex; align-items: center; gap: 14px;
+  padding: 20px 30px;
+  border-radius: 999px;
+  font-family: var(--en); font-weight: 700;
+  font-size: 12.5px; letter-spacing: 0.18em; text-transform: uppercase;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+.btn-primary { background: var(--ink); color: var(--paper); }
+.btn-primary:hover { background: var(--red); }
+.btn-secondary { border: 1.5px solid var(--ink); color: var(--ink); }
+.btn-secondary:hover { background: var(--ink); color: var(--paper); }
+.sus-cta-actions svg { width: 18px; height: 18px; }
+@media (max-width: 900px) {
+  .sus-cta-inner { grid-template-columns: 1fr; }
+}
+
+/* =========================== FOOTER =========================== */
+.footer {
+  background: var(--ink);
+  color: rgba(245,242,235,0.75);
+  padding: clamp(80px, 10vw, 120px) 0 32px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: clamp(32px, 4vw, 64px);
+  padding-bottom: 60px;
+  border-bottom: 1px solid rgba(245,242,235,0.12);
+}
+.footer-logo { width: 88px; margin-bottom: 18px; }
+.footer-tagline {
+  font-family: var(--en); font-weight: 700;
+  font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--paper);
+}
+.footer-jp-tagline {
+  margin-top: 12px;
+  font-family: var(--jp-serif);
+  font-weight: 700; font-size: 16px;
+  color: rgba(245,242,235,0.92);
+}
+.footer-col h4 {
+  font-family: var(--en); font-weight: 700;
+  font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase;
+  color: rgba(245,242,235,0.55);
+  margin-bottom: 20px;
+}
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.footer-col a { font-size: 13.5px; transition: color 0.2s ease; }
+.footer-col a:hover { color: var(--paper); }
+.footer-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 32px;
+  font-family: var(--en); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(245,242,235,0.5);
+}
+.footer-bottom .right { display: flex; gap: 24px; }
+@media (max-width: 900px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .footer-bottom { flex-direction: column; gap: 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+
+<nav class="nav">
+  <a href="home.html" class="nav-logo">
+    <span class="nav-logo-mark"></span>
+    GOODY
+  </a>
+  <div class="nav-links">
+    <a href="home.html#about">About</a>
+    <a href="home.html#business">Business</a>
+    <a href="sustainability.html" class="is-active">Sustainability</a>
+    <a href="home.html#contact">Contact</a>
+  </div>
+  <a href="home.html#contact" class="nav-cta">登録する</a>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="sus-hero">
+  <div class="container">
+    <div class="sus-hero-inner">
+      <div>
+        <div class="label-en reveal">ESG · SDGs · Sustainability</div>
+        <h1 class="sus-hero-title reveal delay-1">
+          <span class="ln"><span class="red">持続可能</span>な</span>
+          <span class="ln">つくる場所を、</span>
+          <span class="ln">みんなで<span class="dot"></span></span>
+        </h1>
+      </div>
+      <div class="sus-hero-aside reveal delay-2">
+        Goodyは、創ることを社会に開きます。<br>
+        働き方、人材育成、環境、コミュニティ。<br>
+        日々の取り組みを、4本の柱で積み重ねていきます。
+      </div>
+    </div>
+    <div class="sus-hero-meta reveal delay-3">
+      <span><b>04</b> Pillars</span>
+      <span><b>06</b> SDG Commitments</span>
+      <span><b>2030</b> Target Horizon</span>
+      <span><b>Tokyo</b> · Worldwide</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MISSION ============ -->
+<section class="sus-mission">
+  <div class="container">
+    <div class="sus-mission-inner">
+      <div>
+        <div class="label-en sus-mission-eyebrow reveal">Mission</div>
+        <h2 class="sus-mission-head reveal delay-1">
+          「創る」を、<br>
+          もっと<span class="red">ひらく</span>。
+        </h2>
+      </div>
+      <div class="sus-mission-body reveal delay-2">
+        <p>
+          創る仕事は、これまで一部の人のものでした。経験がないと入れない、紹介がないと始まらない。
+          私たちは、その入口を社会に開くことを起点に、人と企業と地域がともに育つ場をつくっています。
+        </p>
+        <p>
+          サステナビリティは、その延長線上にあります。
+          「未経験でも、つくる側へ。」というGoodyの約束は、
+          働き手の機会、育成の質、環境への配慮、そしてコミュニティとの関係性が
+          長く健やかに続いてはじめて成立する。これは、私たちの責任です。
+        </p>
+        <div class="sus-mission-quote reveal delay-3">
+          つくる場所が持続可能であること。
+          それは、私たちが、誰の挑戦も置き去りにしない、ということ。
+          <cite>— Goody Sustainability Policy</cite>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PILLARS ============ -->
+<section class="sus-pillars">
+  <div class="container">
+    <div class="sus-pillars-head">
+      <div>
+        <div class="label-en reveal">Four Pillars</div>
+        <h2 class="sus-pillars-title reveal delay-1">
+          <span class="ln">4つの<span class="red">柱</span>で、</span>
+          <span class="ln">私たちは動く。</span>
+        </h2>
+      </div>
+      <p class="sus-pillars-lead reveal delay-2">
+        働き方、人材育成、環境負荷、コミュニティ。
+        この4つを、別々の取り組みではなく、ひとつの循環として設計しています。
+        どれか一つが欠けてもGoodyの持続可能性は成り立ちません。
+      </p>
+    </div>
+
+    <div class="sus-pillars-grid">
+
+      <article class="sus-pillar reveal">
+        <div class="sus-pillar-num">01 / WAY OF WORKING</div>
+        <h3 class="sus-pillar-title">健やかに、長く<br>働ける現場へ</h3>
+        <div class="sus-pillar-en">働き方</div>
+        <p class="sus-pillar-body">
+          柔軟な働き方とフェアな報酬を、フリーランス・パートタイム・正社員のすべての契約形態で設計します。
+          リモートとオフラインの両立、メンタルケア、休暇取得の透明性を、常に基準として運用します。
+        </p>
+        <ul class="sus-pillar-list">
+          <li>全契約形態で同一基準の最低稼働単価を保証</li>
+          <li>創作期間と休息期間を区分するペース設計</li>
+          <li>メンタルヘルス相談窓口を社内外に常設</li>
+          <li>ジェンダー・国籍・経歴に関わらない採用基準</li>
+        </ul>
+      </article>
+
+      <article class="sus-pillar reveal delay-1">
+        <div class="sus-pillar-num">02 / TALENT DEVELOPMENT</div>
+        <h3 class="sus-pillar-title">学びと実務を<br>同じテーブルで</h3>
+        <div class="sus-pillar-en">人材育成</div>
+        <p class="sus-pillar-body">
+          未経験のクリエイターが、現場の案件を通じて学べる仕組みを最重要として設計します。
+          メンター制度、ナレッジ共有、評価フィードバックを、全てのプロジェクトに組み込みます。
+        </p>
+        <ul class="sus-pillar-list">
+          <li>未経験者には必ず専属メンターを配置</li>
+          <li>案件アサインに「育成枠」を一定割合で確保</li>
+          <li>制作工程を社内ナレッジとして循環</li>
+          <li>越境型インターン・海外実務プログラムを提供</li>
+        </ul>
+      </article>
+
+      <article class="sus-pillar reveal delay-2">
+        <div class="sus-pillar-num">03 / ENVIRONMENTAL</div>
+        <h3 class="sus-pillar-title">創ることの<br>環境責任</h3>
+        <div class="sus-pillar-en">環境負荷</div>
+        <p class="sus-pillar-body">
+          制作・配信・移動・素材調達まで、創作活動全体の環境負荷を測定し、削減を続けます。
+          ペーパーレス、再エネ電力、サプライチェーンの透明化を、当然の標準として運用します。
+        </p>
+        <ul class="sus-pillar-list">
+          <li>本社・スタジオの再エネ電力比率 100% 目標</li>
+          <li>制作機材の長期利用とリペアファースト方針</li>
+          <li>飲食事業の食品ロス削減プロトコル</li>
+          <li>サプライチェーンの炭素強度を年次開示</li>
+        </ul>
+      </article>
+
+      <article class="sus-pillar reveal delay-3">
+        <div class="sus-pillar-num">04 / COMMUNITY</div>
+        <h3 class="sus-pillar-title">地域と海外を、<br>創るで結ぶ</h3>
+        <div class="sus-pillar-en">コミュニティ</div>
+        <p class="sus-pillar-body">
+          日本と海外の創り手を、案件を介して結びます。
+          地域文化を尊重し、現地の人材育成と還流に貢献する事業設計を、海外飲食・人材育成事業の中核に据えます。
+        </p>
+        <ul class="sus-pillar-list">
+          <li>現地採用・現地登用の比率を継続開示</li>
+          <li>地域文化のリサーチを案件設計の前段に組込</li>
+          <li>クリエイター同士のピアコミュニティを運営</li>
+          <li>奨学・スカラシップ枠を毎年一定数提供</li>
+        </ul>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ SDG ============ -->
+<section class="sus-sdg">
+  <div class="container">
+    <div class="sus-sdg-head">
+      <div>
+        <div class="label-en reveal">SDG Commitments</div>
+        <h2 class="sus-sdg-title reveal delay-1">
+          <span class="ln">6つの<span class="red">SDGs</span>と、</span>
+          <span class="ln">Goodyの約束。</span>
+        </h2>
+      </div>
+      <p class="sus-sdg-lead reveal delay-2">
+        国連の持続可能な開発目標のうち、Goodyの事業構造と最も整合する6つを起点に、
+        日々の意思決定と数値目標を運用しています。
+      </p>
+    </div>
+
+    <div class="sus-sdg-grid">
+
+      <a class="sus-sdg-card reveal" href="#">
+        <div class="sus-sdg-icon"><img src="img/sdg/sdg-03.webp" alt="SDG 3 すべての人に健康と福祉を" /></div>
+        <div class="sus-sdg-card-body">
+          <div class="sus-sdg-num">SDG 03</div>
+          <div class="sus-sdg-card-title">すべての人に健康と福祉を</div>
+          <p class="sus-sdg-card-desc">創作現場のメンタルヘルス支援、休息設計、安全衛生を、全契約形態に拡張。</p>
+        </div>
+      </a>
+
+      <a class="sus-sdg-card reveal delay-1" href="#">
+        <div class="sus-sdg-icon"><img src="img/sdg/sdg-04.webp" alt="SDG 4 質の高い教育をみんなに" /></div>
+        <div class="sus-sdg-card-body">
+          <div class="sus-sdg-num">SDG 04</div>
+          <div class="sus-sdg-card-title">質の高い教育をみんなに</div>
+          <p class="sus-sdg-card-desc">未経験者向けの育成プログラムを、すべての事業領域で標準実装。</p>
+        </div>
+      </a>
+
+      <a class="sus-sdg-card reveal delay-2" href="#">
+        <div class="sus-sdg-icon"><img src="img/sdg/sdg-08.webp" alt="SDG 8 働きがいも経済成長も" /></div>
+        <div class="sus-sdg-card-body">
+          <div class="sus-sdg-num">SDG 08</div>
+          <div class="sus-sdg-card-title">働きがいも経済成長も</div>
+          <p class="sus-sdg-card-desc">フェアな報酬・透明な評価・健やかな働き方を、創作市場のスタンダードへ。</p>
+        </div>
+      </a>
+
+      <a class="sus-sdg-card reveal" href="#">
+        <div class="sus-sdg-icon"><img src="img/sdg/sdg-10.webp" alt="SDG 10 人や国の不平等をなくそう" /></div>
+        <div class="sus-sdg-card-body">
+          <div class="sus-sdg-num">SDG 10</div>
+          <div class="sus-sdg-card-title">人や国の不平等をなくそう</div>
+          <p class="sus-sdg-card-desc">学歴・経歴・国籍に依らない採用と、海外と日本の双方向の育成機会。</p>
+        </div>
+      </a>
+
+      <a class="sus-sdg-card reveal delay-1" href="#">
+        <div class="sus-sdg-icon"><img src="img/sdg/sdg-13.webp" alt="SDG 13 気候変動に具体的な対策を" /></div>
+        <div class="sus-sdg-card-body">
+          <div class="sus-sdg-num">SDG 13</div>
+          <div class="sus-sdg-card-title">気候変動に具体的な対策を</div>
+          <p class="sus-sdg-card-desc">制作工程・配信・移動・調達の炭素強度を測定し、年次で削減目標を更新。</p>
+        </div>
+      </a>
+
+      <a class="sus-sdg-card reveal delay-2" href="#">
+        <div class="sus-sdg-icon"><img src="img/sdg/sdg-15.webp" alt="SDG 15 陸の豊かさも守ろう" /></div>
+        <div class="sus-sdg-card-body">
+          <div class="sus-sdg-num">SDG 15</div>
+          <div class="sus-sdg-card-title">陸の豊かさも守ろう</div>
+          <p class="sus-sdg-card-desc">海外飲食・素材調達における自然資源の保全と、地域文化への配慮。</p>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ TARGETS ============ -->
+<section class="sus-targets">
+  <div class="container">
+    <div class="sus-targets-head">
+      <div class="label-en sus-targets-eyebrow reveal">2030 Targets</div>
+      <h2 class="sus-targets-title reveal delay-1">
+        2030年に、<br>
+        <span class="red">私たちが立っていたい</span>場所。
+      </h2>
+    </div>
+
+    <div class="sus-targets-grid">
+
+      <div class="sus-target reveal">
+        <div class="sus-target-year">By 2030</div>
+        <div class="sus-target-num">1,000<small>+</small></div>
+        <div class="sus-target-label">未経験から現役へ移行したクリエイター数</div>
+        <div class="sus-target-note">育成 → 案件 → 継続実務までを一気通貫で支援。</div>
+      </div>
+
+      <div class="sus-target reveal delay-1">
+        <div class="sus-target-year">By 2030</div>
+        <div class="sus-target-num">100<small>%</small></div>
+        <div class="sus-target-label">本社・スタジオの再エネ電力比率</div>
+        <div class="sus-target-note">2026年時点で30%を起点に段階的に引き上げます。</div>
+      </div>
+
+      <div class="sus-target reveal delay-2">
+        <div class="sus-target-year">By 2030</div>
+        <div class="sus-target-num">06<small>カ国</small></div>
+        <div class="sus-target-label">海外飲食・人材育成事業の展開国数</div>
+        <div class="sus-target-note">現地採用・現地育成を前提とした、双方向の事業設計。</div>
+      </div>
+
+      <div class="sus-target reveal delay-3">
+        <div class="sus-target-year">毎年</div>
+        <div class="sus-target-num">12<small>件</small></div>
+        <div class="sus-target-label">奨学・スカラシップ枠の継続提供</div>
+        <div class="sus-target-note">経済的事情に左右されない学びの入口を確保します。</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATEMENT ============ -->
+<section class="sus-statement">
+  <div class="container">
+    <div class="sus-statement-inner">
+      <div class="label-en reveal">Commitment</div>
+      <blockquote class="sus-statement-quote reveal delay-1">
+        私たちは、創ることを、<span class="red">入口の広い仕事</span>にしたい。<br>
+        誰かのはじめてが、誰かの仕事を生み、誰かの暮らしを支える。<br>
+        その循環が、長く健やかに続くことを、Goodyの責任として約束します。
+      </blockquote>
+      <div class="sus-statement-sig reveal delay-2">
+        <span class="dot"></span>
+        <span><b>Goody Inc.</b> &nbsp;·&nbsp; Sustainability Statement &nbsp;·&nbsp; 2026</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA BAND ============ -->
+<section class="sus-cta-band">
+  <div class="container">
+    <div class="sus-cta-inner">
+      <h2 class="sus-cta-title reveal">
+        いっしょに、<br>
+        持続可能な<span class="red">つくる場所</span>へ。
+      </h2>
+      <div class="sus-cta-actions reveal delay-1">
+        <a href="home.html#contact" class="btn-primary">
+          登録する
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+        <a href="home.html" class="btn-secondary">
+          Back to Home
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <img class="footer-logo" src="img/goody-logo-light.png" alt="Goody — Good Day Foreveryone" />
+        <div class="footer-tagline">Good Day Foreveryone</div>
+        <div class="footer-jp-tagline">未経験でも、つくる側へ。</div>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="home.html#about">私たちについて</a></li>
+          <li><a href="home.html#business">事業内容</a></li>
+          <li><a href="sustainability.html">サステナビリティ</a></li>
+          <li><a href="#">採用情報</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Business</h4>
+        <ul>
+          <li><a href="home.html#business">クリエイティブ</a></li>
+          <li><a href="home.html#business">グローバル人材育成</a></li>
+          <li><a href="home.html#business">人材サービス</a></li>
+          <li><a href="home.html#business">BPO / 海外飲食 / 酒類</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:hello@goody.jp">hello@goody.jp</a></li>
+          <li><a href="#">東京 / Tokyo</a></li>
+          <li><a href="home.html#contact">登録する →</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Goody Inc. All Rights Reserved.</span>
+      <span class="right">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Tokyo · Worldwide</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* Reveal-on-scroll observer */
+(function () {
+  const els = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.14, rootMargin: '0px 0px -8% 0px' });
+  els.forEach((el) => io.observe(el));
+})();
+</script>
+
+</body>
+</html>

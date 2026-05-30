@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Goody（グッディ）— 未経験でも、つくる側へ。</title>
+<meta name="description" content="クリエイティブ・人材育成・BPO・海外飲食まで。6つの事業領域で、未経験から「つくる側」へと挑戦する人を支えます。" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='none' stroke='%230e0e0e' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23DC2626'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@400;500;700;900&display=swap" rel="stylesheet" />
+<style>
+/* ============ TOKENS ============ */
+:root {
+  --paper: #f5f2eb;
+  --paper-2: #ece8de;
+  --ink: #0e0e0e;
+  --ink-soft: #1a1a1a;
+  --ink-mute: #6f6a60;
+  --line: rgba(14, 14, 14, 0.12);
+  --line-strong: rgba(14, 14, 14, 0.3);
+  --red: #dc2626;
+  --red-deep: #b8211f;
+  --shadow: 0 30px 60px -30px rgba(14, 14, 14, 0.25);
+  --jp-sans: "Noto Sans JP", -apple-system, BlinkMacSystemFont, sans-serif;
+  --jp-serif: "Noto Serif JP", "Times New Roman", serif;
+  --en: "Inter", -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--jp-sans);
+  font-weight: 400;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  cursor: none;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+button { font: inherit; cursor: none; border: 0; background: none; }
+
+::selection { background: var(--red); color: var(--paper); }
+
+@media (max-width: 900px) {
+  body { cursor: auto; }
+  button, a { cursor: pointer; }
+}
+
+/* ============ CUSTOM CURSOR ============ */
+.cursor {
+  position: fixed;
+  top: 0; left: 0;
+  width: 12px; height: 12px;
+  background: var(--red);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: multiply;
+  /* No transition on transform — instant pointer follow */
+  transition: width 0.18s ease, height 0.18s ease, background 0.18s ease, opacity 0.2s ease;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+.cursor.is-link { width: 44px; height: 44px; background: var(--ink); }
+.cursor.is-hidden { opacity: 0; }
+@media (max-width: 900px) { .cursor { display: none; } }
+
+/* ============ NAV ============ */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 22px clamp(20px, 4vw, 56px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  mix-blend-mode: difference;
+  color: var(--paper);
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--en);
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+}
+.nav-logo-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 26px; height: 26px;
+  border: 1.6px solid currentColor;
+  border-radius: 50%;
+}
+.nav-logo-mark::after {
+  content: "";
+  width: 8px; height: 8px;
+  background: var(--red);
+  border-radius: 50%;
+}
+.nav-links {
+  display: flex;
+  gap: 28px;
+  font-family: var(--en);
+  font-weight: 600;
+  font-size: 12.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.nav-links a { position: relative; padding-bottom: 2px; }
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -3px;
+  width: 100%; height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.45s cubic-bezier(0.7, 0, 0.3, 1);
+}
+.nav-links a:hover::after { transform: scaleX(1); transform-origin: left center; }
+.nav-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border: 1.5px solid currentColor;
+  border-radius: 999px;
+  font-family: var(--en);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.nav-cta::before {
+  content: "";
+  width: 6px; height: 6px;
+  background: var(--red);
+  border-radius: 50%;
+}
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav { padding: 18px 20px; }
+}
+
+/* ============ HERO ============ */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  padding: 0 clamp(20px, 4vw, 56px);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: var(--paper);
+}
+.hero-sun {
+  position: absolute;
+  top: 50%;
+  right: -10vw;
+  transform: translateY(-50%);
+  width: 65vw;
+  aspect-ratio: 1;
+  max-width: 1100px;
+  pointer-events: none;
+  z-index: 0;
+}
+.hero-sun-disc {
+  position: absolute;
+  inset: 12% 12% 12% 12%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ff5c5c 0%, var(--red) 40%, var(--red-deep) 78%);
+  animation: breathe 6s ease-in-out infinite;
+  box-shadow:
+    0 30px 120px -20px rgba(220, 38, 38, 0.45),
+    inset 0 -20px 60px rgba(0, 0, 0, 0.18);
+  filter: contrast(1.05);
+}
+.hero-sun-ring {
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid var(--ink);
+  border-radius: 50%;
+  opacity: 0.35;
+  animation: spin 80s linear infinite;
+}
+.hero-sun-ring::before, .hero-sun-ring::after {
+  content: "";
+  position: absolute;
+  inset: 6%;
+  border: 1px dashed var(--ink);
+  border-radius: 50%;
+  opacity: 0.35;
+}
+.hero-sun-ring::after { inset: 22%; opacity: 0.2; animation: spin 50s linear infinite reverse; }
+.hero-grain {
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.45'/></svg>");
+  opacity: 0.1;
+  pointer-events: none;
+  z-index: 1;
+}
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-top: 120px;
+}
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--en);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 32px;
+}
+.hero-eyebrow::before {
+  content: "";
+  width: 36px; height: 1px;
+  background: var(--ink);
+}
+.hero-title {
+  font-family: var(--jp-serif);
+  font-weight: 900;
+  font-size: clamp(48px, 9vw, 140px);
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  margin-bottom: 36px;
+}
+.hero-title-2 {
+  display: block;
+  margin-top: 12px;
+}
+.hero-title .red { color: var(--red); }
+.hero-title .dot {
+  display: inline-block;
+  width: 0.7em; height: 0.7em;
+  background: var(--red);
+  border-radius: 50%;
+  vertical-align: -0.05em;
+  margin: 0 0.05em;
+}
+.hero-sub {
+  font-family: var(--jp-sans);
+  font-weight: 400;
+  font-size: clamp(15px, 1.25vw, 17px);
+  line-height: 2;
+  max-width: 520px;
+  color: var(--ink-soft);
+  margin-bottom: 56px;
+}
+.hero-actions { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 28px 18px 32px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--en);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+.btn-primary:hover { background: var(--red); transform: translateY(-2px); }
+.btn-primary svg { width: 18px; height: 18px; }
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 24px;
+  color: var(--ink);
+  font-family: var(--jp-sans);
+  font-weight: 500;
+  font-size: 13.5px;
+  border-bottom: 1px solid var(--ink);
+}
+.hero-scroll {
+  position: absolute;
+  left: clamp(20px, 4vw, 56px);
+  bottom: 36px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--en);
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  z-index: 2;
+}
+.hero-scroll-line {
+  width: 1px; height: 60px;
+  background: var(--ink);
+  position: relative;
+  overflow: hidden;
+}
+.hero-scroll-line::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 30%;
+  background: var(--red);
+  animation: scrollDown 2.4s ease-in-out infinite;
+}
+.hero-meta {
+  position: absolute;
+  right: clamp(20px, 4vw, 56px);
+  bottom: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  font-family: var(--en);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  z-index: 2;
+  text-align: right;
+}
+.hero-meta strong { color: var(--ink); font-weight: 700; letter-spacing: 0.18em; }
+@media (max-width: 768px) {
+  .hero { min-height: 92vh; }
+  .hero-sun {
+    width: 100vw;
+    right: -30vw;
+    top: 62%;
+    opacity: 0.45;
+  }
+  .hero-meta { display: none; }
+  .hero-inner { padding-top: 100px; padding-bottom: 80px; }
+  .hero-title { font-size: clamp(40px, 13vw, 72px); line-height: 1.02; margin-bottom: 24px; }
+  .hero-sub { font-size: 14.5px; line-height: 1.95; margin-bottom: 32px; }
+  .hero-eyebrow { font-size: 11px; margin-bottom: 22px; }
+}
+@media (max-width: 480px) {
+  .hero-title { font-size: clamp(36px, 14vw, 56px); }
+  .hero-sun { opacity: 0.32; width: 110vw; right: -36vw; }
+}
+
+/* ============ MARQUEE ============ */
+.marquee {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 22px 0;
+  overflow: hidden;
+  border-top: 1px solid var(--paper-2);
+  border-bottom: 1px solid var(--paper-2);
+}
+.marquee-track {
+  display: flex;
+  gap: 56px;
+  font-family: var(--en);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  animation: scrollLeft 35s linear infinite;
+}
+.marquee span { display: inline-flex; align-items: center; gap: 22px; }
+.marquee span::after {
+  content: "";
+  width: 6px; height: 6px;
+  background: var(--red);
+  border-radius: 50%;
+}
+
+/* ============ SECTION SHELL ============ */
+section { position: relative; }
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 4vw, 56px);
+}
+.label-en {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--en);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.label-en::before {
+  content: "";
+  width: 28px; height: 1px;
+  background: var(--red);
+}
+
+/* ============ ABOUT ============ */
+.about {
+  padding: clamp(100px, 14vw, 180px) 0;
+  background: var(--paper);
+  position: relative;
+}
+.about-grid {
+  display: grid;
+  grid-template-columns: minmax(420px, 1.2fr) 1.4fr minmax(180px, 0.8fr);
+  gap: clamp(36px, 4.5vw, 72px);
+  align-items: start;
+}
+/* Phrase-level line element — keeps Japanese text from wrapping mid-phrase */
+.ln { display: block; white-space: nowrap; }
+.about-left .label-en { margin-bottom: 28px; }
+.about-jp-label {
+  font-family: var(--jp-serif);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-mute);
+  letter-spacing: 0.2em;
+}
+.about-title {
+  font-family: var(--jp-serif);
+  font-weight: 700;
+  font-size: clamp(26px, 2.6vw, 44px);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  margin-bottom: 32px;
+}
+.about-title .red { color: var(--red); }
+.about-title em {
+  font-style: normal;
+  display: inline-block;
+  position: relative;
+  padding: 0 4px;
+}
+.about-title em::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -2px;
+  height: 8px;
+  background: rgba(220, 38, 38, 0.18);
+  z-index: -1;
+}
+.about-body p {
+  font-size: 15.5px;
+  line-height: 2.05;
+  margin-bottom: 22px;
+  color: var(--ink-soft);
+  max-width: 580px;
+}
+.about-body p:last-child { margin-bottom: 0; }
+.about-stat {
+  font-family: var(--en);
+  font-weight: 800;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.about-stat-item {
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+}
+.about-stat-num {
+  font-size: clamp(36px, 4vw, 56px);
+  color: var(--red);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.about-stat-num sup { font-size: 0.45em; vertical-align: top; color: var(--ink); }
+.about-stat-label {
+  font-family: var(--jp-sans);
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  margin-top: 8px;
+  color: var(--ink-soft);
+}
+.about-tategaki {
+  writing-mode: vertical-rl;
+  font-family: var(--jp-serif);
+  font-weight: 500;
+  font-size: 18px;
+  letter-spacing: 0.6em;
+  line-height: 1.6;
+  color: var(--ink-mute);
+  margin-top: 14px;
+  text-align: right;
+  align-self: end;
+}
+@media (max-width: 1024px) {
+  .about-grid { grid-template-columns: 1fr; gap: 48px; }
+  .about-stat { text-align: left; flex-direction: row; flex-wrap: wrap; gap: 32px; }
+  .about-stat-item { flex: 1 1 200px; }
+  .about-tategaki { display: none; }
+}
+
+/* ============ BUSINESS PINNED HORIZONTAL ============ */
+.biz-section {
+  background: var(--ink);
+  color: var(--paper);
+  position: relative;
+  padding-bottom: 0;
+}
+.biz-head {
+  padding: clamp(100px, 14vw, 180px) clamp(20px, 4vw, 56px) clamp(60px, 8vw, 100px);
+  display: grid;
+  grid-template-columns: minmax(560px, 1.4fr) minmax(280px, 1fr);
+  gap: clamp(40px, 6vw, 96px);
+  max-width: 1400px;
+  margin: 0 auto;
+  align-items: end;
+}
+@media (max-width: 1100px) {
+  .biz-head { grid-template-columns: 1fr; }
+  .biz-head-lead { max-width: 640px; }
+}
+.biz-head .label-en { color: var(--paper-2); }
+.biz-head .label-en::before { background: var(--red); }
+.biz-head-title {
+  font-family: var(--jp-serif);
+  font-weight: 900;
+  font-size: clamp(40px, 6vw, 86px);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  margin-top: 24px;
+}
+.biz-head-title .red { color: var(--red); }
+.biz-head-lead {
+  font-family: var(--jp-sans);
+  font-weight: 400;
+  font-size: clamp(15px, 1.2vw, 17px);
+  line-height: 2;
+  color: rgba(245, 242, 235, 0.78);
+  max-width: 560px;
+}
+
+.biz-pin {
+  position: relative;
+  height: 600vh; /* 6 slides */
+}
+.biz-stage {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+.biz-track {
+  display: flex;
+  height: 100%;
+  width: 600vw; /* 6 slides full width */
+  will-change: transform;
+  transition: transform 0.05s linear;
+}
+.biz-slide {
+  flex: 0 0 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(40px, 6vw, 100px);
+  padding: clamp(60px, 8vw, 100px) clamp(40px, 6vw, 100px);
+  position: relative;
+  border-right: 1px solid rgba(245, 242, 235, 0.06);
+}
+.biz-slide:last-child { border-right: 0; }
+/* Left column now holds JUST the small tag; the giant number is positioned absolutely as a BG */
+.biz-slide-left {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  max-width: none;
+  z-index: 0;
+}
+.biz-slide-num {
+  position: absolute;
+  font-family: var(--en);
+  font-weight: 800;
+  line-height: 0.85;
+  letter-spacing: -0.06em;
+  color: transparent;
+  white-space: nowrap;
+  user-select: none;
+  /* Defaults — overridden per .var-X variation below */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(280px, 48vw, 760px);
+  -webkit-text-stroke: 1.5px rgba(245, 242, 235, 0.14);
+}
+.biz-slide-num::before {
+  content: attr(data-n);
+  position: absolute;
+  top: 0; left: 0;
+  -webkit-text-stroke: 0;
+  background-image: var(--biz-img);
+  background-size: cover;
+  background-position: center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  opacity: 0;
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1s cubic-bezier(0.7, 0, 0.3, 1), opacity 0.7s ease;
+}
+.biz-slide.is-active .biz-slide-num::before {
+  clip-path: inset(0% 0 0 0);
+  opacity: 0.5;
+}
+
+/* =====================================================
+   6 VARIATIONS — assign one class per slide while iterating;
+   the user picks their favorite then we apply that class
+   uniformly to all 6 slides.
+   ===================================================== */
+
+/* A — Massive Ghost (huge centered number, faded outline) */
+.biz-slide.var-a .biz-slide-num {
+  font-size: clamp(300px, 52vw, 820px);
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  -webkit-text-stroke: 1.5px rgba(245, 242, 235, 0.12);
+}
+
+/* B — Off-axis Big (right-of-center, slight tilt) */
+.biz-slide.var-b .biz-slide-num {
+  font-size: clamp(260px, 42vw, 680px);
+  top: 48%; left: 64%; transform: translate(-50%, -50%) rotate(-4deg);
+  -webkit-text-stroke: 1.5px rgba(245, 242, 235, 0.18);
+}
+
+/* C — Right Half-Bleed (number anchored to right edge, partially clipped) */
+.biz-slide.var-c .biz-slide-num {
+  font-size: clamp(380px, 64vw, 1040px);
+  top: 50%; right: -12vw; left: auto; transform: translateY(-50%);
+  -webkit-text-stroke: 1.5px rgba(245, 242, 235, 0.16);
+}
+
+/* D — Low Behind Bottom (number sits low, big, behind the lower half) */
+.biz-slide.var-d .biz-slide-num {
+  font-size: clamp(420px, 70vw, 1100px);
+  bottom: -16vh; left: 50%; top: auto; right: auto; transform: translateX(-50%);
+  -webkit-text-stroke: 1.5px rgba(245, 242, 235, 0.10);
+}
+
+/* E — Stroke Bold (medium size, much heavier outline for stencil look) */
+.biz-slide.var-e .biz-slide-num {
+  font-size: clamp(280px, 44vw, 720px);
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  -webkit-text-stroke: 3px rgba(245, 242, 235, 0.32);
+}
+
+/* F — Overflow Giant (massive, partially off the top + bottom — pure texture) */
+.biz-slide.var-f .biz-slide-num {
+  font-size: clamp(560px, 86vw, 1400px);
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  -webkit-text-stroke: 1.5px rgba(245, 242, 235, 0.10);
+}
+.biz-slide.var-f.is-active .biz-slide-num::before { opacity: 0.4; }
+.biz-slide-tag {
+  position: absolute;
+  top: clamp(100px, 14vh, 140px);
+  left: clamp(40px, 6vw, 100px);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--en);
+  font-weight: 600;
+  font-size: 11.5px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--paper-2);
+  pointer-events: auto;
+  z-index: 3;
+}
+.biz-slide-tag::before {
+  content: "";
+  width: 8px; height: 8px;
+  background: var(--red);
+  border-radius: 50%;
+}
+.biz-slide-right {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding-bottom: 20px;
+  flex: 0 1 720px;
+  max-width: 720px;
+  background: radial-gradient(ellipse at center, rgba(14, 14, 14, 0.55) 0%, rgba(14, 14, 14, 0) 75%);
+  padding: 40px 40px 48px;
+  border-radius: 16px;
+}
+.biz-slide-title {
+  font-family: var(--jp-serif);
+  font-weight: 900;
+  font-size: clamp(28px, 3.6vw, 56px);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+.biz-slide-desc {
+  font-family: var(--jp-sans);
+  font-size: 15px;
+  line-height: 2.1;
+  color: rgba(245, 242, 235, 0.7);
+  max-width: 540px;
+}
+.biz-slide-feats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 36px;
+  max-width: 540px;
+}
+.biz-slide-feat {
+  border-top: 1px solid rgba(245, 242, 235, 0.18);
+  padding-top: 12px;
+  font-family: var(--jp-sans);
+  font-size: 13.5px;
+  color: var(--paper);
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.biz-slide-feat::before {
+  content: "+";
+  color: var(--red);
+  font-family: var(--en);
+  font-weight: 700;
+  margin-top: -2px;
+}
+.biz-slide-cta {
+  align-self: flex-start;
+  margin-top: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 26px;
+  border: 1.5px solid rgba(245, 242, 235, 0.7);
+  border-radius: 999px;
+  color: var(--paper);
+  font-family: var(--en);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+.biz-slide-cta:hover { background: var(--red); border-color: var(--red); color: var(--paper); }
+.biz-slide-cta svg { width: 16px; height: 16px; }
+
+.biz-progress {
+  position: absolute;
+  left: 50%;
+  bottom: 36px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-family: var(--en);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  color: rgba(245, 242, 235, 0.6);
+  z-index: 10;
+  pointer-events: none;
+}
+.biz-progress-bar {
+  width: 240px; height: 1px;
+  background: rgba(245, 242, 235, 0.2);
+  position: relative;
+}
+.biz-progress-bar span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0;
+  background: var(--red);
+  transition: width 0.18s ease;
+}
+
+@media (max-width: 900px) {
+  .biz-head {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: clamp(80px, 16vw, 120px) 20px clamp(40px, 10vw, 64px);
+  }
+  .biz-head-title { font-size: clamp(36px, 9vw, 56px); margin-top: 16px; }
+  .biz-head-lead { font-size: 14.5px; line-height: 1.95; }
+
+  .biz-pin { height: auto; }
+  .biz-stage { position: static; height: auto; overflow: visible; }
+  .biz-track {
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    transform: none !important;
+    transition: none;
+  }
+  .biz-slide {
+    flex: 0 0 auto;
+    display: block;
+    height: auto;
+    padding: 56px 20px 64px;
+    border-right: 0;
+    border-bottom: 1px solid rgba(245, 242, 235, 0.08);
+  }
+
+  /* Number becomes a clean static red label on mobile */
+  .biz-slide-left { position: static; inset: auto; pointer-events: auto; }
+  .biz-slide-num,
+  .biz-slide.var-c .biz-slide-num,
+  .biz-slide.var-d .biz-slide-num {
+    position: static;
+    display: block;
+    font-size: clamp(72px, 22vw, 140px);
+    line-height: 0.9;
+    color: var(--red);
+    -webkit-text-stroke: 0;
+    -webkit-text-fill-color: var(--red);
+    transform: none;
+    top: auto; left: auto; right: auto; bottom: auto;
+    margin: 0 0 4px;
+  }
+  .biz-slide-num::before { display: none; }
+  .biz-slide-tag {
+    position: static;
+    margin-bottom: 28px;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+  }
+
+  .biz-slide-right {
+    flex: 1 1 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    background: none;
+    border-radius: 0;
+    gap: 22px;
+  }
+  .biz-slide-title { font-size: clamp(26px, 7vw, 34px); }
+  .biz-slide-desc { font-size: 14.5px; line-height: 2; }
+  .biz-slide-feats { grid-template-columns: 1fr 1fr; gap: 14px 20px; }
+  .biz-slide-feat { font-size: 13px; }
+  .biz-slide-cta {
+    padding: 14px 22px;
+    font-size: 11.5px;
+  }
+  .biz-progress { display: none; }
+}
+
+@media (max-width: 480px) {
+  .biz-slide-feats { grid-template-columns: 1fr; }
+  .biz-head-title { font-size: clamp(32px, 10vw, 44px); }
+  .biz-slide { padding: 48px 18px 56px; }
+}
+
+/* ============ SUSTAINABILITY TEASER ============ */
+.sus-teaser {
+  position: relative;
+  padding: clamp(100px, 14vw, 180px) 0;
+  background: var(--paper);
+  overflow: hidden;
+}
+.sus-teaser-inner {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: clamp(40px, 6vw, 96px);
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+.sus-teaser-left .label-en { margin-bottom: 24px; }
+.sus-teaser-title {
+  font-family: var(--jp-serif);
+  font-weight: 900;
+  font-size: clamp(36px, 5.2vw, 78px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 26px;
+}
+.sus-teaser-title .red { color: var(--red); }
+.sus-teaser-body {
+  font-size: 15.5px;
+  line-height: 2.05;
+  color: var(--ink-soft);
+  margin-bottom: 40px;
+  max-width: 520px;
+}
+.sus-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  padding: 22px 32px;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  font-family: var(--en);
+  font-weight: 700;
+  font-size: 12.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+.sus-cta:hover { background: var(--ink); color: var(--paper); }
+.sus-cta svg { width: 18px; height: 18px; }
+.sus-teaser-right {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  align-items: center;
+  justify-items: center;
+}
+.sus-teaser-icon {
+  aspect-ratio: 1;
+  width: 100%;
+  max-width: 130px;
+  background: var(--paper-2);
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s cubic-bezier(0.7, 0, 0.3, 1);
+}
+.sus-teaser-icon img { width: 100%; height: 100%; object-fit: contain; }
+.sus-teaser-icon:hover { transform: translateY(-6px); }
+
+@media (max-width: 900px) {
+  .sus-teaser { padding: clamp(60px, 14vw, 100px) 0; }
+  .sus-teaser-inner { grid-template-columns: 1fr; gap: 40px; }
+  .sus-teaser-title { font-size: clamp(34px, 9vw, 56px); }
+  .sus-teaser-body { font-size: 14.5px; line-height: 1.95; }
+  .sus-teaser-right { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 480px) {
+  .sus-teaser-right { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ============ FOOTER ============ */
+.footer {
+  background: var(--ink);
+  color: var(--paper);
+  padding: clamp(80px, 10vw, 130px) 0 32px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 80px;
+}
+.footer-logo {
+  display: block;
+  width: clamp(220px, 22vw, 360px);
+  height: auto;
+  margin-bottom: 28px;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.footer-tagline {
+  font-family: var(--en);
+  font-size: 13px;
+  letter-spacing: 0.32em;
+  color: var(--paper-2);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.footer-jp-tagline {
+  font-family: var(--jp-serif);
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  color: var(--paper-2);
+}
+.footer-col h4 {
+  font-family: var(--en);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+  color: var(--red);
+}
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.footer-col a {
+  font-family: var(--jp-sans);
+  font-size: 14px;
+  color: var(--paper-2);
+  transition: color 0.25s ease;
+}
+.footer-col a:hover { color: var(--red); }
+.footer-bottom {
+  border-top: 1px solid rgba(245, 242, 235, 0.12);
+  padding-top: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--en);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--ink-mute);
+  text-transform: uppercase;
+}
+.footer-bottom .right { display: flex; gap: 24px; }
+@media (max-width: 900px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 560px) {
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; gap: 16px; align-items: flex-start; }
+}
+
+/* ============ ANIM HELPERS ============ */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 1s ease, transform 1s cubic-bezier(0.22, 1, 0.36, 1); }
+.reveal.is-in { opacity: 1; transform: none; }
+.reveal.delay-1 { transition-delay: 0.12s; }
+.reveal.delay-2 { transition-delay: 0.22s; }
+.reveal.delay-3 { transition-delay: 0.32s; }
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+@keyframes spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+@keyframes scrollDown {
+  0% { transform: translateY(-100%); }
+  60% { transform: translateY(330%); }
+  100% { transform: translateY(330%); }
+}
+@keyframes scrollLeft {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor" aria-hidden="true"></div>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="#" class="nav-logo">
+    <span class="nav-logo-mark"></span>
+    GOODY
+  </a>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#business">Business</a>
+    <a href="sustainability.html">Sustainability</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <a href="#contact" class="nav-cta">登録する</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-sun" aria-hidden="true">
+    <div class="hero-sun-ring"></div>
+    <div class="hero-sun-disc"></div>
+  </div>
+  <div class="hero-grain"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Good Day Foreveryone</div>
+    <h1 class="hero-title">
+      <span class="ln">未経験でも、</span>
+      <span class="ln hero-title-2">つくる<span class="dot"></span>側へ。</span>
+    </h1>
+    <p class="hero-sub">
+      クリエイティブから、人材育成、BPO、海外飲食まで。<br>
+      6つの事業領域で、はじめての挑戦に「実案件」という土俵を。<br>
+      Goodyは、誰かの「やってみたい」が、明日の仕事になる場所です。
+    </p>
+    <div class="hero-actions">
+      <a href="#business" class="btn-primary">
+        Explore Business
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#about" class="btn-ghost">私たちについて →</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+  <div class="hero-meta">
+    <span>Tokyo · Worldwide</span>
+    <strong>EST. 2024</strong>
+    <span>006 / Business Lines</span>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Creative</span><span>Global Talent</span><span>HR Services</span><span>BPO</span><span>F&amp;B Overseas</span><span>Spirits</span>
+    <span>Creative</span><span>Global Talent</span><span>HR Services</span><span>BPO</span><span>F&amp;B Overseas</span><span>Spirits</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-left">
+        <div class="label-en reveal">About Us</div>
+        <h2 class="about-title reveal delay-1">
+          <span class="ln">「<em>つくる側</em>」を、</span>
+          <span class="ln">もっと自由に、</span>
+          <span class="ln">もっと<span class="red">多様</span>に。</span>
+        </h2>
+        <p class="about-jp-label reveal delay-2">私たちについて</p>
+      </div>
+      <div class="about-body reveal delay-2">
+        <p>
+          Goody（グッディ）は、「未経験でも、つくる側へ。」を合言葉に、
+          はじめてクリエイティブの世界に足を踏み入れる人と、
+          現場の仕事をつなげる会社です。
+        </p>
+        <p>
+          研修だけでは越えられない「実務経験」という壁を、
+          私たち自身がクライアントとプロジェクトを抱え、
+          現場の手触りごと提供することで取り払います。
+        </p>
+        <p>
+          グッドな仕事を、毎日。<br>
+          Good Day Foreveryone。<br>
+          すべての挑戦に、いい一日を。
+        </p>
+      </div>
+      <div class="about-stat reveal delay-3">
+        <div class="about-stat-item">
+          <div class="about-stat-num">06<sup>領域</sup></div>
+          <div class="about-stat-label">事業ライン</div>
+        </div>
+        <div class="about-stat-item">
+          <div class="about-stat-num">100<sup>%</sup></div>
+          <div class="about-stat-label">実案件ベース</div>
+        </div>
+        <div class="about-tategaki">誰かの、はじめてを。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUSINESS (pinned horizontal scroll) -->
+<section class="biz-section" id="business">
+  <div class="biz-head">
+    <div>
+      <div class="label-en reveal">Business · Content</div>
+      <h2 class="biz-head-title reveal delay-1">
+        <span class="ln">6つの<span class="red">領域</span>で、</span>
+        <span class="ln">企業の課題に、</span>
+        <span class="ln">答えを。</span>
+      </h2>
+    </div>
+    <p class="biz-head-lead reveal delay-2">
+      クリエイティブ、グローバル人材育成、人材サービス、BPO、海外飲食、酒類マーケティング。
+      Goodyは、それぞれが独立した専門領域として深さを持ちながら、横断的に組み合わせることで、企業の挑戦を加速します。
+    </p>
+  </div>
+
+  <div class="biz-pin" id="bizPin">
+    <div class="biz-stage">
+      <div class="biz-track" id="bizTrack">
+
+        <article class="biz-slide var-d" data-index="0" style="--biz-img: url('img/biz/biz-01-creative.jpg')">
+          <div class="biz-slide-left">
+            <span class="biz-slide-num" data-n="01">01</span>
+            <span class="biz-slide-tag">Creative</span>
+          </div>
+          <div class="biz-slide-right">
+            <h3 class="biz-slide-title">クリエイティブ事業</h3>
+            <p class="biz-slide-desc">
+              動画、グラフィック、ブランディング、Web制作まで。企業の表現を支える総合クリエイティブ。
+              未経験から実案件に参加できる体制で、「学ぶ」と「届ける」を同じテーブルで進めます。
+            </p>
+            <div class="biz-slide-feats">
+              <span class="biz-slide-feat">ブランディング設計</span>
+              <span class="biz-slide-feat">動画・モーション</span>
+              <span class="biz-slide-feat">Web/UI 制作</span>
+              <span class="biz-slide-feat">グラフィック</span>
+            </div>
+            <a class="biz-slide-cta" href="business/creative.html">
+              View More
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="biz-slide var-d" data-index="1" style="--biz-img: url('img/biz/biz-02-global.jpg')">
+          <div class="biz-slide-left">
+            <span class="biz-slide-num" data-n="02">02</span>
+            <span class="biz-slide-tag">Global Talent</span>
+          </div>
+          <div class="biz-slide-right">
+            <h3 class="biz-slide-title">グローバル人材<br>育成事業</h3>
+            <p class="biz-slide-desc">
+              海外で活躍する人材を育成するプログラムと、現地キャリアまで伴走する一気通貫の支援。
+              語学だけでなく、文化的なリテラシーと実務の両方を、現地ネットワークの中で身につけます。
+            </p>
+            <div class="biz-slide-feats">
+              <span class="biz-slide-feat">語学プログラム</span>
+              <span class="biz-slide-feat">海外インターン</span>
+              <span class="biz-slide-feat">現地就労支援</span>
+              <span class="biz-slide-feat">越境メンタリング</span>
+            </div>
+            <a class="biz-slide-cta" href="business/global.html">
+              View More
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="biz-slide var-d" data-index="2" style="--biz-img: url('img/biz/biz-03-hr.jpg')">
+          <div class="biz-slide-left">
+            <span class="biz-slide-num" data-n="03">03</span>
+            <span class="biz-slide-tag">HR Services</span>
+          </div>
+          <div class="biz-slide-right">
+            <h3 class="biz-slide-title">人材サービス事業</h3>
+            <p class="biz-slide-desc">
+              採用支援、人材紹介、業務委託まで。企業の人材戦略を、必要な形で、必要なときに。
+              リアルな案件ベースでの育成と紹介を組み合わせることで、ミスマッチのない人材接続を実現します。
+            </p>
+            <div class="biz-slide-feats">
+              <span class="biz-slide-feat">採用伴走</span>
+              <span class="biz-slide-feat">人材紹介</span>
+              <span class="biz-slide-feat">業務委託マッチ</span>
+              <span class="biz-slide-feat">育成 × 採用</span>
+            </div>
+            <a class="biz-slide-cta" href="business/hr.html">
+              View More
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="biz-slide var-d" data-index="3" style="--biz-img: url('img/biz/biz-04-bpo.jpg')">
+          <div class="biz-slide-left">
+            <span class="biz-slide-num" data-n="04">04</span>
+            <span class="biz-slide-tag">BPO</span>
+          </div>
+          <div class="biz-slide-right">
+            <h3 class="biz-slide-title">BPO事業</h3>
+            <p class="biz-slide-desc">
+              バックオフィスを中心に、企業のノンコア業務を一括受託。
+              コア業務に集中できる環境を整えながら、受託の現場をクリエイター・エントリー層の実務経験の場としても活用します。
+            </p>
+            <div class="biz-slide-feats">
+              <span class="biz-slide-feat">事務代行</span>
+              <span class="biz-slide-feat">経理アシスト</span>
+              <span class="biz-slide-feat">業務設計</span>
+              <span class="biz-slide-feat">運用最適化</span>
+            </div>
+            <a class="biz-slide-cta" href="business/bpo.html">
+              View More
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="biz-slide var-d" data-index="4" style="--biz-img: url('img/biz/biz-05-food.jpg')">
+          <div class="biz-slide-left">
+            <span class="biz-slide-num" data-n="05">05</span>
+            <span class="biz-slide-tag">F&amp;B Overseas</span>
+          </div>
+          <div class="biz-slide-right">
+            <h3 class="biz-slide-title">海外飲食事業</h3>
+            <p class="biz-slide-desc">
+              海外マーケットでの飲食店運営とブランド展開。
+              現地に根ざした、日本発の食体験を世界へ。仕入れ・店舗運営・ブランディングまで、現地パートナーとともに磨き上げます。
+            </p>
+            <div class="biz-slide-feats">
+              <span class="biz-slide-feat">店舗開発</span>
+              <span class="biz-slide-feat">メニュー設計</span>
+              <span class="biz-slide-feat">現地オペレーション</span>
+              <span class="biz-slide-feat">ブランド海外展開</span>
+            </div>
+            <a class="biz-slide-cta" href="business/food.html">
+              View More
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="biz-slide var-d" data-index="5" style="--biz-img: url('img/biz/biz-06-spirits.jpg')">
+          <div class="biz-slide-left">
+            <span class="biz-slide-num" data-n="06">06</span>
+            <span class="biz-slide-tag">Spirits</span>
+          </div>
+          <div class="biz-slide-right">
+            <h3 class="biz-slide-title">酒類マーケティング・<br>クリエイティブ事業</h3>
+            <p class="biz-slide-desc">
+              酒類ブランドのマーケティング戦略から、ビジュアル・コピー・体験設計まで一気通貫で。
+              「飲む」を「物語」に変えるクリエイティブを、流通・小売・現場のリアルとともに設計します。
+            </p>
+            <div class="biz-slide-feats">
+              <span class="biz-slide-feat">ブランド戦略</span>
+              <span class="biz-slide-feat">パッケージ</span>
+              <span class="biz-slide-feat">体験設計</span>
+              <span class="biz-slide-feat">流通プロモ</span>
+            </div>
+            <a class="biz-slide-cta" href="business/spirits.html">
+              View More
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </article>
+
+      </div>
+      <div class="biz-progress">
+        <span id="bizCounter">01 / 06</span>
+        <span class="biz-progress-bar"><span id="bizBar"></span></span>
+        <span>Scroll →</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUSTAINABILITY TEASER -->
+<section class="sus-teaser" id="sustainability">
+  <div class="container">
+    <div class="sus-teaser-inner">
+      <div class="sus-teaser-left">
+        <div class="label-en reveal">ESG · SDGs</div>
+        <h2 class="sus-teaser-title reveal delay-1">
+          <span class="ln"><span class="red">持続可能</span>な</span>
+          <span class="ln">つくる場所を、</span>
+          <span class="ln">みんなで。</span>
+        </h2>
+        <p class="sus-teaser-body reveal delay-2">
+          Goodyは、国連の「持続可能な開発目標（SDGs）」に共感し、
+          働き方・育成・環境負荷の三方向から、日々の取り組みを積み重ねています。
+          「未経験でも、つくる側へ」という入口は、社会に開かれた入口でなくてはならない。
+        </p>
+        <a href="sustainability.html" class="sus-cta reveal delay-3">
+          サステナビリティを見る
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+      <div class="sus-teaser-right reveal delay-2">
+        <div class="sus-teaser-icon"><img src="img/sdg/sdg-04.webp" alt="SDG 4 質の高い教育をみんなに" loading="lazy" /></div>
+        <div class="sus-teaser-icon"><img src="img/sdg/sdg-08.webp" alt="SDG 8 働きがいも経済成長も" loading="lazy" /></div>
+        <div class="sus-teaser-icon"><img src="img/sdg/sdg-10.webp" alt="SDG 10 人や国の不平等をなくそう" loading="lazy" /></div>
+        <div class="sus-teaser-icon"><img src="img/sdg/sdg-03.webp" alt="SDG 3 すべての人に健康と福祉を" loading="lazy" /></div>
+        <div class="sus-teaser-icon"><img src="img/sdg/sdg-13.webp" alt="SDG 13 気候変動に具体的な対策を" loading="lazy" /></div>
+        <div class="sus-teaser-icon"><img src="img/sdg/sdg-15.webp" alt="SDG 15 陸の豊かさも守ろう" loading="lazy" /></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer" id="contact">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <img class="footer-logo" src="img/goody-logo-light.png" alt="Goody — Good Day Foreveryone" />
+        <div class="footer-tagline">Good Day Foreveryone</div>
+        <div class="footer-jp-tagline">未経験でも、つくる側へ。</div>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#about">私たちについて</a></li>
+          <li><a href="#business">事業内容</a></li>
+          <li><a href="sustainability.html">サステナビリティ</a></li>
+          <li><a href="#">採用情報</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Business</h4>
+        <ul>
+          <li><a href="#business">クリエイティブ</a></li>
+          <li><a href="#business">グローバル人材育成</a></li>
+          <li><a href="#business">人材サービス</a></li>
+          <li><a href="#business">BPO / 海外飲食 / 酒類</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:hello@goody.jp">hello@goody.jp</a></li>
+          <li><a href="#">東京 / Tokyo</a></li>
+          <li><a href="#">登録する →</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Goody Inc. All Rights Reserved.</span>
+      <span class="right">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Tokyo · Worldwide</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============ CUSTOM CURSOR (instant follow, no lerp) ============ */
+(function () {
+  if (window.matchMedia('(max-width: 900px)').matches || matchMedia('(pointer: coarse)').matches) return;
+  const cursor = document.getElementById('cursor');
+  if (!cursor) return;
+  window.addEventListener('pointermove', (e) => {
+    cursor.style.transform = 'translate(' + e.clientX + 'px,' + e.clientY + 'px) translate(-50%,-50%)';
+  }, { passive: true });
+  window.addEventListener('mouseleave', () => cursor.classList.add('is-hidden'));
+  window.addEventListener('mouseenter', () => cursor.classList.remove('is-hidden'));
+  document.querySelectorAll('a, button, [data-cursor-link]').forEach((el) => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('is-link'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('is-link'));
+  });
+})();
+
+/* ============ REVEAL ON SCROLL ============ */
+(function () {
+  const els = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  els.forEach((el) => io.observe(el));
+})();
+
+/* ============ BIZ PINNED HORIZONTAL SCROLL ============ */
+(function () {
+  if (window.matchMedia('(max-width: 900px)').matches) return;
+  const pin = document.getElementById('bizPin');
+  const track = document.getElementById('bizTrack');
+  const slides = document.querySelectorAll('.biz-slide');
+  const counter = document.getElementById('bizCounter');
+  const bar = document.getElementById('bizBar');
+  if (!pin || !track) return;
+
+  // Hysteresis around boundaries prevents activeIdx from flipping
+  // back and forth when scroll sits exactly on a transition threshold.
+  const STEPS = slides.length - 1;
+  const HYST = 0.04;
+  let activeIdx = -1;
+  let rafQueued = false;
+
+  function nextActive(t, prev) {
+    const raw = t * STEPS;
+    if (prev < 0) return Math.round(raw);
+    const lower = prev - 0.5 + HYST;
+    const upper = prev + 0.5 - HYST;
+    if (raw < lower) return prev - 1;
+    if (raw > upper) return prev + 1;
+    return prev;
+  }
+
+  function apply() {
+    rafQueued = false;
+    const rect = pin.getBoundingClientRect();
+    const total = rect.height - window.innerHeight;
+    if (total <= 0) return;
+    const t = Math.max(0, Math.min(1, -rect.top / total));
+    const tx = -t * STEPS * window.innerWidth;
+    track.style.transform = `translate3d(${tx}px, 0, 0)`;
+    if (bar) bar.style.width = (t * 100).toFixed(1) + '%';
+
+    const next = Math.max(0, Math.min(STEPS, nextActive(t, activeIdx)));
+    if (next !== activeIdx) {
+      activeIdx = next;
+      slides.forEach((s, i) => {
+        // Only flip classes that are actually changing — avoids restarting
+        // the image-fill clip-path animation on unrelated slides.
+        const wantActive = i === activeIdx;
+        if (s.classList.contains('is-active') !== wantActive) {
+          s.classList.toggle('is-active', wantActive);
+        }
+        const wantVarC = i === activeIdx - 1;
+        if (wantVarC) {
+          if (!s.classList.contains('var-c')) {
+            s.classList.remove('var-d');
+            s.classList.add('var-c');
+          }
+        } else {
+          if (!s.classList.contains('var-d')) {
+            s.classList.remove('var-c');
+            s.classList.add('var-d');
+          }
+        }
+      });
+      if (counter) {
+        counter.textContent = String(activeIdx + 1).padStart(2, '0') + ' / 06';
+      }
+    }
+  }
+
+  function update() {
+    if (rafQueued) return;
+    rafQueued = true;
+    requestAnimationFrame(apply);
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  apply();
+})();
+</script>
+
+</body>
+</html>
