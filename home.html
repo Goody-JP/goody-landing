@@ -337,9 +337,22 @@ button { font: inherit; cursor: none; border: 0; background: none; }
 }
 .hero-meta strong { color: var(--ink); font-weight: 700; letter-spacing: 0.18em; }
 @media (max-width: 768px) {
-  .hero-sun { width: 90vw; right: -25vw; opacity: 0.6; }
+  .hero { min-height: 92vh; }
+  .hero-sun {
+    width: 100vw;
+    right: -30vw;
+    top: 62%;
+    opacity: 0.45;
+  }
   .hero-meta { display: none; }
-  .hero-inner { padding-top: 110px; padding-bottom: 100px; }
+  .hero-inner { padding-top: 100px; padding-bottom: 80px; }
+  .hero-title { font-size: clamp(40px, 13vw, 72px); line-height: 1.02; margin-bottom: 24px; }
+  .hero-sub { font-size: 14.5px; line-height: 1.95; margin-bottom: 32px; }
+  .hero-eyebrow { font-size: 11px; margin-bottom: 22px; }
+}
+@media (max-width: 480px) {
+  .hero-title { font-size: clamp(36px, 14vw, 56px); }
+  .hero-sun { opacity: 0.32; width: 110vw; right: -36vw; }
 }
 
 /* ============ MARQUEE ============ */
@@ -778,27 +791,80 @@ section { position: relative; }
 }
 
 @media (max-width: 900px) {
-  .biz-head { grid-template-columns: 1fr; gap: 28px; }
+  .biz-head {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: clamp(80px, 16vw, 120px) 20px clamp(40px, 10vw, 64px);
+  }
+  .biz-head-title { font-size: clamp(36px, 9vw, 56px); margin-top: 16px; }
+  .biz-head-lead { font-size: 14.5px; line-height: 1.95; }
+
   .biz-pin { height: auto; }
-  .biz-stage { position: static; height: auto; }
+  .biz-stage { position: static; height: auto; overflow: visible; }
   .biz-track {
     flex-direction: column;
     width: 100%;
     height: auto;
     transform: none !important;
+    transition: none;
   }
   .biz-slide {
     flex: 0 0 auto;
+    display: block;
     height: auto;
-    grid-template-columns: 1fr;
-    gap: 24px;
-    padding: 80px clamp(20px, 5vw, 36px);
+    padding: 56px 20px 64px;
     border-right: 0;
     border-bottom: 1px solid rgba(245, 242, 235, 0.08);
   }
-  .biz-slide-num { font-size: 120px; }
-  .biz-slide-feats { grid-template-columns: 1fr; }
+
+  /* Number becomes a clean static red label on mobile */
+  .biz-slide-left { position: static; inset: auto; pointer-events: auto; }
+  .biz-slide-num,
+  .biz-slide.var-c .biz-slide-num,
+  .biz-slide.var-d .biz-slide-num {
+    position: static;
+    display: block;
+    font-size: clamp(72px, 22vw, 140px);
+    line-height: 0.9;
+    color: var(--red);
+    -webkit-text-stroke: 0;
+    -webkit-text-fill-color: var(--red);
+    transform: none;
+    top: auto; left: auto; right: auto; bottom: auto;
+    margin: 0 0 4px;
+  }
+  .biz-slide-num::before { display: none; }
+  .biz-slide-tag {
+    position: static;
+    margin-bottom: 28px;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+  }
+
+  .biz-slide-right {
+    flex: 1 1 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    background: none;
+    border-radius: 0;
+    gap: 22px;
+  }
+  .biz-slide-title { font-size: clamp(26px, 7vw, 34px); }
+  .biz-slide-desc { font-size: 14.5px; line-height: 2; }
+  .biz-slide-feats { grid-template-columns: 1fr 1fr; gap: 14px 20px; }
+  .biz-slide-feat { font-size: 13px; }
+  .biz-slide-cta {
+    padding: 14px 22px;
+    font-size: 11.5px;
+  }
   .biz-progress { display: none; }
+}
+
+@media (max-width: 480px) {
+  .biz-slide-feats { grid-template-columns: 1fr; }
+  .biz-head-title { font-size: clamp(32px, 10vw, 44px); }
+  .biz-slide { padding: 48px 18px 56px; }
 }
 
 /* ============ SUSTAINABILITY TEASER ============ */
@@ -873,7 +939,14 @@ section { position: relative; }
 .sus-teaser-icon:hover { transform: translateY(-6px); }
 
 @media (max-width: 900px) {
-  .sus-teaser-inner { grid-template-columns: 1fr; }
+  .sus-teaser { padding: clamp(60px, 14vw, 100px) 0; }
+  .sus-teaser-inner { grid-template-columns: 1fr; gap: 40px; }
+  .sus-teaser-title { font-size: clamp(34px, 9vw, 56px); }
+  .sus-teaser-body { font-size: 14.5px; line-height: 1.95; }
+  .sus-teaser-right { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 480px) {
+  .sus-teaser-right { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* ============ FOOTER ============ */
@@ -1101,7 +1174,7 @@ section { position: relative; }
     <div class="biz-stage">
       <div class="biz-track" id="bizTrack">
 
-        <article class="biz-slide var-c" data-index="0" style="--biz-img: url('img/biz/biz-01-creative.jpg')">
+        <article class="biz-slide var-d" data-index="0" style="--biz-img: url('img/biz/biz-01-creative.jpg')">
           <div class="biz-slide-left">
             <span class="biz-slide-num" data-n="01">01</span>
             <span class="biz-slide-tag">Creative</span>
@@ -1149,7 +1222,7 @@ section { position: relative; }
           </div>
         </article>
 
-        <article class="biz-slide var-c" data-index="2" style="--biz-img: url('img/biz/biz-03-hr.jpg')">
+        <article class="biz-slide var-d" data-index="2" style="--biz-img: url('img/biz/biz-03-hr.jpg')">
           <div class="biz-slide-left">
             <span class="biz-slide-num" data-n="03">03</span>
             <span class="biz-slide-tag">HR Services</span>
@@ -1197,7 +1270,7 @@ section { position: relative; }
           </div>
         </article>
 
-        <article class="biz-slide var-c" data-index="4" style="--biz-img: url('img/biz/biz-05-food.jpg')">
+        <article class="biz-slide var-d" data-index="4" style="--biz-img: url('img/biz/biz-05-food.jpg')">
           <div class="biz-slide-left">
             <span class="biz-slide-num" data-n="05">05</span>
             <span class="biz-slide-tag">F&amp;B Overseas</span>
@@ -1382,7 +1455,13 @@ section { position: relative; }
     track.style.transform = `translate3d(${tx}px, 0, 0)`;
     if (bar) bar.style.width = (t * 100).toFixed(1) + '%';
     const activeIdx = Math.round(t * (slides.length - 1));
-    slides.forEach((s, i) => s.classList.toggle('is-active', i === activeIdx));
+    slides.forEach((s, i) => {
+      s.classList.toggle('is-active', i === activeIdx);
+      // Unified transition language: active slide = var-d (bottom-center, image fills from bottom),
+      // just-exited slide = var-c (right-edge middle, outline only).
+      s.classList.remove('var-a', 'var-b', 'var-c', 'var-d', 'var-e', 'var-f');
+      s.classList.add(i === activeIdx - 1 ? 'var-c' : 'var-d');
+    });
     if (counter) {
       counter.textContent = String(activeIdx + 1).padStart(2, '0') + ' / 06';
     }
