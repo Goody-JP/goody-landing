@@ -556,7 +556,7 @@ section { position: relative; }
   height: 100vh;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: clamp(40px, 6vw, 100px);
   padding: clamp(60px, 8vw, 100px) clamp(40px, 6vw, 100px);
   position: relative;
@@ -685,9 +685,10 @@ section { position: relative; }
   flex-direction: column;
   gap: 28px;
   padding-bottom: 20px;
-  flex: 0 1 min(640px, 46vw);
-  max-width: min(640px, 46vw);
-  margin-right: clamp(0px, 4vw, 80px);
+  flex: 0 1 min(580px, 48vw);
+  max-width: min(580px, 48vw);
+  margin-left: clamp(160px, 18vw, 320px);
+  margin-right: 0;
   background: radial-gradient(ellipse at center, rgba(14, 14, 14, 0.55) 0%, rgba(14, 14, 14, 0) 75%);
   padding: 40px 40px 48px;
   border-radius: 16px;
