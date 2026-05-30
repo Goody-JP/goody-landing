@@ -1446,29 +1446,71 @@ section { position: relative; }
   const bar = document.getElementById('bizBar');
   if (!pin || !track) return;
 
-  function update() {
+  // Hysteresis around boundaries prevents activeIdx from flipping
+  // back and forth when scroll sits exactly on a transition threshold.
+  const STEPS = slides.length - 1;
+  const HYST = 0.04;
+  let activeIdx = -1;
+  let rafQueued = false;
+
+  function nextActive(t, prev) {
+    const raw = t * STEPS;
+    if (prev < 0) return Math.round(raw);
+    const lower = prev - 0.5 + HYST;
+    const upper = prev + 0.5 - HYST;
+    if (raw < lower) return prev - 1;
+    if (raw > upper) return prev + 1;
+    return prev;
+  }
+
+  function apply() {
+    rafQueued = false;
     const rect = pin.getBoundingClientRect();
     const total = rect.height - window.innerHeight;
     if (total <= 0) return;
     const t = Math.max(0, Math.min(1, -rect.top / total));
-    const tx = -t * (slides.length - 1) * window.innerWidth;
+    const tx = -t * STEPS * window.innerWidth;
     track.style.transform = `translate3d(${tx}px, 0, 0)`;
     if (bar) bar.style.width = (t * 100).toFixed(1) + '%';
-    const activeIdx = Math.round(t * (slides.length - 1));
-    slides.forEach((s, i) => {
-      s.classList.toggle('is-active', i === activeIdx);
-      // Unified transition language: active slide = var-d (bottom-center, image fills from bottom),
-      // just-exited slide = var-c (right-edge middle, outline only).
-      s.classList.remove('var-a', 'var-b', 'var-c', 'var-d', 'var-e', 'var-f');
-      s.classList.add(i === activeIdx - 1 ? 'var-c' : 'var-d');
-    });
-    if (counter) {
-      counter.textContent = String(activeIdx + 1).padStart(2, '0') + ' / 06';
+
+    const next = Math.max(0, Math.min(STEPS, nextActive(t, activeIdx)));
+    if (next !== activeIdx) {
+      activeIdx = next;
+      slides.forEach((s, i) => {
+        // Only flip classes that are actually changing — avoids restarting
+        // the image-fill clip-path animation on unrelated slides.
+        const wantActive = i === activeIdx;
+        if (s.classList.contains('is-active') !== wantActive) {
+          s.classList.toggle('is-active', wantActive);
+        }
+        const wantVarC = i === activeIdx - 1;
+        if (wantVarC) {
+          if (!s.classList.contains('var-c')) {
+            s.classList.remove('var-d');
+            s.classList.add('var-c');
+          }
+        } else {
+          if (!s.classList.contains('var-d')) {
+            s.classList.remove('var-c');
+            s.classList.add('var-d');
+          }
+        }
+      });
+      if (counter) {
+        counter.textContent = String(activeIdx + 1).padStart(2, '0') + ' / 06';
+      }
     }
   }
+
+  function update() {
+    if (rafQueued) return;
+    rafQueued = true;
+    requestAnimationFrame(apply);
+  }
+
   window.addEventListener('scroll', update, { passive: true });
   window.addEventListener('resize', update);
-  update();
+  apply();
 })();
 </script>
 
