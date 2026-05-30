@@ -556,7 +556,7 @@ section { position: relative; }
   height: 100vh;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   gap: clamp(40px, 6vw, 100px);
   padding: clamp(60px, 8vw, 100px) clamp(40px, 6vw, 100px);
   position: relative;
@@ -635,11 +635,11 @@ section { position: relative; }
   -webkit-text-stroke: 1.5px rgba(245, 242, 235, 0.16);
 }
 
-/* D — Left number (sits opposite the right-aligned text card) */
+/* D — Low Behind Bottom (number sits low, big, behind the lower half) */
 .biz-slide.var-d .biz-slide-num {
-  font-size: clamp(140px, 18vw, 300px);
-  top: 50%; left: clamp(40px, 6vw, 120px); right: auto; transform: translateY(-50%);
-  -webkit-text-stroke: 1.2px rgba(245, 242, 235, 0.22);
+  font-size: clamp(420px, 70vw, 1100px);
+  bottom: -16vh; left: 50%; top: auto; right: auto; transform: translateX(-50%);
+  -webkit-text-stroke: 1.5px rgba(245, 242, 235, 0.10);
 }
 
 /* E — Stroke Bold (medium size, much heavier outline for stencil look) */
@@ -685,10 +685,8 @@ section { position: relative; }
   flex-direction: column;
   gap: 28px;
   padding-bottom: 20px;
-  flex: 0 1 min(580px, 48vw);
-  max-width: min(580px, 48vw);
-  margin-left: clamp(160px, 18vw, 320px);
-  margin-right: 0;
+  flex: 0 1 720px;
+  max-width: 720px;
   background: radial-gradient(ellipse at center, rgba(14, 14, 14, 0.55) 0%, rgba(14, 14, 14, 0) 75%);
   padding: 40px 40px 48px;
   border-radius: 16px;
