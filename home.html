@@ -556,7 +556,7 @@ section { position: relative; }
   height: 100vh;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: clamp(40px, 6vw, 100px);
   padding: clamp(60px, 8vw, 100px) clamp(40px, 6vw, 100px);
   position: relative;
@@ -635,10 +635,10 @@ section { position: relative; }
   -webkit-text-stroke: 1.5px rgba(245, 242, 235, 0.16);
 }
 
-/* D — Center-left number (sits between gutter and content card) */
+/* D — Right number (sits opposite the left-aligned text card) */
 .biz-slide.var-d .biz-slide-num {
-  font-size: clamp(160px, 20vw, 320px);
-  top: 50%; left: clamp(220px, 26vw, 440px); transform: translateY(-50%);
+  font-size: clamp(140px, 18vw, 300px);
+  top: 50%; right: clamp(40px, 6vw, 120px); left: auto; transform: translateY(-50%);
   -webkit-text-stroke: 1.2px rgba(245, 242, 235, 0.22);
 }
 
@@ -685,8 +685,9 @@ section { position: relative; }
   flex-direction: column;
   gap: 28px;
   padding-bottom: 20px;
-  flex: 0 1 720px;
-  max-width: 720px;
+  flex: 0 1 min(640px, 46vw);
+  max-width: min(640px, 46vw);
+  margin-left: clamp(0px, 4vw, 80px);
   background: radial-gradient(ellipse at center, rgba(14, 14, 14, 0.55) 0%, rgba(14, 14, 14, 0) 75%);
   padding: 40px 40px 48px;
   border-radius: 16px;
