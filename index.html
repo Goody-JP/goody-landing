@@ -236,6 +236,58 @@ body {
   .caption { font-size: 11px; letter-spacing: 0.36em; }
 }
 
+/* Version selector */
+.versions {
+  margin-top: 28px;
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  opacity: 0;
+  animation: captionIn 1.2s 2.1s ease forwards;
+}
+.ver-btn {
+  font-family: var(--en);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--ink);
+  padding: 12px 26px 11px;
+  border-radius: 999px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+.ver-btn .dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--ink);
+  transition: background 0.25s ease;
+}
+.ver-btn:hover,
+.ver-btn:focus-visible {
+  background: var(--ink);
+  color: var(--paper);
+  transform: translateY(-1px);
+  outline: none;
+}
+.ver-btn:hover .dot,
+.ver-btn:focus-visible .dot { background: var(--red); }
+.ver-btn.v2 { border-color: var(--red); color: var(--red); }
+.ver-btn.v2 .dot { background: var(--red); }
+.ver-btn.v2:hover,
+.ver-btn.v2:focus-visible { background: var(--red); color: var(--paper); }
+.ver-btn.v2:hover .dot,
+.ver-btn.v2:focus-visible .dot { background: var(--paper); }
+@media (max-width: 700px) {
+  .versions { margin-top: 22px; gap: 10px; }
+  .ver-btn { font-size: 10px; padding: 10px 20px 9px; letter-spacing: 0.28em; }
+}
+
 /* Entry transition veil */
 .entry-veil {
   position: fixed;
@@ -274,6 +326,10 @@ body {
     <button class="dot-btn" id="dotBtn" aria-label="サイトに入る / Enter site"></button>
   </div>
   <div class="caption">未　経　験　で　も　、つ　く　る　側　へ　。</div>
+  <div class="versions" role="group" aria-label="Select version">
+    <a class="ver-btn v1" href="home.html" data-target="home.html"><span class="dot" aria-hidden="true"></span>V1 · Current</a>
+    <a class="ver-btn v2" href="home-v2.html" data-target="home-v2.html"><span class="dot" aria-hidden="true"></span>V2 · In Progress</a>
+  </div>
 </main>
 
 <div class="ticker bottom" aria-hidden="true">
@@ -290,18 +346,25 @@ body {
   const btn = document.getElementById('dotBtn');
   const wrap = document.getElementById('logoWrap');
   const veil = document.getElementById('entryVeil');
+  const verBtns = document.querySelectorAll('.ver-btn');
   let entering = false;
 
-  function enter() {
+  function enter(target) {
     if (entering) return;
     entering = true;
     wrap.classList.add('is-leaving');
     veil.classList.add('is-expanding');
-    setTimeout(() => { window.location.href = 'home.html'; }, 950);
+    setTimeout(() => { window.location.href = target || 'home.html'; }, 950);
   }
-  btn.addEventListener('click', enter);
+  btn.addEventListener('click', () => enter('home.html'));
+  verBtns.forEach((b) => {
+    b.addEventListener('click', (e) => {
+      e.preventDefault();
+      enter(b.dataset.target);
+    });
+  });
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enter(); }
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enter('home.html'); }
   });
 })();
 </script>
