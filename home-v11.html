@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Growellは、一人ひとりの挑戦と成長に寄り添い、新しいキャリアの選択肢を広げていきます。">
+<title>Growell — 好きで、生きていく力を</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Noto+Sans+JP:wght@300;400;500&family=Noto+Serif+JP:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#0b0b0b;
+  --white:#ffffff;
+  --grey-100:#f5f5f5;
+  --grey-200:#e8e8e8;
+  --grey-400:#aaaaaa;
+  --grey-600:#666666;
+  --accent:#1a1a1a;
+  --dur:0.7s;
+  --ease:cubic-bezier(0.16,1,0.3,1);
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--white);color:var(--black);overflow-x:hidden;line-height:1.7;font-weight:300}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;border:none;background:none;font:inherit}
+
+/* ── TYPOGRAPHY ── */
+.t-eyebrow{font-family:'Inter',sans-serif;font-size:0.65rem;font-weight:400;letter-spacing:0.2em;text-transform:uppercase;color:var(--grey-400)}
+.t-serif{font-family:'Noto Serif JP',serif}
+.t-inter{font-family:'Inter',sans-serif}
+
+/* ── REVEAL ── */
+[data-reveal]{opacity:0;transform:translateY(28px);transition:opacity var(--dur) var(--ease),transform var(--dur) var(--ease)}
+[data-reveal].visible{opacity:1;transform:none}
+[data-reveal="fade"]{transform:none}
+@media(prefers-reduced-motion:reduce){
+  [data-reveal]{opacity:1;transform:none;transition:none}
+  *{transition-duration:0.01ms!important;animation-duration:0.01ms!important}
+}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 clamp(1.5rem,5vw,4rem);height:4rem;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);border-bottom:1px solid transparent;transition:border-color 0.3s}
+nav.scrolled{border-color:var(--grey-200)}
+.nav-logo{font-family:'Inter',sans-serif;font-size:1.1rem;font-weight:500;letter-spacing:0.04em;color:var(--black)}
+.nav-links{display:flex;align-items:center;gap:clamp(1.5rem,3vw,2.5rem)}
+.nav-links a{font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;color:var(--grey-600);transition:color 0.2s}
+.nav-links a:hover{color:var(--black)}
+.nav-cta{font-family:'Noto Sans JP',sans-serif;font-size:0.75rem;font-weight:400;letter-spacing:0.05em;padding:0.5rem 1.25rem;border:1px solid var(--black);color:var(--black);transition:background 0.2s,color 0.2s}
+.nav-cta:hover{background:var(--black);color:var(--white)}
+.nav-right{display:flex;align-items:center;gap:2rem}
+/* hamburger */
+.hamburger{display:none;flex-direction:column;gap:5px;padding:4px;width:28px}
+.hamburger span{display:block;height:1px;background:var(--black);transition:transform 0.3s,opacity 0.3s}
+.hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+/* mobile menu */
+.mobile-menu{display:none;position:fixed;top:4rem;left:0;right:0;bottom:0;background:var(--white);z-index:99;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;opacity:0;pointer-events:none;transition:opacity 0.3s}
+.mobile-menu.open{opacity:1;pointer-events:all}
+.mobile-menu a{font-family:'Inter',sans-serif;font-size:1.1rem;font-weight:300;letter-spacing:0.12em;text-transform:uppercase;color:var(--grey-600)}
+.mobile-menu .nav-cta{font-size:0.9rem;padding:0.75rem 2rem}
+
+@media(max-width:768px){
+  .nav-links,.nav-right .nav-cta{display:none}
+  .hamburger{display:flex}
+  .mobile-menu{display:flex}
+}
+
+/* ── SECTIONS ── */
+section{padding:clamp(6rem,14vw,14rem) clamp(1.5rem,5vw,4rem)}
+
+/* ── HERO ── */
+#hero{padding-top:calc(4rem + clamp(7rem,16vw,16rem));padding-bottom:clamp(7rem,16vw,16rem);padding-left:clamp(1.5rem,5vw,4rem);padding-right:clamp(1.5rem,5vw,4rem);min-height:100svh;display:flex;flex-direction:column;justify-content:center;background:var(--white)}
+.hero-inner{max-width:900px}
+.hero-eyebrow{margin-bottom:3rem}
+.hero-headline{font-family:'Noto Serif JP',serif;font-size:clamp(2.4rem,7vw,6rem);font-weight:300;line-height:1.25;letter-spacing:-0.01em;color:var(--black);margin-bottom:clamp(2.5rem,5vw,5rem)}
+.hero-lead{font-size:clamp(0.85rem,1.2vw,1rem);font-weight:300;color:var(--grey-600);max-width:520px;line-height:2;margin-bottom:clamp(3rem,5vw,5rem)}
+.hero-ctas{display:flex;align-items:center;gap:2rem;flex-wrap:wrap}
+.btn-primary{font-family:'Noto Sans JP',sans-serif;font-size:0.78rem;font-weight:400;letter-spacing:0.05em;padding:0.85rem 2.25rem;background:var(--black);color:var(--white);display:inline-block;transition:background 0.2s,color 0.2s}
+.btn-primary:hover{background:var(--grey-600)}
+.btn-ghost{font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:400;letter-spacing:0.1em;color:var(--grey-600);display:inline-flex;align-items:center;gap:0.4rem;transition:color 0.2s;text-transform:uppercase}
+.btn-ghost:hover{color:var(--black)}
+/* hero line ornament */
+.hero-line{width:40px;height:1px;background:var(--grey-200);margin-bottom:3rem}
+
+/* ── ABOUT ── */
+#about{background:var(--black);color:var(--white)}
+.about-inner{max-width:820px;margin:0 auto}
+.about-inner .t-eyebrow{color:var(--grey-600)}
+.about-title{font-family:'Noto Serif JP',serif;font-size:clamp(1.8rem,4vw,3.2rem);font-weight:300;line-height:1.4;letter-spacing:0.01em;margin:2.5rem 0 4rem;color:var(--white)}
+.about-body p{font-size:clamp(0.85rem,1.1vw,0.95rem);font-weight:300;color:rgba(255,255,255,0.65);line-height:2.2;margin-bottom:1rem}
+.about-body p:first-of-type{font-family:'Noto Serif JP',serif;font-size:clamp(1rem,2vw,1.4rem);font-weight:300;color:rgba(255,255,255,0.9);margin-bottom:2rem}
+.about-body p:last-child,.about-body p:nth-last-child(2){font-family:'Noto Serif JP',serif;font-size:clamp(0.95rem,1.6vw,1.2rem);color:rgba(255,255,255,0.85)}
+.about-stats{margin-top:5rem;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,0.08)}
+.stat{background:var(--black);padding:3rem 0;display:flex;flex-direction:column;gap:0.75rem}
+.stat-num{font-family:'Inter',sans-serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:300;letter-spacing:-0.02em;color:var(--white)}
+.stat-label{font-family:'Noto Sans JP',sans-serif;font-size:0.72rem;font-weight:300;color:var(--grey-600);letter-spacing:0.1em}
+@media(max-width:600px){.about-stats{grid-template-columns:1fr}}
+
+/* ── BUSINESS ── */
+#business{background:var(--white)}
+.business-header{max-width:820px;margin:0 auto 6rem}
+.business-title{font-family:'Noto Serif JP',serif;font-size:clamp(1.8rem,4vw,3.2rem);font-weight:300;line-height:1.4;margin:2rem 0}
+.business-index{max-width:820px;margin:0 auto}
+.biz-item{border-top:1px solid var(--grey-200);padding:3rem 0;display:grid;grid-template-columns:5rem 1fr auto;gap:2rem;align-items:start;transition:opacity 0.2s}
+.biz-item:last-child{border-bottom:1px solid var(--grey-200)}
+.biz-item:hover .biz-num{color:var(--black)}
+.biz-item:hover .biz-more{opacity:1;transform:translateX(4px)}
+.biz-num{font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:400;letter-spacing:0.12em;color:var(--grey-400);padding-top:0.15rem}
+.biz-content{}
+.biz-titles{margin-bottom:1rem}
+.biz-jp{font-family:'Noto Serif JP',serif;font-size:clamp(1rem,1.8vw,1.3rem);font-weight:400;color:var(--black);line-height:1.4}
+.biz-en{font-family:'Inter',sans-serif;font-size:0.65rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:var(--grey-400);margin-top:0.4rem}
+.biz-desc{font-size:0.82rem;font-weight:300;color:var(--grey-600);line-height:1.9;max-width:460px}
+.biz-more{font-family:'Inter',sans-serif;font-size:0.6rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:var(--grey-400);white-space:nowrap;padding-top:0.2rem;opacity:0;transition:opacity 0.3s,transform 0.3s;display:flex;align-items:center;gap:0.3rem}
+.biz-more::after{content:'→'}
+@media(max-width:640px){
+  .biz-item{grid-template-columns:3rem 1fr;gap:1rem}
+  .biz-more{display:none}
+}
+
+/* ── SUSTAINABILITY ── */
+#sustainability{background:var(--grey-100)}
+.sus-inner{max-width:820px;margin:0 auto}
+.sus-title{font-family:'Noto Serif JP',serif;font-size:clamp(1.8rem,4vw,3.2rem);font-weight:300;line-height:1.4;margin:2rem 0 3rem}
+.sus-body{font-size:clamp(0.85rem,1.1vw,0.95rem);font-weight:300;color:var(--grey-600);line-height:2.2;max-width:580px;margin-bottom:3.5rem}
+.sus-cta{font-family:'Inter',sans-serif;font-size:0.68rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:var(--black);display:inline-flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--black);padding-bottom:0.25rem;transition:gap 0.2s}
+.sus-cta:hover{gap:0.9rem}
+.sdg-grid{margin-top:5rem;display:grid;grid-template-columns:repeat(6,1fr);gap:1rem}
+.sdg-grid img{aspect-ratio:1;object-fit:cover;filter:grayscale(20%);transition:filter 0.3s}
+.sdg-grid img:hover{filter:none}
+@media(max-width:768px){.sdg-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:480px){.sdg-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* ── FOOTER ── */
+footer{background:var(--black);color:var(--white);padding:clamp(5rem,10vw,10rem) clamp(1.5rem,5vw,4rem) clamp(2.5rem,4vw,4rem)}
+.footer-top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:clamp(2rem,4vw,5rem);margin-bottom:clamp(4rem,7vw,7rem)}
+.footer-brand{}
+.footer-logo{font-family:'Inter',sans-serif;font-size:1.3rem;font-weight:500;letter-spacing:0.04em;margin-bottom:1rem}
+.footer-tagline{font-family:'Inter',sans-serif;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--grey-600);margin-bottom:0.5rem}
+.footer-sub{font-family:'Noto Serif JP',serif;font-size:0.82rem;font-weight:300;color:rgba(255,255,255,0.4);margin-top:0.75rem}
+.footer-col h4{font-family:'Inter',sans-serif;font-size:0.6rem;font-weight:400;letter-spacing:0.18em;text-transform:uppercase;color:var(--grey-600);margin-bottom:1.5rem}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:0.9rem}
+.footer-col ul li a{font-size:0.78rem;font-weight:300;color:rgba(255,255,255,0.55);transition:color 0.2s}
+.footer-col ul li a:hover{color:var(--white)}
+.footer-contact a{color:rgba(255,255,255,0.55);transition:color 0.2s}
+.footer-contact a:hover{color:var(--white)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.08);padding-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.footer-copy{font-family:'Inter',sans-serif;font-size:0.62rem;letter-spacing:0.08em;color:rgba(255,255,255,0.25)}
+.footer-location{font-family:'Inter',sans-serif;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.25)}
+@media(max-width:900px){
+  .footer-top{grid-template-columns:1fr 1fr;gap:3rem}
+}
+@media(max-width:520px){
+  .footer-top{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav id="nav" role="navigation" aria-label="メインナビゲーション">
+  <a href="/" class="nav-logo" aria-label="Growellトップ">Growell</a>
+  <div class="nav-right">
+    <div class="nav-links" role="list">
+      <a href="#about" role="listitem">About</a>
+      <a href="#business" role="listitem">Business</a>
+      <a href="sustainability.html" role="listitem">Sustainability</a>
+      <a href="#contact" role="listitem">Contact</a>
+    </div>
+    <a href="#" class="nav-cta" aria-label="求職者登録">登録する</a>
+    <button class="hamburger" aria-label="メニューを開く" aria-expanded="false" aria-controls="mobile-menu" id="hamburger">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ── MOBILE MENU ── -->
+<div class="mobile-menu" id="mobile-menu" role="dialog" aria-modal="true" aria-label="モバイルナビゲーション">
+  <a href="#about" class="mobile-link">About</a>
+  <a href="#business" class="mobile-link">Business</a>
+  <a href="sustainability.html" class="mobile-link">Sustainability</a>
+  <a href="#contact" class="mobile-link">Contact</a>
+  <a href="#" class="nav-cta">登録する</a>
+</div>
+
+<!-- ── HERO ── -->
+<section id="hero" aria-labelledby="hero-heading">
+  <div class="hero-inner">
+    <p class="t-eyebrow hero-eyebrow" data-reveal="fade">Grow Well, Everyone</p>
+    <div class="hero-line" aria-hidden="true"></div>
+    <h1 class="hero-headline t-serif" id="hero-heading" data-reveal>
+      好きで、<br>生きていく力を
+    </h1>
+    <p class="hero-lead" data-reveal>
+      可能性を信じることから、未来は動き出す。Growellは、一人ひとりの挑戦と成長に寄り添い、新しいキャリアの選択肢を広げていきます。自分らしい未来は、ここから始まる。
+    </p>
+    <div class="hero-ctas" data-reveal>
+      <a href="#business" class="btn-primary">事業を見る</a>
+      <a href="#about" class="btn-ghost">私たちについて</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section id="about" aria-labelledby="about-heading">
+  <div class="about-inner">
+    <p class="t-eyebrow" data-reveal="fade">About Us</p>
+    <h2 class="about-title t-serif" id="about-heading" data-reveal>
+      未来は、挑戦した人から<br>変わっていく
+    </h2>
+    <div class="about-body">
+      <p data-reveal>挑戦する人を、増やしたい。</p>
+      <p data-reveal>経験の有無ではなく、「やってみたい」という想いこそが、人を成長させる原動力だと私たちは信じています。</p>
+      <p data-reveal>Growellは、一人ひとりの挑戦を支え、成長の機会を創り出す会社です。</p>
+      <p data-reveal>人が成長すれば、企業が成長する。企業が成長すれば、社会がより良くなる。</p>
+      <p data-reveal>私たちは、人と企業の可能性をつなぎ、挑戦する人が活躍できる未来を創っていきます。</p>
+      <p data-reveal>「やってみたい」を、「できる」に変える。</p>
+      <p data-reveal>それがGrowellの使命です。</p>
+    </div>
+    <div class="about-stats" data-reveal>
+      <div class="stat">
+        <span class="stat-num t-inter">06</span>
+        <span class="stat-label">領域 / 事業ライン</span>
+      </div>
+      <div class="stat" style="padding-left:2rem">
+        <span class="stat-num t-inter">100%</span>
+        <span class="stat-label">挑戦に、寄り添う</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── BUSINESS ── -->
+<section id="business" aria-labelledby="business-heading">
+  <div class="business-header">
+    <p class="t-eyebrow" data-reveal="fade">Business · Content</p>
+    <h2 class="business-title t-serif" id="business-heading" data-reveal>
+      成長のきっかけを、<br>すべての人へ。
+    </h2>
+  </div>
+  <div class="business-index" role="list">
+
+    <div class="biz-item" role="listitem" data-reveal>
+      <span class="biz-num t-inter" aria-hidden="true">01</span>
+      <div class="biz-content">
+        <div class="biz-titles">
+          <p class="biz-jp">グローバル人材育成事業</p>
+          <p class="biz-en t-inter">Global Talent</p>
+        </div>
+        <p class="biz-desc">世界で通用する自分へ。グローバルな視点と実践的な経験を通じて、世界で活躍できる人材の育成を支援します。</p>
+      </div>
+      <a href="business/global.html" class="biz-more t-inter" aria-label="グローバル人材育成事業を詳しく見る">View More</a>
+    </div>
+
+    <div class="biz-item" role="listitem" data-reveal>
+      <span class="biz-num t-inter" aria-hidden="true">02</span>
+      <div class="biz-content">
+        <div class="biz-titles">
+          <p class="biz-jp">クリエイティブ事業</p>
+          <p class="biz-en t-inter">Creative</p>
+        </div>
+        <p class="biz-desc">アイデアを、価値に変える。デザイン・映像・Web・SNSを通じて、企業やサービスが持つ本来の魅力を届けます。</p>
+      </div>
+      <a href="business/creative.html" class="biz-more t-inter" aria-label="クリエイティブ事業を詳しく見る">View More</a>
+    </div>
+
+    <div class="biz-item" role="listitem" data-reveal>
+      <span class="biz-num t-inter" aria-hidden="true">03</span>
+      <div class="biz-content">
+        <div class="biz-titles">
+          <p class="biz-jp">人材サービス事業</p>
+          <p class="biz-en t-inter">HR Services</p>
+        </div>
+        <p class="biz-desc">人と企業の、その先の成長へ。一人ひとりの想いに向き合いながら、新しいキャリアとの出会いを創出します。</p>
+      </div>
+      <a href="business/hr.html" class="biz-more t-inter" aria-label="人材サービス事業を詳しく見る">View More</a>
+    </div>
+
+    <div class="biz-item" role="listitem" data-reveal>
+      <span class="biz-num t-inter" aria-hidden="true">04</span>
+      <div class="biz-content">
+        <div class="biz-titles">
+          <p class="biz-jp">BPO事業</p>
+          <p class="biz-en t-inter">BPO</p>
+        </div>
+        <p class="biz-desc">成長に集中できる環境をつくる。業務の効率化と最適化を通じて、企業の挑戦と成長を支援します。</p>
+      </div>
+      <a href="business/bpo.html" class="biz-more t-inter" aria-label="BPO事業を詳しく見る">View More</a>
+    </div>
+
+    <div class="biz-item" role="listitem" data-reveal>
+      <span class="biz-num t-inter" aria-hidden="true">05</span>
+      <div class="biz-content">
+        <div class="biz-titles">
+          <p class="biz-jp">海外飲食事業</p>
+          <p class="biz-en t-inter">F&amp;B Overseas</p>
+        </div>
+        <p class="biz-desc">「日本の食文化とおもてなしを世界へ届ける」。国や文化を越えて人を笑顔にすることを目指します。</p>
+      </div>
+      <a href="business/food.html" class="biz-more t-inter" aria-label="海外飲食事業を詳しく見る">View More</a>
+    </div>
+
+    <div class="biz-item" role="listitem" data-reveal>
+      <span class="biz-num t-inter" aria-hidden="true">06</span>
+      <div class="biz-content">
+        <div class="biz-titles">
+          <p class="biz-jp">酒類マーケティング・クリエイティブ事業</p>
+          <p class="biz-en t-inter">Spirits</p>
+        </div>
+        <p class="biz-desc">酒類ブランドの戦略から、ビジュアル・コピー・体験設計まで一気通貫で。「飲む」を「物語」に変えます。</p>
+      </div>
+      <a href="business/spirits.html" class="biz-more t-inter" aria-label="酒類マーケティング・クリエイティブ事業を詳しく見る">View More</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── SUSTAINABILITY ── -->
+<section id="sustainability" aria-labelledby="sus-heading">
+  <div class="sus-inner">
+    <p class="t-eyebrow" data-reveal="fade">ESG · SDGs</p>
+    <h2 class="sus-title t-serif" id="sus-heading" data-reveal>
+      持続可能な、<br>つくる場所を。
+    </h2>
+    <p class="sus-body" data-reveal>
+      Growellは、国連の「持続可能な開発目標（SDGs）」に共感し、働き方・育成・環境負荷の三方向から、日々の取り組みを積み重ねています。挑戦の入口は、社会に開かれた入口でなくてはならない。
+    </p>
+    <a href="sustainability.html" class="sus-cta t-inter" data-reveal aria-label="サステナビリティページを見る">
+      サステナビリティを見る
+    </a>
+    <div class="sdg-grid" data-reveal aria-label="取り組むSDGsゴール">
+      <img src="img/sdg/sdg-04.webp" alt="SDG 4: 質の高い教育をみんなに" loading="lazy" width="100" height="100">
+      <img src="img/sdg/sdg-08.webp" alt="SDG 8: 働きがいも経済成長も" loading="lazy" width="100" height="100">
+      <img src="img/sdg/sdg-10.webp" alt="SDG 10: 人や国の不平等をなくそう" loading="lazy" width="100" height="100">
+      <img src="img/sdg/sdg-03.webp" alt="SDG 3: すべての人に健康と福祉を" loading="lazy" width="100" height="100">
+      <img src="img/sdg/sdg-13.webp" alt="SDG 13: 気候変動に具体的な対策を" loading="lazy" width="100" height="100">
+      <img src="img/sdg/sdg-15.webp" alt="SDG 15: 陸の豊かさも守ろう" loading="lazy" width="100" height="100">
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer id="contact" role="contentinfo">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <p class="footer-logo t-inter">Growell</p>
+      <p class="footer-tagline t-inter">Grow Well, Everyone</p>
+      <p class="footer-sub t-serif">好きで、生きていく力を。</p>
+    </div>
+    <div class="footer-col">
+      <h4 class="t-inter">Company</h4>
+      <ul>
+        <li><a href="#about">私たちについて</a></li>
+        <li><a href="#business">事業内容</a></li>
+        <li><a href="sustainability.html">サステナビリティ</a></li>
+        <li><a href="#">採用情報</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4 class="t-inter">Business</h4>
+      <ul>
+        <li><a href="#business">グローバル人材育成</a></li>
+        <li><a href="#business">クリエイティブ</a></li>
+        <li><a href="#business">人材サービス</a></li>
+        <li><a href="#business">BPO / 海外飲食 / 酒類</a></li>
+      </ul>
+    </div>
+    <div class="footer-col footer-contact">
+      <h4 class="t-inter">Contact</h4>
+      <ul>
+        <li><a href="mailto:hello@growell.jp">hello@growell.jp</a></li>
+        <li><span style="font-size:0.78rem;font-weight:300;color:rgba(255,255,255,0.35)">東京 / Tokyo</span></li>
+        <li><a href="#" style="display:inline-flex;align-items:center;gap:0.4rem;font-family:'Inter',sans-serif;font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.55);border-bottom:1px solid rgba(255,255,255,0.15);padding-bottom:0.2rem">登録する →</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy t-inter">© 2026 Growell Inc. All Rights Reserved.</p>
+    <p class="footer-location t-inter">Tokyo · Worldwide</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+
+  // ── NAV SCROLL STATE ──
+  var nav = document.getElementById('nav');
+  window.addEventListener('scroll', function(){
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, {passive:true});
+
+  // ── HAMBURGER ──
+  var hamburger = document.getElementById('hamburger');
+  var mobileMenu = document.getElementById('mobile-menu');
+  hamburger.addEventListener('click', function(){
+    var open = mobileMenu.classList.toggle('open');
+    hamburger.classList.toggle('open', open);
+    hamburger.setAttribute('aria-expanded', String(open));
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+  mobileMenu.querySelectorAll('a').forEach(function(link){
+    link.addEventListener('click', function(){
+      mobileMenu.classList.remove('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded','false');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // ── SCROLL REVEAL ──
+  var reveals = document.querySelectorAll('[data-reveal]');
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        // stagger siblings
+        var siblings = Array.from(entry.target.parentElement.querySelectorAll('[data-reveal]'));
+        var idx = siblings.indexOf(entry.target);
+        entry.target.style.transitionDelay = (idx * 0.06) + 's';
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  },{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+  reveals.forEach(function(el){ observer.observe(el); });
+
+})();
+</script>
+</body>
+</html>
