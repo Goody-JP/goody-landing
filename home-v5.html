@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Growell | 好きで、生きていく力を</title>
+  <meta name="description" content="Growellは、一人ひとりの挑戦と成長に寄り添い、新しいキャリアの選択肢を広げていきます。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #06060a;
+      --bg-2: #0b0b12;
+      --bg-3: #0f0f1a;
+      --text: #e8e8f0;
+      --text-muted: rgba(232,232,240,0.45);
+      --text-dim: rgba(232,232,240,0.25);
+      --accent-v: #a855f7;
+      --accent-c: #06b6d4;
+      --accent-m: #e879f9;
+      --glow-v: rgba(168,85,247,0.35);
+      --glow-c: rgba(6,182,212,0.35);
+      --glow-m: rgba(232,121,249,0.35);
+      --border: rgba(255,255,255,0.07);
+      --border-glow: rgba(168,85,247,0.25);
+      --label: 'Inter', sans-serif;
+      --body: 'Noto Sans JP', sans-serif;
+      --serif: 'Noto Serif JP', serif;
+      --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --dur-fast: 200ms;
+      --dur-normal: 400ms;
+      --dur-slow: 800ms;
+      --space-xs: 0.5rem;
+      --space-sm: 1rem;
+      --space-md: 2rem;
+      --space-lg: 4rem;
+      --space-xl: 8rem;
+      --space-2xl: 12rem;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 16px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--body);
+      font-weight: 300;
+      line-height: 1.75;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    body.touch-device { cursor: auto; }
+
+    /* ─── CUSTOM CURSOR ─────────────────────────────────── */
+    #cursor-dot, #cursor-ring {
+      position: fixed;
+      top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      will-change: transform;
+      transition: opacity 0.3s;
+    }
+
+    #cursor-dot {
+      width: 6px; height: 6px;
+      background: var(--accent-v);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 8px var(--accent-v), 0 0 16px var(--glow-v);
+    }
+
+    #cursor-ring {
+      width: 36px; height: 36px;
+      border: 1.5px solid var(--accent-v);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: transform 0.12s var(--ease-expo), width 0.25s var(--ease-expo), height 0.25s var(--ease-expo), border-color 0.25s;
+      opacity: 0.7;
+    }
+
+    body.cursor-hover #cursor-ring {
+      width: 56px; height: 56px;
+      border-color: var(--accent-c);
+      opacity: 1;
+    }
+
+    .touch-device #cursor-dot,
+    .touch-device #cursor-ring { display: none; }
+
+    /* ─── NAV ───────────────────────────────────────────── */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 0 clamp(1.5rem, 5vw, 4rem);
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid transparent;
+      transition: background 0.4s, border-color 0.4s, backdrop-filter 0.4s;
+    }
+
+    header.scrolled {
+      background: rgba(6,6,10,0.85);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-color: var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--label);
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+      background: linear-gradient(135deg, var(--accent-v), var(--accent-c));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: clamp(1.5rem, 3vw, 3rem);
+    }
+
+    nav a {
+      font-family: var(--label);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color var(--dur-fast);
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent-v), var(--accent-c));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform var(--dur-normal) var(--ease-expo);
+    }
+
+    nav a:hover { color: var(--text); }
+    nav a:hover::after { transform: scaleX(1); }
+
+    .btn-primary {
+      font-family: var(--label);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: linear-gradient(135deg, var(--accent-v), var(--accent-c));
+      border: none;
+      padding: 0.6rem 1.4rem;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      cursor: none;
+      transition: opacity var(--dur-fast), box-shadow var(--dur-normal);
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+      box-shadow: 0 0 24px var(--glow-v), 0 0 48px var(--glow-c);
+    }
+
+    /* ─── HAMBURGER ─────────────────────────────────────── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: none;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 1.5px;
+      background: var(--text-muted);
+      transition: transform var(--dur-normal) var(--ease-expo), opacity var(--dur-fast);
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 99;
+      background: rgba(6,6,10,0.97);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--dur-normal);
+    }
+
+    .mobile-menu.open {
+      opacity: 1;
+      pointer-events: all;
+      display: flex;
+    }
+
+    .mobile-menu a {
+      font-family: var(--label);
+      font-size: 1.1rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color var(--dur-fast);
+    }
+
+    .mobile-menu a:hover { color: var(--text); }
+
+    @media (max-width: 768px) {
+      nav { display: none; }
+      .hamburger { display: flex; }
+    }
+
+    /* ─── SECTION REVEAL ────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity var(--dur-slow) var(--ease-expo), transform var(--dur-slow) var(--ease-expo);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+    .reveal-delay-6 { transition-delay: 0.6s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      header { transition: none; }
+      nav a::after { transition: none; }
+    }
+
+    /* ─── SECTION LABELS ────────────────────────────────── */
+    .eyebrow {
+      font-family: var(--label);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent-v);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 32px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent-v), var(--accent-c));
+    }
+
+    /* ─── HERO ──────────────────────────────────────────── */
+    #hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    #webgl-canvas {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .fallback-orb {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .fallback-orb-inner {
+      width: clamp(280px, 50vw, 560px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, var(--accent-v), var(--accent-c), var(--accent-m), var(--accent-v));
+      filter: blur(80px);
+      opacity: 0.35;
+      animation: orbSpin 12s linear infinite;
+    }
+
+    @keyframes orbSpin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { .fallback-orb-inner { animation: none; } }
+
+    .webgl-unavailable #webgl-canvas { display: none; }
+    .webgl-unavailable .fallback-orb { display: flex; }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      padding: 0 clamp(1.5rem, 8vw, 8rem);
+      padding-top: 120px;
+      padding-bottom: 6rem;
+      max-width: 900px;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--label);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent-c);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-h1 {
+      font-family: var(--serif);
+      font-size: clamp(2.5rem, 7vw, 6rem);
+      font-weight: 300;
+      line-height: 1.2;
+      letter-spacing: 0.03em;
+      color: var(--text);
+      margin-bottom: 2rem;
+      background: linear-gradient(135deg, #ffffff 0%, rgba(168,85,247,0.9) 50%, rgba(6,182,212,0.8) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-lead {
+      font-size: clamp(0.875rem, 1.5vw, 1.05rem);
+      line-height: 2;
+      color: var(--text-muted);
+      max-width: 520px;
+      margin-bottom: 3rem;
+    }
+
+    .hero-ctas {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-ghost {
+      font-family: var(--label);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color var(--dur-fast);
+      position: relative;
+    }
+
+    .btn-ghost::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent-v), var(--accent-c));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform var(--dur-normal) var(--ease-expo);
+    }
+
+    .btn-ghost:hover { color: var(--text); }
+    .btn-ghost:hover::after { transform: scaleX(1); }
+
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: clamp(1.5rem, 8vw, 8rem);
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .scroll-line {
+      width: 40px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent-v), transparent);
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollLine {
+      0%, 100% { opacity: 0.4; transform: scaleX(1); }
+      50% { opacity: 1; transform: scaleX(1.5); transform-origin: left; }
+    }
+
+    .scroll-label {
+      font-family: var(--label);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    /* ─── ABOUT ─────────────────────────────────────────── */
+    #about {
+      position: relative;
+      padding: var(--space-xl) clamp(1.5rem, 8vw, 8rem);
+      background: var(--bg-2);
+    }
+
+    #about::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 80px;
+      background: linear-gradient(to bottom, transparent, var(--border-glow));
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 8vw, 8rem);
+      align-items: start;
+      max-width: 1200px;
+    }
+
+    @media (max-width: 900px) {
+      .about-grid { grid-template-columns: 1fr; }
+    }
+
+    .about-title {
+      font-family: var(--serif);
+      font-size: clamp(1.75rem, 4vw, 3.25rem);
+      font-weight: 300;
+      line-height: 1.4;
+      letter-spacing: 0.03em;
+      color: var(--text);
+      margin-bottom: 2.5rem;
+    }
+
+    .about-body p {
+      font-size: clamp(0.875rem, 1.25vw, 0.975rem);
+      line-height: 2.1;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+    }
+
+    .about-body p:last-child { margin-bottom: 0; }
+
+    .about-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      padding-top: 1rem;
+    }
+
+    .stat-item {
+      padding: 2rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--bg-3);
+      position: relative;
+      overflow: hidden;
+      transition: border-color var(--dur-normal), box-shadow var(--dur-normal);
+    }
+
+    .stat-item:hover {
+      border-color: var(--border-glow);
+      box-shadow: 0 0 32px rgba(168,85,247,0.1), inset 0 0 32px rgba(168,85,247,0.04);
+    }
+
+    .stat-item::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent-v), transparent);
+    }
+
+    .stat-number {
+      font-family: var(--label);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      background: linear-gradient(135deg, var(--accent-v), var(--accent-c));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      font-family: var(--label);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    /* ─── BUSINESS ──────────────────────────────────────── */
+    #business {
+      padding: var(--space-xl) clamp(1.5rem, 8vw, 8rem);
+      background: var(--bg);
+    }
+
+    .business-header {
+      max-width: 1200px;
+      margin-bottom: clamp(3rem, 6vw, 5rem);
+    }
+
+    .business-title {
+      font-family: var(--serif);
+      font-size: clamp(1.75rem, 4vw, 3.25rem);
+      font-weight: 300;
+      line-height: 1.4;
+      letter-spacing: 0.03em;
+      color: var(--text);
+    }
+
+    .business-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5px;
+      max-width: 1200px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    @media (max-width: 768px) {
+      .business-grid { grid-template-columns: 1fr; }
+    }
+
+    .business-item {
+      background: var(--bg-2);
+      padding: clamp(1.75rem, 3vw, 2.5rem);
+      position: relative;
+      overflow: hidden;
+      transition: background var(--dur-normal);
+    }
+
+    .business-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(168,85,247,0.04) 0%, rgba(6,182,212,0.04) 100%);
+      opacity: 0;
+      transition: opacity var(--dur-normal);
+    }
+
+    .business-item:hover { background: var(--bg-3); }
+    .business-item:hover::before { opacity: 1; }
+
+    .business-item-glow {
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--glow-v) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity var(--dur-slow);
+      pointer-events: none;
+    }
+
+    .business-item:hover .business-item-glow { opacity: 1; }
+
+    .business-num {
+      font-family: var(--label);
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      color: var(--accent-v);
+      margin-bottom: 0.75rem;
+    }
+
+    .business-name {
+      font-family: var(--body);
+      font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.5;
+      margin-bottom: 0.25rem;
+    }
+
+    .business-name-en {
+      font-family: var(--label);
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent-c);
+      margin-bottom: 1rem;
+    }
+
+    .business-desc {
+      font-size: 0.83rem;
+      line-height: 1.9;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .business-link {
+      font-family: var(--label);
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent-v);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color var(--dur-fast), gap var(--dur-normal) var(--ease-expo);
+    }
+
+    .business-link::after {
+      content: '→';
+      transition: transform var(--dur-normal) var(--ease-expo);
+    }
+
+    .business-link:hover { color: var(--accent-c); }
+    .business-link:hover::after { transform: translateX(4px); }
+
+    /* ─── SUSTAINABILITY ────────────────────────────────── */
+    #sustainability {
+      padding: var(--space-xl) clamp(1.5rem, 8vw, 8rem);
+      background: var(--bg-2);
+      position: relative;
+    }
+
+    #sustainability::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 80% 50%, rgba(168,85,247,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .sustain-inner {
+      max-width: 1200px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 8vw, 8rem);
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .sustain-inner { grid-template-columns: 1fr; }
+    }
+
+    .sustain-title {
+      font-family: var(--serif);
+      font-size: clamp(1.75rem, 4vw, 3.25rem);
+      font-weight: 300;
+      line-height: 1.4;
+      letter-spacing: 0.03em;
+      color: var(--text);
+      margin-bottom: 2rem;
+    }
+
+    .sustain-body {
+      font-size: clamp(0.875rem, 1.25vw, 0.975rem);
+      line-height: 2.1;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+    }
+
+    .btn-outline {
+      font-family: var(--label);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent-v);
+      text-decoration: none;
+      border: 1px solid var(--border-glow);
+      padding: 0.75rem 1.75rem;
+      border-radius: var(--radius-sm);
+      transition: background var(--dur-normal), box-shadow var(--dur-normal), border-color var(--dur-normal);
+      display: inline-block;
+    }
+
+    .btn-outline:hover {
+      background: rgba(168,85,247,0.1);
+      box-shadow: 0 0 24px var(--glow-v);
+      border-color: var(--accent-v);
+    }
+
+    .sdg-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+    }
+
+    @media (max-width: 480px) {
+      .sdg-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .sdg-card {
+      aspect-ratio: 1;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--bg-3);
+      transition: border-color var(--dur-normal), transform var(--dur-normal) var(--ease-expo), box-shadow var(--dur-normal);
+    }
+
+    .sdg-card:hover {
+      border-color: var(--border-glow);
+      transform: scale(1.04);
+      box-shadow: 0 8px 32px rgba(168,85,247,0.2);
+    }
+
+    .sdg-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ─── FOOTER ────────────────────────────────────────── */
+    footer {
+      background: var(--bg-3);
+      border-top: 1px solid var(--border);
+      padding: clamp(3rem, 6vw, 6rem) clamp(1.5rem, 8vw, 8rem) 2rem;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: clamp(2rem, 4vw, 4rem);
+      margin-bottom: 4rem;
+    }
+
+    @media (max-width: 900px) {
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 480px) {
+      .footer-top { grid-template-columns: 1fr; }
+    }
+
+    .footer-brand .nav-logo {
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+
+    .footer-tagline {
+      font-family: var(--label);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    .footer-col-title {
+      font-family: var(--label);
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent-v);
+      margin-bottom: 1.25rem;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .footer-col a {
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color var(--dur-fast);
+    }
+
+    .footer-col a:hover { color: var(--text); }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-copy {
+      font-family: var(--label);
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: var(--text-dim);
+    }
+
+    /* ─── GLOBAL NOISE OVERLAY ──────────────────────────── */
+    .noise-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      pointer-events: none;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 180px 180px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Noise grain texture -->
+<div class="noise-overlay" aria-hidden="true"></div>
+
+<!-- Custom cursor -->
+<div id="cursor-dot" aria-hidden="true"></div>
+<div id="cursor-ring" aria-hidden="true"></div>
+
+<!-- ─── HEADER ─────────────────────────────────────────── -->
+<header id="site-header">
+  <a href="/" class="nav-logo" aria-label="Growell ホームへ戻る">Growell</a>
+  <nav aria-label="Main navigation">
+    <a href="#about">About</a>
+    <a href="#business">Business</a>
+    <a href="sustainability.html">Sustainability</a>
+    <a href="#contact">Contact</a>
+    <a href="#" class="btn-primary">登録する</a>
+  </nav>
+  <button class="hamburger" id="hamburger" aria-label="メニューを開く" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <a href="#about" class="mobile-nav-link">About</a>
+  <a href="#business" class="mobile-nav-link">Business</a>
+  <a href="sustainability.html" class="mobile-nav-link">Sustainability</a>
+  <a href="#contact" class="mobile-nav-link">Contact</a>
+  <a href="#" class="btn-primary">登録する</a>
+</div>
+
+<main>
+
+  <!-- ─── HERO ──────────────────────────────────────────── -->
+  <section id="hero" aria-labelledby="hero-heading">
+    <canvas id="webgl-canvas" aria-hidden="true"></canvas>
+    <div class="fallback-orb" aria-hidden="true">
+      <div class="fallback-orb-inner"></div>
+    </div>
+
+    <div class="hero-content">
+      <p class="hero-eyebrow reveal">Grow Well, Everyone</p>
+      <h1 id="hero-heading" class="hero-h1 reveal reveal-delay-1">好きで、生きていく力を</h1>
+      <p class="hero-lead reveal reveal-delay-2">
+        可能性を信じることから、未来は動き出す。Growellは、一人ひとりの挑戦と成長に寄り添い、新しいキャリアの選択肢を広げていきます。自分らしい未来は、ここから始まる。
+      </p>
+      <div class="hero-ctas reveal reveal-delay-3">
+        <a href="#business" class="btn-primary">事業を見る</a>
+        <a href="#about" class="btn-ghost">私たちについて →</a>
+      </div>
+    </div>
+
+    <div class="hero-scroll-hint" aria-hidden="true">
+      <div class="scroll-line"></div>
+      <span class="scroll-label">Scroll</span>
+    </div>
+  </section>
+
+  <!-- ─── ABOUT ─────────────────────────────────────────── -->
+  <section id="about" aria-labelledby="about-heading">
+    <div class="about-grid">
+      <div>
+        <p class="eyebrow reveal">About Us</p>
+        <h2 id="about-heading" class="about-title reveal reveal-delay-1">
+          未来は、挑戦した人から変わっていく
+        </h2>
+        <div class="about-stats">
+          <div class="stat-item reveal reveal-delay-2">
+            <div class="stat-number">06</div>
+            <div class="stat-label">領域 / 事業ライン</div>
+          </div>
+          <div class="stat-item reveal reveal-delay-3">
+            <div class="stat-number">100%</div>
+            <div class="stat-label">挑戦に、寄り添う</div>
+          </div>
+        </div>
+      </div>
+      <div class="about-body reveal reveal-delay-2">
+        <p>挑戦する人を、増やしたい。</p>
+        <p>経験の有無ではなく、「やってみたい」という想いこそが、人を成長させる原動力だと私たちは信じています。</p>
+        <p>Growellは、一人ひとりの挑戦を支え、成長の機会を創り出す会社です。</p>
+        <p>人が成長すれば、企業が成長する。企業が成長すれば、社会がより良くなる。</p>
+        <p>私たちは、人と企業の可能性をつなぎ、挑戦する人が活躍できる未来を創っていきます。</p>
+        <p>「やってみたい」を、「できる」に変える。</p>
+        <p>それがGrowellの使命です。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── BUSINESS ──────────────────────────────────────── -->
+  <section id="business" aria-labelledby="business-heading">
+    <div class="business-header">
+      <p class="eyebrow reveal">Business · Content</p>
+      <h2 id="business-heading" class="business-title reveal reveal-delay-1">
+        成長のきっかけを、すべての人へ。
+      </h2>
+    </div>
+
+    <div class="business-grid">
+      <article class="business-item reveal">
+        <div class="business-item-glow" aria-hidden="true"></div>
+        <p class="business-num">01</p>
+        <h3 class="business-name">グローバル人材育成事業</h3>
+        <p class="business-name-en">Global Talent</p>
+        <p class="business-desc">世界で通用する自分へ。グローバルな視点と実践的な経験を通じて、世界で活躍できる人材の育成を支援します。</p>
+        <a href="business/global.html" class="business-link">View More</a>
+      </article>
+
+      <article class="business-item reveal reveal-delay-1">
+        <div class="business-item-glow" aria-hidden="true"></div>
+        <p class="business-num">02</p>
+        <h3 class="business-name">クリエイティブ事業</h3>
+        <p class="business-name-en">Creative</p>
+        <p class="business-desc">アイデアを、価値に変える。デザイン・映像・Web・SNSを通じて、企業やサービスが持つ本来の魅力を届けます。</p>
+        <a href="business/creative.html" class="business-link">View More</a>
+      </article>
+
+      <article class="business-item reveal reveal-delay-2">
+        <div class="business-item-glow" aria-hidden="true"></div>
+        <p class="business-num">03</p>
+        <h3 class="business-name">人材サービス事業</h3>
+        <p class="business-name-en">HR Services</p>
+        <p class="business-desc">人と企業の、その先の成長へ。一人ひとりの想いに向き合いながら、新しいキャリアとの出会いを創出します。</p>
+        <a href="business/hr.html" class="business-link">View More</a>
+      </article>
+
+      <article class="business-item reveal reveal-delay-3">
+        <div class="business-item-glow" aria-hidden="true"></div>
+        <p class="business-num">04</p>
+        <h3 class="business-name">BPO事業</h3>
+        <p class="business-name-en">BPO</p>
+        <p class="business-desc">成長に集中できる環境をつくる。業務の効率化と最適化を通じて、企業の挑戦と成長を支援します。</p>
+        <a href="business/bpo.html" class="business-link">View More</a>
+      </article>
+
+      <article class="business-item reveal reveal-delay-4">
+        <div class="business-item-glow" aria-hidden="true"></div>
+        <p class="business-num">05</p>
+        <h3 class="business-name">海外飲食事業</h3>
+        <p class="business-name-en">F&B Overseas</p>
+        <p class="business-desc">「日本の食文化とおもてなしを世界へ届ける」。国や文化を越えて人を笑顔にすることを目指します。</p>
+        <a href="business/food.html" class="business-link">View More</a>
+      </article>
+
+      <article class="business-item reveal reveal-delay-5">
+        <div class="business-item-glow" aria-hidden="true"></div>
+        <p class="business-num">06</p>
+        <h3 class="business-name">酒類マーケティング・クリエイティブ事業</h3>
+        <p class="business-name-en">Spirits</p>
+        <p class="business-desc">酒類ブランドの戦略から、ビジュアル・コピー・体験設計まで一気通貫で。「飲む」を「物語」に変えます。</p>
+        <a href="business/spirits.html" class="business-link">View More</a>
+      </article>
+    </div>
+  </section>
+
+  <!-- ─── SUSTAINABILITY ────────────────────────────────── -->
+  <section id="sustainability" aria-labelledby="sustain-heading">
+    <div class="sustain-inner">
+      <div>
+        <p class="eyebrow reveal">ESG · SDGs</p>
+        <h2 id="sustain-heading" class="sustain-title reveal reveal-delay-1">
+          持続可能な、つくる場所を。
+        </h2>
+        <p class="sustain-body reveal reveal-delay-2">
+          Growellは、国連の「持続可能な開発目標（SDGs）」に共感し、働き方・育成・環境負荷の三方向から、日々の取り組みを積み重ねています。挑戦の入口は、社会に開かれた入口でなくてはならない。
+        </p>
+        <a href="sustainability.html" class="btn-outline reveal reveal-delay-3">サステナビリティを見る</a>
+      </div>
+      <div class="sdg-grid reveal reveal-delay-2">
+        <div class="sdg-card">
+          <img src="img/sdg/sdg-04.webp" alt="SDG 4 — 質の高い教育をみんなに" loading="lazy" width="200" height="200" />
+        </div>
+        <div class="sdg-card">
+          <img src="img/sdg/sdg-08.webp" alt="SDG 8 — 働きがいも経済成長も" loading="lazy" width="200" height="200" />
+        </div>
+        <div class="sdg-card">
+          <img src="img/sdg/sdg-10.webp" alt="SDG 10 — 人や国の不平等をなくそう" loading="lazy" width="200" height="200" />
+        </div>
+        <div class="sdg-card">
+          <img src="img/sdg/sdg-03.webp" alt="SDG 3 — すべての人に健康と福祉を" loading="lazy" width="200" height="200" />
+        </div>
+        <div class="sdg-card">
+          <img src="img/sdg/sdg-13.webp" alt="SDG 13 — 気候変動に具体的な対策を" loading="lazy" width="200" height="200" />
+        </div>
+        <div class="sdg-card">
+          <img src="img/sdg/sdg-15.webp" alt="SDG 15 — 陸の豊かさも守ろう" loading="lazy" width="200" height="200" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ─── FOOTER ─────────────────────────────────────────── -->
+<footer id="contact" aria-labelledby="footer-brand">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="/" class="nav-logo" id="footer-brand">Growell</a>
+      <p class="footer-tagline">Grow Well, Everyone</p>
+      <p class="footer-sub">好きで、生きていく力を。</p>
+    </div>
+
+    <div class="footer-col">
+      <p class="footer-col-title">Company</p>
+      <ul>
+        <li><a href="#about">私たちについて</a></li>
+        <li><a href="#business">事業内容</a></li>
+        <li><a href="sustainability.html">サステナビリティ</a></li>
+        <li><a href="#">採用情報</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <p class="footer-col-title">Business</p>
+      <ul>
+        <li><a href="#business">グローバル人材育成</a></li>
+        <li><a href="#business">クリエイティブ</a></li>
+        <li><a href="#business">人材サービス</a></li>
+        <li><a href="#business">BPO / 海外飲食 / 酒類</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <p class="footer-col-title">Contact</p>
+      <ul>
+        <li><a href="mailto:hello@growell.jp">hello@growell.jp</a></li>
+        <li><a href="#contact">東京 / Tokyo</a></li>
+        <li><a href="#">登録する →</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2026 Growell Inc. All Rights Reserved.</p>
+    <p class="footer-copy">Tokyo · Worldwide</p>
+  </div>
+</footer>
+
+<!-- ─── THREE.JS CDN ──────────────────────────────────── -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ─── TOUCH DETECTION ─────────────────────────────── */
+  const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+  if (isTouch) document.body.classList.add('touch-device');
+
+  /* ─── CUSTOM CURSOR ───────────────────────────────── */
+  if (!isTouch) {
+    const dot  = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    let mx = -200, my = -200;
+    let rx = -200, ry = -200;
+
+    document.addEventListener('mousemove', function (e) {
+      mx = e.clientX; my = e.clientY;
+      dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
+    });
+
+    (function animRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
+      requestAnimationFrame(animRing);
+    })();
+
+    document.querySelectorAll('a, button, [role="button"]').forEach(function (el) {
+      el.addEventListener('mouseenter', function () { document.body.classList.add('cursor-hover'); });
+      el.addEventListener('mouseleave', function () { document.body.classList.remove('cursor-hover'); });
+    });
+  }
+
+  /* ─── HEADER SCROLL STATE ─────────────────────────── */
+  var header = document.getElementById('site-header');
+  window.addEventListener('scroll', function () {
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  /* ─── HAMBURGER / MOBILE MENU ─────────────────────── */
+  var burger  = document.getElementById('hamburger');
+  var mMenu   = document.getElementById('mobile-menu');
+
+  function toggleMenu(open) {
+    burger.classList.toggle('open', open);
+    mMenu.classList.toggle('open', open);
+    mMenu.setAttribute('aria-hidden', String(!open));
+    burger.setAttribute('aria-expanded', String(open));
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+
+  burger.addEventListener('click', function () {
+    toggleMenu(!burger.classList.contains('open'));
+  });
+
+  mMenu.querySelectorAll('.mobile-nav-link, .btn-primary').forEach(function (link) {
+    link.addEventListener('click', function () { toggleMenu(false); });
+  });
+
+  /* ─── INTERSECTION OBSERVER (reveal) ─────────────── */
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!prefersReduced) {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(function (el) {
+      observer.observe(el);
+    });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function (el) {
+      el.classList.add('visible');
+    });
+  }
+
+  /* ─── WEBGL / THREE.JS ────────────────────────────── */
+  function initWebGL() {
+    if (typeof THREE === 'undefined') {
+      document.body.classList.add('webgl-unavailable');
+      return;
+    }
+
+    var canvas = document.getElementById('webgl-canvas');
+    var hero   = document.getElementById('hero');
+
+    var renderer;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        canvas: canvas,
+        antialias: true,
+        alpha: true,
+        powerPreference: 'high-performance'
+      });
+    } catch (e) {
+      document.body.classList.add('webgl-unavailable');
+      return;
+    }
+
+    /* Cap pixel ratio at 2 for perf */
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    var scene  = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.z = 4.5;
+
+    /* ── Particle field ── */
+    var particleCount = 1800;
+    var particleGeo   = new THREE.BufferGeometry();
+    var positions     = new Float32Array(particleCount * 3);
+    var colors        = new Float32Array(particleCount * 3);
+    var particleVelY  = new Float32Array(particleCount);
+
+    var palette = [
+      new THREE.Color(0xa855f7),
+      new THREE.Color(0x06b6d4),
+      new THREE.Color(0xe879f9),
+      new THREE.Color(0x818cf8)
+    ];
+
+    for (var i = 0; i < particleCount; i++) {
+      positions[i * 3]     = (Math.random() - 0.5) * 14;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 9;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 8 - 3;
+      particleVelY[i] = (Math.random() - 0.5) * 0.002;
+
+      var c = palette[Math.floor(Math.random() * palette.length)];
+      colors[i * 3]     = c.r;
+      colors[i * 3 + 1] = c.g;
+      colors[i * 3 + 2] = c.b;
+    }
+
+    particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    particleGeo.setAttribute('color',    new THREE.BufferAttribute(colors, 3));
+
+    var particleMat = new THREE.PointsMaterial({
+      size: 0.035,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.55,
+      sizeAttenuation: true,
+      depthWrite: false
+    });
+
+    var particles = new THREE.Points(particleGeo, particleMat);
+    scene.add(particles);
+
+    /* ── Iridescent icosahedron ── */
+    var icoGeo  = new THREE.IcosahedronGeometry(1.4, 1);
+    var icoMat  = new THREE.MeshStandardMaterial({
+      color: 0x000000,
+      metalness: 1.0,
+      roughness: 0.05,
+      envMapIntensity: 1.5
+    });
+
+    /* Overlay a shimmering wireframe for the "iridescent outline" look */
+    var wireMat  = new THREE.MeshBasicMaterial({
+      color: 0xa855f7,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.25
+    });
+
+    var icoMesh  = new THREE.Mesh(icoGeo, icoMat);
+    var wireMesh = new THREE.Mesh(icoGeo, wireMat);
+    icoMesh.add(wireMesh);
+    scene.add(icoMesh);
+
+    /* Add a glowing core sphere */
+    var coreGeo = new THREE.SphereGeometry(0.85, 32, 32);
+    var coreMat = new THREE.MeshBasicMaterial({
+      color: 0x4f0d8f,
+      transparent: true,
+      opacity: 0.55
+    });
+    var coreMesh = new THREE.Mesh(coreGeo, coreMat);
+    scene.add(coreMesh);
+
+    /* ── Outer glow ring ── */
+    var ringGeo = new THREE.TorusGeometry(1.9, 0.02, 16, 120);
+    var ringMat = new THREE.MeshBasicMaterial({
+      color: 0x06b6d4,
+      transparent: true,
+      opacity: 0.3
+    });
+    var ringMesh = new THREE.Mesh(ringGeo, ringMat);
+    ringMesh.rotation.x = Math.PI / 2;
+    scene.add(ringMesh);
+
+    /* Second ring at angle */
+    var ring2 = ringMesh.clone();
+    ring2.rotation.x = Math.PI / 6;
+    ring2.rotation.y = Math.PI / 4;
+    var ring2Mat = new THREE.MeshBasicMaterial({
+      color: 0xe879f9,
+      transparent: true,
+      opacity: 0.2
+    });
+    ring2.material = ring2Mat;
+    scene.add(ring2);
+
+    /* Ambient + point lights for metalness to catch */
+    var amb = new THREE.AmbientLight(0x120820, 0.6);
+    scene.add(amb);
+
+    var pt1 = new THREE.PointLight(0xa855f7, 4, 12);
+    pt1.position.set(3, 2, 3);
+    scene.add(pt1);
+
+    var pt2 = new THREE.PointLight(0x06b6d4, 3, 12);
+    pt2.position.set(-3, -2, 2);
+    scene.add(pt2);
+
+    var pt3 = new THREE.PointLight(0xe879f9, 2, 10);
+    pt3.position.set(0, 3, -2);
+    scene.add(pt3);
+
+    /* ── Mouse tracking ── */
+    var mouse = { x: 0, y: 0 };
+    var target = { x: 0, y: 0 };
+
+    if (!isTouch) {
+      document.addEventListener('mousemove', function (e) {
+        mouse.x = (e.clientX / window.innerWidth - 0.5) * 2;
+        mouse.y = -(e.clientY / window.innerHeight - 0.5) * 2;
+      }, { passive: true });
+    }
+
+    /* ── Intersection observer to pause render when offscreen ── */
+    var heroVisible = true;
+    var visObs = new IntersectionObserver(function (entries) {
+      heroVisible = entries[0].isIntersecting;
+    }, { threshold: 0 });
+    visObs.observe(hero);
+
+    /* ── Resize handler ── */
+    window.addEventListener('resize', function () {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    }, { passive: true });
+
+    /* ── Iridescent color shift (wireframe color cycle) ── */
+    var hue = 0;
+
+    /* ── Animation loop ── */
+    var clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      if (!heroVisible) return;
+
+      var elapsed = clock.getElapsedTime();
+
+      /* Lerp camera/object toward mouse */
+      target.x += (mouse.x * 0.4 - target.x) * 0.05;
+      target.y += (mouse.y * 0.25 - target.y) * 0.05;
+
+      /* Rotate icosahedron */
+      icoMesh.rotation.x = elapsed * 0.18 + target.y * 0.6;
+      icoMesh.rotation.y = elapsed * 0.22 + target.x * 0.6;
+
+      /* Pulse core */
+      var pulse = 0.85 + 0.08 * Math.sin(elapsed * 1.6);
+      coreMesh.scale.setScalar(pulse);
+
+      /* Shift wireframe hue */
+      hue = (elapsed * 0.05) % 1;
+      wireMat.color.setHSL(hue, 0.9, 0.6);
+      wireMat.opacity = 0.18 + 0.12 * Math.sin(elapsed * 0.7);
+
+      /* Rotate rings */
+      ringMesh.rotation.z = elapsed * 0.08;
+      ring2.rotation.z    = -elapsed * 0.06;
+      ring2.rotation.y    = elapsed * 0.04;
+
+      /* Drift particles */
+      var pos = particleGeo.attributes.position.array;
+      for (var i = 0; i < particleCount; i++) {
+        pos[i * 3 + 1] += particleVelY[i];
+        if (pos[i * 3 + 1] > 4.5) pos[i * 3 + 1] = -4.5;
+        if (pos[i * 3 + 1] < -4.5) pos[i * 3 + 1] = 4.5;
+      }
+      particleGeo.attributes.position.needsUpdate = true;
+
+      /* Subtle particle rotation */
+      particles.rotation.y = elapsed * 0.02 + target.x * 0.1;
+      particles.rotation.x = target.y * 0.05;
+
+      /* Light orbit */
+      pt1.position.x = 3 * Math.cos(elapsed * 0.3) + target.x;
+      pt1.position.z = 3 * Math.sin(elapsed * 0.3);
+      pt2.position.x = -3 * Math.cos(elapsed * 0.2) + target.x;
+      pt2.position.z = -3 * Math.sin(elapsed * 0.2);
+
+      renderer.render(scene, camera);
+    }
+
+    /* Prefer reduced motion: only static render, no animation */
+    if (prefersReduced) {
+      renderer.render(scene, camera);
+    } else {
+      animate();
+    }
+  }
+
+  /* Wait for three.js to load */
+  window.addEventListener('load', function () {
+    initWebGL();
+  });
+
+  /* Fallback if three.js fails to load */
+  window.addEventListener('error', function (e) {
+    if (e.filename && e.filename.includes('three')) {
+      document.body.classList.add('webgl-unavailable');
+    }
+  }, true);
+
+})();
+</script>
+</body>
+</html>
