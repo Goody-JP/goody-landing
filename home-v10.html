@@ -776,58 +776,138 @@
     }
 
     /* ─────────────────────────────────────────
-       SUSTAINABILITY
+       FUTURE
     ───────────────────────────────────────── */
-    .sustainability__inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
-      align-items: start;
-    }
-    @media (max-width: 900px) {
-      .sustainability__inner { grid-template-columns: 1fr; gap: 3rem; }
-    }
-    .sustainability__title {
+    .future__headline {
       font-family: var(--font-body);
       font-size: var(--text-3xl);
       font-weight: 900;
       line-height: 1.15;
       letter-spacing: -0.02em;
       color: #fff;
-      margin-top: 1.5rem;
+      margin-top: 1.25rem;
       margin-bottom: 1.75rem;
     }
-    .sustainability__body {
+    .future__intro {
       font-size: var(--text-base);
-      line-height: 1.9;
+      line-height: 2;
+      color: rgba(255,255,255,0.62);
+      max-width: 640px;
+      margin-bottom: 3rem;
+    }
+
+    /* Vision block */
+    .future__vision {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,107,44,0.2);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 var(--radius-card) var(--radius-card) 0;
+      padding: 2rem 2.25rem;
+      margin-bottom: 4rem;
+      max-width: 720px;
+    }
+    .future__vision-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .future__vision-title {
+      font-family: var(--font-serif);
+      font-size: var(--text-2xl);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.4;
+      margin-bottom: 1.25rem;
+    }
+    .future__vision-body {
+      font-size: var(--text-base);
+      line-height: 1.95;
       color: rgba(255,255,255,0.6);
-      margin-bottom: 2.5rem;
     }
-    .sustainability__sdgs {
+
+    /* Four points grid */
+    .future__points {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0.75rem;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 4rem;
     }
-    .sdg-item {
-      aspect-ratio: 1;
-      border-radius: var(--radius-sm);
+    @media (max-width: 768px) {
+      .future__points { grid-template-columns: 1fr; }
+    }
+    .future__point {
+      position: relative;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--radius-card);
+      padding: 2.25rem 2rem;
       overflow: hidden;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.08);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform var(--dur-normal) var(--ease-out),
-                  border-color var(--dur-normal);
+      transition: background var(--dur-normal) var(--ease-out),
+                  border-color var(--dur-normal) var(--ease-out),
+                  transform var(--dur-normal) var(--ease-out);
     }
-    .sdg-item:hover {
-      transform: scale(1.05);
-      border-color: rgba(255,107,44,0.4);
+    .future__point::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,107,44,0.07) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity var(--dur-normal);
     }
-    .sdg-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
+    .future__point:hover {
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(255,107,44,0.28);
+      transform: translateY(-3px);
+    }
+    .future__point:hover::after { opacity: 1; }
+    .future__point-num {
+      font-family: var(--font-display);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 0.85rem;
+    }
+    .future__point-title {
+      font-size: var(--text-lg);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+      margin-bottom: 0.75rem;
+    }
+    .future__point-body {
+      font-size: var(--text-sm);
+      line-height: 1.85;
+      color: rgba(255,255,255,0.52);
+    }
+
+    /* Closing message */
+    .future__message {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 3rem;
+      text-align: center;
+    }
+    .future__message-title {
+      font-family: var(--font-serif);
+      font-size: var(--text-2xl);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.01em;
+    }
+    .future__message-body {
+      font-size: var(--text-base);
+      line-height: 2;
+      color: rgba(255,255,255,0.55);
+    }
+    .future__message em {
+      font-style: normal;
+      color: var(--accent-warm);
+      font-weight: 700;
     }
 
     /* ─────────────────────────────────────────
@@ -1039,9 +1119,9 @@
         <a href="#" class="nav__logo" aria-label="Growellホームへ">Grow<span>ell</span></a>
 
         <ul class="nav__links" role="list">
-          <li><a href="#about">About</a></li>
-          <li><a href="#business">Business</a></li>
-          <li><a href="sustainability.html">Sustainability</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#service">Service</a></li>
+          <li><a href="#future">Future</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
 
@@ -1061,9 +1141,9 @@
 
     <!-- Mobile menu -->
     <div class="nav__mobile" id="nav-mobile" role="dialog" aria-label="モバイルナビゲーション" aria-modal="false">
-      <a href="#about" class="nav__mobile-link">About</a>
-      <a href="#business" class="nav__mobile-link">Business</a>
-      <a href="sustainability.html" class="nav__mobile-link">Sustainability</a>
+      <a href="#about" class="nav__mobile-link">About Us</a>
+      <a href="#service" class="nav__mobile-link">Service</a>
+      <a href="#future" class="nav__mobile-link">Future</a>
       <a href="#contact" class="nav__mobile-link">Contact</a>
       <a href="#" class="btn btn--primary">登録する</a>
     </div>
@@ -1089,7 +1169,7 @@
           可能性を信じることから、未来は動き出す。Growellは、一人ひとりの挑戦と成長に寄り添い、新しいキャリアの選択肢を広げていきます。自分らしい未来は、ここから始まる。
         </p>
         <div class="hero__actions">
-          <a href="#business" class="btn btn--primary">事業を見る</a>
+          <a href="#service" class="btn btn--primary">事業を見る</a>
           <a href="#about" class="btn btn--ghost-light">私たちについて →</a>
         </div>
       </div>
@@ -1156,13 +1236,13 @@
       </div>
     </div>
 
-    <!-- ══════════ BUSINESS ══════════ -->
-    <section class="section section--dark" id="business" aria-labelledby="business-heading">
+    <!-- ══════════ SERVICE ══════════ -->
+    <section class="section section--dark" id="service" aria-labelledby="service-heading">
       <div class="section__inner">
         <div class="business__header">
           <div>
-            <p class="eyebrow eyebrow--light fade-in">Business · Content</p>
-            <h2 class="business__title fade-in fade-in--delay-1" id="business-heading">
+            <p class="eyebrow eyebrow--light fade-in">Service · 事業内容</p>
+            <h2 class="business__title fade-in fade-in--delay-1" id="service-heading">
               成長のきっかけを、<br />すべての人へ。
             </h2>
           </div>
@@ -1279,44 +1359,80 @@
       </div>
     </section>
 
-    <!-- ══════════ SUSTAINABILITY ══════════ -->
-    <section class="section section--dark" id="sustainability" aria-labelledby="sustainability-heading">
+    <!-- ══════════ FUTURE ══════════ -->
+    <section class="section section--dark" id="future" aria-labelledby="future-heading">
       <div class="section__inner">
-        <div class="sustainability__inner">
-          <div>
-            <p class="eyebrow eyebrow--light fade-in">ESG · SDGs</p>
-            <h2 class="sustainability__title fade-in fade-in--delay-1" id="sustainability-heading">
-              持続可能な、<br />つくる場所を。
-            </h2>
-            <p class="sustainability__body fade-in fade-in--delay-2">
-              Growellは、国連の「持続可能な開発目標（SDGs）」に共感し、働き方・育成・環境負荷の三方向から、日々の取り組みを積み重ねています。挑戦の入口は、社会に開かれた入口でなくてはならない。
+
+        <p class="eyebrow eyebrow--light fade-in">FUTURE · 未来の可能性を広げるために</p>
+        <h2 class="future__headline fade-in fade-in--delay-1" id="future-heading">
+          挑戦する人が、もっと活躍できる社会へ。
+        </h2>
+        <p class="future__intro fade-in fade-in--delay-2">
+          Growellは、人材サービスを提供する会社ではなく、人の可能性を広げる会社を目指しています。<br />
+          一人ひとりの挑戦が、未来を変えるきっかけになる。<br />
+          私たちは、その一歩を支える存在であり続けます。
+        </p>
+
+        <div class="future__vision fade-in fade-in--delay-2">
+          <p class="future__vision-label">OUR VISION</p>
+          <p class="future__vision-title">人の成長が、社会を前に進める。</p>
+          <p class="future__vision-body">
+            人が成長することで、企業が成長する。<br />
+            企業が成長することで、社会が成長する。<br />
+            Growellは、その成長の循環を創り続けます。
+          </p>
+        </div>
+
+        <div class="future__points" role="list">
+
+          <div class="future__point fade-in" role="listitem">
+            <p class="future__point-num">01</p>
+            <h3 class="future__point-title">挑戦できる機会を増やす。</h3>
+            <p class="future__point-body">
+              経験や環境に関係なく、誰もが新しい一歩を踏み出せる社会へ。<br />
+              私たちは、挑戦のきっかけを創り続けます。
             </p>
-            <a href="sustainability.html" class="btn btn--outline-dark fade-in fade-in--delay-3" style="--color:#fff;border-color:rgba(255,255,255,0.25);color:rgba(255,255,255,0.85);" onmouseenter="this.style.background='rgba(255,255,255,0.08)'" onmouseleave="this.style.background='transparent'">
-              サステナビリティを見る →
-            </a>
           </div>
 
-          <div class="sustainability__sdgs fade-in fade-in--delay-2" aria-label="取り組むSDGs目標">
-            <div class="sdg-item">
-              <img src="img/sdg/sdg-04.webp" alt="SDG4: 質の高い教育をみんなに" loading="lazy" width="120" height="120" />
-            </div>
-            <div class="sdg-item">
-              <img src="img/sdg/sdg-08.webp" alt="SDG8: 働きがいも経済成長も" loading="lazy" width="120" height="120" />
-            </div>
-            <div class="sdg-item">
-              <img src="img/sdg/sdg-10.webp" alt="SDG10: 人や国の不平等をなくそう" loading="lazy" width="120" height="120" />
-            </div>
-            <div class="sdg-item">
-              <img src="img/sdg/sdg-03.webp" alt="SDG3: すべての人に健康と福祉を" loading="lazy" width="120" height="120" />
-            </div>
-            <div class="sdg-item">
-              <img src="img/sdg/sdg-13.webp" alt="SDG13: 気候変動に具体的な対策を" loading="lazy" width="120" height="120" />
-            </div>
-            <div class="sdg-item">
-              <img src="img/sdg/sdg-15.webp" alt="SDG15: 陸の豊かさも守ろう" loading="lazy" width="120" height="120" />
-            </div>
+          <div class="future__point fade-in fade-in--delay-1" role="listitem">
+            <p class="future__point-num">02</p>
+            <h3 class="future__point-title">成長できる選択肢を広げる。</h3>
+            <p class="future__point-body">
+              学びや経験を通じて、未来の可能性は大きく広がる。<br />
+              一人ひとりが成長できる環境づくりに取り組みます。
+            </p>
           </div>
+
+          <div class="future__point fade-in fade-in--delay-2" role="listitem">
+            <p class="future__point-num">03</p>
+            <h3 class="future__point-title">世界へ挑戦する人を増やす。</h3>
+            <p class="future__point-body">
+              国境や価値観を越えて、世界で活躍できる人材を育てたい。<br />
+              グローバルな機会創出を通じて、新しい未来を創ります。
+            </p>
+          </div>
+
+          <div class="future__point fade-in fade-in--delay-3" role="listitem">
+            <p class="future__point-num">04</p>
+            <h3 class="future__point-title">人と企業の架け橋になる。</h3>
+            <p class="future__point-body">
+              人には可能性がある。<br />
+              企業には成長する力がある。<br />
+              Growellは、その両方をつなぎ、新しい価値を生み出していきます。
+            </p>
+          </div>
+
         </div>
+
+        <div class="future__message fade-in">
+          <p class="future__message-title">挑戦が、次の挑戦を生み出す。</p>
+          <p class="future__message-body">
+            挑戦した人が成長する。<br />
+            成長した人が、また<em>誰かの挑戦を支える</em>。<br />
+            Growellは、そんな成長の循環を創り続けます。
+          </p>
+        </div>
+
       </div>
     </section>
 
@@ -1326,8 +1442,12 @@
         <div class="contact-band__left fade-in">
           <p class="contact-band__eyebrow">Contact · Join Us</p>
           <h2 class="contact-band__title" id="contact-heading">
-            挑戦を、<br />一緒に始めよう。
+            あなたの未来は、<br />ここから始まる。
           </h2>
+          <p style="margin-top:1.25rem;font-size:var(--text-lg);line-height:1.85;color:rgba(255,255,255,0.85);max-width:480px;">
+            何者でもない今から、誰かに必要とされる人へ。<br />
+            Growellは、その挑戦と成長に寄り添います。
+          </p>
           <a href="mailto:hello@growell.jp" class="contact-band__email">hello@growell.jp</a>
         </div>
         <div class="contact-band__right fade-in fade-in--delay-1">
@@ -1356,19 +1476,20 @@
           <p class="footer__col-title">Company</p>
           <ul class="footer__links" role="list">
             <li><a href="#about">私たちについて</a></li>
-            <li><a href="#business">事業内容</a></li>
+            <li><a href="#service">事業内容</a></li>
+            <li><a href="#future">未来へ</a></li>
             <li><a href="sustainability.html">サステナビリティ</a></li>
             <li><a href="#">採用情報</a></li>
           </ul>
         </div>
 
         <div>
-          <p class="footer__col-title">Business</p>
+          <p class="footer__col-title">Service</p>
           <ul class="footer__links" role="list">
-            <li><a href="#business">グローバル人材育成</a></li>
-            <li><a href="#business">クリエイティブ</a></li>
-            <li><a href="#business">人材サービス</a></li>
-            <li><a href="#business">BPO / 海外飲食 / 酒類</a></li>
+            <li><a href="#service">グローバル人材育成</a></li>
+            <li><a href="#service">クリエイティブ</a></li>
+            <li><a href="#service">人材サービス</a></li>
+            <li><a href="#service">BPO / 海外飲食 / 酒類</a></li>
           </ul>
         </div>
 

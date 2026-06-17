@@ -160,8 +160,8 @@ section{padding:clamp(6rem,14vw,14rem) clamp(1.5rem,5vw,4rem)}
   .photo-break{aspect-ratio:4/3}
 }
 
-/* ── BUSINESS ── */
-#business{background:var(--white);padding-top:clamp(6rem,14vw,14rem);padding-bottom:0;padding-left:clamp(1.5rem,5vw,4rem);padding-right:clamp(1.5rem,5vw,4rem)}
+/* ── SERVICE ── */
+#service{background:var(--white);padding-top:clamp(6rem,14vw,14rem);padding-bottom:0;padding-left:clamp(1.5rem,5vw,4rem);padding-right:clamp(1.5rem,5vw,4rem)}
 .business-header{max-width:820px;margin:0 auto 6rem}
 .business-title{font-family:'Noto Serif JP',serif;font-size:clamp(1.8rem,4vw,3.2rem);font-weight:300;line-height:1.4;margin:2rem 0}
 
@@ -226,18 +226,71 @@ section{padding:clamp(6rem,14vw,14rem) clamp(1.5rem,5vw,4rem)}
   .biz-spread.reverse .biz-spread-photo{order:-1}
 }
 
-/* ── SUSTAINABILITY ── */
-#sustainability{background:var(--grey-100)}
-.sus-inner{max-width:820px;margin:0 auto}
-.sus-title{font-family:'Noto Serif JP',serif;font-size:clamp(1.8rem,4vw,3.2rem);font-weight:300;line-height:1.4;margin:2rem 0 3rem}
-.sus-body{font-size:clamp(0.85rem,1.1vw,0.95rem);font-weight:300;color:var(--grey-600);line-height:2.2;max-width:580px;margin-bottom:3.5rem}
-.sus-cta{font-family:'Inter',sans-serif;font-size:0.68rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:var(--black);display:inline-flex;align-items:center;gap:0.5rem;border-bottom:1px solid var(--black);padding-bottom:0.25rem;transition:gap 0.2s}
-.sus-cta:hover{gap:0.9rem}
-.sdg-grid{margin-top:5rem;display:grid;grid-template-columns:repeat(6,1fr);gap:1rem}
-.sdg-grid img{aspect-ratio:1;object-fit:cover;filter:grayscale(20%);transition:filter 0.3s}
-.sdg-grid img:hover{filter:none}
-@media(max-width:768px){.sdg-grid{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:480px){.sdg-grid{grid-template-columns:repeat(2,1fr)}}
+/* ── FUTURE ── */
+#future{background:var(--white);padding-top:clamp(8rem,16vw,16rem);padding-bottom:0;padding-left:0;padding-right:0}
+.future-intro-wrap{padding:0 clamp(1.5rem,5vw,4rem) clamp(6rem,10vw,10rem)}
+.future-intro-inner{max-width:820px;margin:0 auto}
+.future-eyebrow-row{display:flex;align-items:center;gap:2rem;margin-bottom:4rem}
+.future-eyebrow-line{flex:1;height:1px;background:var(--grey-200)}
+.future-headline{font-family:'Noto Serif JP',serif;font-size:clamp(2rem,5vw,4.2rem);font-weight:300;line-height:1.3;letter-spacing:-0.01em;color:var(--black);margin:0 0 clamp(3rem,6vw,6rem)}
+.future-intro-body{display:grid;grid-template-columns:1fr 1fr;gap:clamp(3rem,5vw,6rem);align-items:start}
+.future-intro-lead p{font-family:'Noto Serif JP',serif;font-size:clamp(0.95rem,1.4vw,1.1rem);font-weight:300;color:var(--black);line-height:2.1;margin-bottom:1.25rem}
+.future-vision-block{border-top:1px solid var(--grey-200);padding-top:2.5rem}
+.future-vision-label{font-family:'Inter',sans-serif;font-size:0.62rem;font-weight:400;letter-spacing:0.2em;text-transform:uppercase;color:var(--grey-400);margin-bottom:1.75rem}
+.future-vision-block p{font-size:clamp(0.82rem,1.1vw,0.9rem);font-weight:300;color:var(--grey-600);line-height:2.1;margin-bottom:0.9rem}
+.future-vision-block p:last-child{font-family:'Noto Serif JP',serif;font-size:clamp(0.92rem,1.3vw,1rem);color:var(--black);font-weight:300;margin-top:1.25rem;margin-bottom:0}
+@media(max-width:768px){
+  .future-intro-body{grid-template-columns:1fr}
+  .future-eyebrow-row{gap:1rem}
+}
+
+/* Future — full-bleed photo divider */
+.future-photo-break{
+  width:100%;
+  aspect-ratio:21/9;
+  overflow:hidden;
+  position:relative;
+}
+.future-photo-break img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;
+  filter:grayscale(100%);
+  transition:filter 1.2s var(--ease);
+  display:block;
+}
+.future-photo-break:hover img{filter:grayscale(0%)}
+@media(max-width:640px){.future-photo-break{aspect-ratio:4/3}}
+
+/* Future — four points index */
+.future-points-wrap{padding:0 clamp(1.5rem,5vw,4rem) clamp(6rem,10vw,10rem);margin-top:clamp(6rem,10vw,10rem)}
+.future-points-inner{max-width:1100px;margin:0 auto}
+.future-point{
+  display:grid;
+  grid-template-columns:6rem 1fr;
+  gap:0 clamp(2rem,4vw,5rem);
+  border-top:1px solid var(--grey-200);
+  padding:clamp(2.5rem,5vw,5rem) 0;
+}
+.future-point:last-child{border-bottom:1px solid var(--grey-200)}
+.future-point-num{font-family:'Inter',sans-serif;font-size:clamp(2rem,4vw,3.5rem);font-weight:300;letter-spacing:-0.02em;color:var(--grey-200);line-height:1;padding-top:0.1em}
+.future-point-body{}
+.future-point-title{font-family:'Noto Serif JP',serif;font-size:clamp(1.1rem,2.2vw,1.65rem);font-weight:300;color:var(--black);line-height:1.4;margin-bottom:1.5rem}
+.future-point-body p{font-size:clamp(0.82rem,1.1vw,0.9rem);font-weight:300;color:var(--grey-600);line-height:2;margin-bottom:0.5rem}
+.future-point-body p:last-child{margin-bottom:0}
+@media(max-width:600px){
+  .future-point{grid-template-columns:4rem 1fr;gap:0 1.5rem}
+  .future-point-num{font-size:clamp(1.5rem,6vw,2.5rem)}
+}
+
+/* Future — closing message */
+.future-message-wrap{
+  background:var(--black);
+  color:var(--white);
+  padding:clamp(6rem,12vw,12rem) clamp(1.5rem,5vw,4rem);
+}
+.future-message-inner{max-width:820px;margin:0 auto}
+.future-message-inner p{font-family:'Noto Serif JP',serif;font-size:clamp(1.1rem,2.2vw,1.75rem);font-weight:300;color:rgba(255,255,255,0.9);line-height:1.8;margin-bottom:1.25rem}
+.future-message-inner p:last-child{margin-bottom:0;color:rgba(255,255,255,0.65);font-size:clamp(0.95rem,1.6vw,1.25rem)}
 
 /* ── FOOTER ── */
 footer{background:var(--black);color:var(--white);padding:clamp(5rem,10vw,10rem) clamp(1.5rem,5vw,4rem) clamp(2.5rem,4vw,4rem)}
@@ -270,9 +323,9 @@ footer{background:var(--black);color:var(--white);padding:clamp(5rem,10vw,10rem)
   <a href="/" class="nav-logo" aria-label="Growellトップ">Growell</a>
   <div class="nav-right">
     <div class="nav-links" role="list">
-      <a href="#about" role="listitem">About</a>
-      <a href="#business" role="listitem">Business</a>
-      <a href="sustainability.html" role="listitem">Sustainability</a>
+      <a href="#about" role="listitem">About Us</a>
+      <a href="#service" role="listitem">Service</a>
+      <a href="#future" role="listitem">Future</a>
       <a href="#contact" role="listitem">Contact</a>
     </div>
     <a href="#" class="nav-cta" aria-label="求職者登録">登録する</a>
@@ -284,9 +337,9 @@ footer{background:var(--black);color:var(--white);padding:clamp(5rem,10vw,10rem)
 
 <!-- ── MOBILE MENU ── -->
 <div class="mobile-menu" id="mobile-menu" role="dialog" aria-modal="true" aria-label="モバイルナビゲーション">
-  <a href="#about" class="mobile-link">About</a>
-  <a href="#business" class="mobile-link">Business</a>
-  <a href="sustainability.html" class="mobile-link">Sustainability</a>
+  <a href="#about" class="mobile-link">About Us</a>
+  <a href="#service" class="mobile-link">Service</a>
+  <a href="#future" class="mobile-link">Future</a>
   <a href="#contact" class="mobile-link">Contact</a>
   <a href="#" class="nav-cta">登録する</a>
 </div>
@@ -316,7 +369,7 @@ footer{background:var(--black);color:var(--white);padding:clamp(5rem,10vw,10rem)
         可能性を信じることから、未来は動き出す。Growellは、一人ひとりの挑戦と成長に寄り添い、新しいキャリアの選択肢を広げていきます。自分らしい未来は、ここから始まる。
       </p>
       <div class="hero-ctas" data-reveal>
-        <a href="#business" class="btn-primary">事業を見る</a>
+        <a href="#service" class="btn-primary">事業を見る</a>
         <a href="#about" class="btn-ghost">私たちについて</a>
       </div>
     </div>
@@ -364,11 +417,11 @@ footer{background:var(--black);color:var(--white);padding:clamp(5rem,10vw,10rem)
   >
 </div>
 
-<!-- ── BUSINESS ── -->
-<section id="business" aria-labelledby="business-heading">
+<!-- ── SERVICE ── -->
+<section id="service" aria-labelledby="service-heading">
   <div class="business-header">
-    <p class="t-eyebrow" data-reveal="fade">Business · Content</p>
-    <h2 class="business-title t-serif" id="business-heading" data-reveal>
+    <p class="t-eyebrow" data-reveal="fade">Service · 事業内容</p>
+    <h2 class="business-title t-serif" id="service-heading" data-reveal>
       成長のきっかけを、<br>すべての人へ。
     </h2>
   </div>
@@ -459,32 +512,124 @@ footer{background:var(--black);color:var(--white);padding:clamp(5rem,10vw,10rem)
 
 </section>
 
-<!-- ── SUSTAINABILITY ── -->
-<section id="sustainability" aria-labelledby="sus-heading">
-  <div class="sus-inner">
-    <p class="t-eyebrow" data-reveal="fade">ESG · SDGs</p>
-    <h2 class="sus-title t-serif" id="sus-heading" data-reveal>
-      持続可能な、<br>つくる場所を。
-    </h2>
-    <p class="sus-body" data-reveal>
-      Growellは、国連の「持続可能な開発目標（SDGs）」に共感し、働き方・育成・環境負荷の三方向から、日々の取り組みを積み重ねています。挑戦の入口は、社会に開かれた入口でなくてはならない。
-    </p>
-    <a href="sustainability.html" class="sus-cta t-inter" data-reveal aria-label="サステナビリティページを見る">
-      サステナビリティを見る
-    </a>
-    <div class="sdg-grid" data-reveal aria-label="取り組むSDGsゴール">
-      <img src="img/sdg/sdg-04.webp" alt="SDG 4: 質の高い教育をみんなに" loading="lazy" width="100" height="100">
-      <img src="img/sdg/sdg-08.webp" alt="SDG 8: 働きがいも経済成長も" loading="lazy" width="100" height="100">
-      <img src="img/sdg/sdg-10.webp" alt="SDG 10: 人や国の不平等をなくそう" loading="lazy" width="100" height="100">
-      <img src="img/sdg/sdg-03.webp" alt="SDG 3: すべての人に健康と福祉を" loading="lazy" width="100" height="100">
-      <img src="img/sdg/sdg-13.webp" alt="SDG 13: 気候変動に具体的な対策を" loading="lazy" width="100" height="100">
-      <img src="img/sdg/sdg-15.webp" alt="SDG 15: 陸の豊かさも守ろう" loading="lazy" width="100" height="100">
+<!-- ── FUTURE ── -->
+<section id="future" aria-labelledby="future-heading">
+
+  <!-- Intro block -->
+  <div class="future-intro-wrap">
+    <div class="future-intro-inner">
+      <div class="future-eyebrow-row" data-reveal="fade">
+        <span class="t-eyebrow">FUTURE</span>
+        <span class="future-eyebrow-line" aria-hidden="true"></span>
+        <span class="t-eyebrow">未来の可能性を広げるために</span>
+      </div>
+      <h2 class="future-headline t-serif" id="future-heading" data-reveal>
+        挑戦する人が、もっと<br>活躍できる社会へ。
+      </h2>
+      <div class="future-intro-body">
+        <div class="future-intro-lead">
+          <p data-reveal>Growellは、人材サービスを提供する会社ではなく、人の可能性を広げる会社を目指しています。</p>
+          <p data-reveal>一人ひとりの挑戦が、未来を変えるきっかけになる。</p>
+          <p data-reveal>私たちは、その一歩を支える存在であり続けます。</p>
+        </div>
+        <div class="future-vision-block" data-reveal>
+          <p class="future-vision-label t-inter">OUR VISION</p>
+          <p>人の成長が、社会を前に進める。</p>
+          <p>人が成長することで、企業が成長する。</p>
+          <p>企業が成長することで、社会が成長する。</p>
+          <p>Growellは、その成長の循環を創り続けます。</p>
+        </div>
+      </div>
     </div>
   </div>
+
+  <!-- Full-bleed photo divider -->
+  <div class="future-photo-break" aria-hidden="true">
+    <img
+      src="img/biz/biz-03-hr.jpg"
+      alt=""
+      width="1800"
+      height="771"
+      loading="lazy"
+      decoding="async"
+    >
+  </div>
+
+  <!-- Four-point editorial index -->
+  <div class="future-points-wrap">
+    <div class="future-points-inner">
+
+      <div class="future-point" data-reveal>
+        <p class="future-point-num t-inter" aria-hidden="true">01</p>
+        <div class="future-point-body">
+          <h3 class="future-point-title t-serif">挑戦できる機会を増やす。</h3>
+          <p>経験や環境に関係なく、誰もが新しい一歩を踏み出せる社会へ。</p>
+          <p>私たちは、挑戦のきっかけを創り続けます。</p>
+        </div>
+      </div>
+
+      <div class="future-point" data-reveal>
+        <p class="future-point-num t-inter" aria-hidden="true">02</p>
+        <div class="future-point-body">
+          <h3 class="future-point-title t-serif">成長できる選択肢を広げる。</h3>
+          <p>学びや経験を通じて、未来の可能性は大きく広がる。</p>
+          <p>一人ひとりが成長できる環境づくりに取り組みます。</p>
+        </div>
+      </div>
+
+      <div class="future-point" data-reveal>
+        <p class="future-point-num t-inter" aria-hidden="true">03</p>
+        <div class="future-point-body">
+          <h3 class="future-point-title t-serif">世界へ挑戦する人を増やす。</h3>
+          <p>国境や価値観を越えて、世界で活躍できる人材を育てたい。</p>
+          <p>グローバルな機会創出を通じて、新しい未来を創ります。</p>
+        </div>
+      </div>
+
+      <div class="future-point" data-reveal>
+        <p class="future-point-num t-inter" aria-hidden="true">04</p>
+        <div class="future-point-body">
+          <h3 class="future-point-title t-serif">人と企業の架け橋になる。</h3>
+          <p>人には可能性がある。</p>
+          <p>企業には成長する力がある。</p>
+          <p>Growellは、その両方をつなぎ、新しい価値を生み出していきます。</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Closing message — dark band -->
+  <div class="future-message-wrap" aria-labelledby="future-message-heading">
+    <div class="future-message-inner">
+      <p id="future-message-heading" data-reveal>挑戦が、次の挑戦を生み出す。</p>
+      <p data-reveal>挑戦した人が成長する。</p>
+      <p data-reveal>成長した人が、また誰かの挑戦を支える。</p>
+      <p data-reveal>Growellは、そんな成長の循環を創り続けます。</p>
+    </div>
+  </div>
+
 </section>
 
-<!-- ── FOOTER ── -->
+<!-- ── CONTACT / FOOTER ── -->
 <footer id="contact" role="contentinfo">
+
+  <!-- Contact intro -->
+  <div style="background:var(--grey-100);padding:clamp(6rem,12vw,12rem) clamp(1.5rem,5vw,4rem) clamp(5rem,9vw,9rem)">
+    <div style="max-width:820px;margin:0 auto">
+      <p class="t-eyebrow" style="margin-bottom:2.5rem" data-reveal>Contact</p>
+      <h2 class="t-serif" style="font-size:clamp(2rem,5vw,4rem);font-weight:300;line-height:1.3;color:var(--black);margin-bottom:clamp(2.5rem,5vw,4rem)" data-reveal>
+        あなたの未来は、<br>ここから始まる。
+      </h2>
+      <p class="t-serif" style="font-size:clamp(0.95rem,1.6vw,1.25rem);font-weight:300;color:var(--grey-600);line-height:2;max-width:580px;margin-bottom:1.25rem" data-reveal>何者でもない今から、誰かに必要とされる人へ。</p>
+      <p class="t-serif" style="font-size:clamp(0.95rem,1.6vw,1.25rem);font-weight:300;color:var(--grey-600);line-height:2;max-width:580px;margin-bottom:clamp(3rem,5vw,5rem)" data-reveal>Growellは、その挑戦と成長に寄り添います。</p>
+      <div style="display:flex;align-items:center;gap:2rem;flex-wrap:wrap" data-reveal>
+        <a href="#" class="btn-primary">登録する</a>
+        <a href="mailto:hello@growell.jp" class="btn-ghost">hello@growell.jp</a>
+      </div>
+    </div>
+  </div>
+
   <div class="footer-top">
     <div class="footer-brand">
       <p class="footer-logo t-inter">Growell</p>
@@ -495,18 +640,18 @@ footer{background:var(--black);color:var(--white);padding:clamp(5rem,10vw,10rem)
       <h4 class="t-inter">Company</h4>
       <ul>
         <li><a href="#about">私たちについて</a></li>
-        <li><a href="#business">事業内容</a></li>
+        <li><a href="#service">事業内容</a></li>
         <li><a href="sustainability.html">サステナビリティ</a></li>
         <li><a href="#">採用情報</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4 class="t-inter">Business</h4>
+      <h4 class="t-inter">Service</h4>
       <ul>
-        <li><a href="#business">グローバル人材育成</a></li>
-        <li><a href="#business">クリエイティブ</a></li>
-        <li><a href="#business">人材サービス</a></li>
-        <li><a href="#business">BPO / 海外飲食 / 酒類</a></li>
+        <li><a href="#service">グローバル人材育成</a></li>
+        <li><a href="#service">クリエイティブ</a></li>
+        <li><a href="#service">人材サービス</a></li>
+        <li><a href="#service">BPO / 海外飲食 / 酒類</a></li>
       </ul>
     </div>
     <div class="footer-col footer-contact">
