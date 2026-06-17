@@ -293,12 +293,14 @@
       position: absolute;
       inset: 0;
       z-index: 0;
+      background: #0d0d10 url('video/hero-tokyo-poster.jpg') center 45% / cover no-repeat;
     }
-    .hero__photo img {
+    .hero__photo img,
+    .hero__photo video {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center 30%;
+      object-position: center 45%;
     }
 
     /* Dark gradient overlay for legibility */
@@ -1494,15 +1496,16 @@
     <section class="hero" aria-labelledby="hero-heading">
       <!-- Full-bleed photo layer -->
       <div class="hero__photo" aria-hidden="true">
-        <img
-          src="img/biz/biz-02-global.jpg"
-          alt=""
-          width="1800"
-          height="2400"
-          fetchpriority="high"
-          loading="eager"
-          decoding="sync"
-        />
+        <video
+          class="hero__video"
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          poster="video/hero-tokyo-poster.jpg"
+        >
+          <source src="video/hero-tokyo.mp4" type="video/mp4" />
+        </video>
       </div>
 
       <!-- Coral glow + grain on top of photo -->
@@ -2029,6 +2032,15 @@
         cell.style.transitionDelay = `${i * 100}ms`;
       });
     }
+
+    /* Hero video: play unless the visitor prefers reduced motion (poster stays otherwise) */
+    (function () {
+      var v = document.querySelector('.hero__video');
+      if (!v) return;
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var go = function () { var p = v.play(); if (p && p.catch) p.catch(function () {}); };
+      if (v.readyState >= 2) go(); else v.addEventListener('loadeddata', go, { once: true });
+    })();
   </script>
 </body>
 </html>
