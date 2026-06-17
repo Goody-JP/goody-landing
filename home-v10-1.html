@@ -810,6 +810,95 @@
       stroke: currentColor;
     }
 
+    /* ─── Service: expanding panels (next-homie style) ─── */
+    .panels {
+      display: flex;
+      gap: 10px;
+      height: clamp(440px, 66vh, 660px);
+    }
+    .panel {
+      position: relative;
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      border-radius: var(--radius-card);
+      display: block;
+      text-decoration: none;
+      background: #15151b;
+      isolation: isolate;
+      transition: flex var(--dur-slow) var(--ease-out);
+    }
+    .panel.is-active { flex: 4.2; }
+    .panels:hover .panel { flex: 1; }
+    .panels:hover .panel:hover { flex: 4.2; }
+    .panel__img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; z-index: -2;
+      filter: grayscale(40%) brightness(0.6);
+      transition: transform var(--dur-slow) var(--ease-out), filter var(--dur-slow) var(--ease-out);
+    }
+    .panel::after {
+      content: ''; position: absolute; inset: 0; z-index: -1;
+      background: linear-gradient(180deg, rgba(13,13,16,0.10) 0%, rgba(13,13,16,0.32) 50%, rgba(13,13,16,0.92) 100%);
+    }
+    .panel.is-active .panel__img,
+    .panels:hover .panel:hover .panel__img { filter: grayscale(0%) brightness(0.8); transform: scale(1.05); }
+    .panel.is-active::before,
+    .panels:hover .panel:hover::before {
+      content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
+      background: var(--accent); z-index: 2;
+    }
+    .panel__label {
+      position: absolute; left: 0; right: 0; bottom: 1.6rem;
+      display: flex; flex-direction: column; align-items: center; gap: 0.9rem;
+      opacity: 1; transition: opacity var(--dur-normal) var(--ease-out);
+      pointer-events: none;
+    }
+    .panel__label .panel__num {
+      font-family: var(--font-display); font-weight: 800; font-size: var(--text-sm); color: var(--accent);
+    }
+    .panel__tagv {
+      writing-mode: vertical-rl; text-orientation: mixed;
+      font-family: var(--font-display); font-weight: 700;
+      font-size: 0.82rem; letter-spacing: 0.24em; text-transform: uppercase;
+      color: #fff; white-space: nowrap;
+    }
+    .panel__full {
+      position: absolute; left: 0; bottom: 0;
+      width: max(58%, 340px); min-width: 300px;
+      padding: 2.2rem 2.2rem 2rem;
+      display: flex; flex-direction: column; gap: 0.65rem;
+      opacity: 0; transform: translateY(10px);
+      transition: opacity var(--dur-normal) var(--ease-out), transform var(--dur-normal) var(--ease-out);
+      pointer-events: none;
+    }
+    .panel__kicker { font-family: var(--font-display); font-weight: 800; font-size: var(--text-xs); letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+    .panel__name { font-size: var(--text-xl); font-weight: 800; color: #fff; line-height: 1.25; }
+    .panel__desc { font-size: var(--text-sm); line-height: 1.8; color: rgba(255,255,255,0.74); }
+    .panel__more { display: inline-flex; align-items: center; gap: 0.45rem; margin-top: 0.5rem; font-family: var(--font-display); font-weight: 700; font-size: var(--text-xs); letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+    .panel__more svg { width: 15px; height: 15px; stroke: currentColor; }
+    .panel.is-active .panel__label { opacity: 0; }
+    .panel.is-active .panel__full { opacity: 1; transform: none; }
+    .panels:hover .panel .panel__label { opacity: 1; }
+    .panels:hover .panel .panel__full { opacity: 0; transform: translateY(10px); }
+    .panels:hover .panel:hover .panel__label { opacity: 0; }
+    .panels:hover .panel:hover .panel__full { opacity: 1; transform: none; }
+    @media (max-width: 900px) {
+      .panels { flex-direction: column; height: auto; gap: 12px; }
+      .panel, .panel.is-active,
+      .panels:hover .panel, .panels:hover .panel:hover { flex: none; height: 210px; }
+      .panel__label { display: none; }
+      .panel__full,
+      .panel.is-active .panel__full,
+      .panels:hover .panel .panel__full,
+      .panels:hover .panel:hover .panel__full { opacity: 1; transform: none; width: 100%; }
+      .panel__img, .panel.is-active .panel__img { filter: grayscale(0%) brightness(0.55); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .panel, .panel__img, .panel__full, .panel__label { transition: none; }
+    }
+
     /* ─────────────────────────────────────────
        BRAND MANIFESTO BAND
     ───────────────────────────────────────── */
@@ -1450,12 +1539,6 @@
             <h2 class="about__title fade-in fade-in--delay-1" id="about-heading">
               未来は、挑戦した人から変わっていく
             </h2>
-            <div class="about__stats fade-in fade-in--delay-2">
-              <div class="stat">
-                <div class="stat__number">06</div>
-                <div class="stat__label">領域 / 事業ライン</div>
-              </div>
-            </div>
           </div>
 
           <div class="about__body fade-in fade-in--delay-2">
@@ -1538,10 +1621,6 @@
     <div class="strip" aria-label="実績数字">
       <div class="strip__inner">
         <div class="strip__item fade-in">
-          <div class="strip__num">06</div>
-          <div class="strip__unit">事業ライン</div>
-        </div>
-        <div class="strip__item fade-in fade-in--delay-1">
           <div class="strip__num">挑戦</div>
           <div class="strip__unit">Challenge</div>
         </div>
@@ -1568,163 +1647,73 @@
           </div>
         </div>
 
-        <div class="business__grid" role="list">
+        <div class="panels" role="list">
 
-          <!-- 01 Global Talent → biz-02-global.jpg -->
-          <article class="biz-card" role="listitem">
-            <div class="biz-card__photo">
-              <img
-                src="img/biz/biz-02-global.jpg"
-                alt="グローバル人材育成事業 — 世界で活躍する人材育成の現場"
-                width="900"
-                height="1200"
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
-            <div class="biz-card__body">
-              <div class="biz-card__meta">
-                <span class="biz-card__num">01</span>
-                <span class="biz-card__tag">Global Talent</span>
-              </div>
-              <h3 class="biz-card__name">グローバル人材育成事業</h3>
-              <p class="biz-card__desc">世界で通用する自分へ。グローバルな視点と実践的な経験を通じて、世界で活躍できる人材の育成を支援します。</p>
-              <a href="business/global.html" class="biz-card__link" aria-label="グローバル人材育成事業の詳細">
-                View More
-                <svg viewBox="0 0 16 16" fill="none" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-              </a>
-            </div>
-          </article>
+          <a class="panel is-active" href="business/global.html" role="listitem" aria-label="グローバル人材育成事業の詳細">
+            <img class="panel__img" src="img/biz/biz-02-global.jpg" alt="グローバル人材育成事業" width="900" height="1200" loading="lazy" decoding="async" />
+            <span class="panel__label"><span class="panel__num">01</span><span class="panel__tagv">Global Talent</span></span>
+            <span class="panel__full">
+              <span class="panel__kicker">01 / Global Talent</span>
+              <span class="panel__name">グローバル人材育成事業</span>
+              <span class="panel__desc">世界で通用する自分へ。グローバルな視点と実践的な経験を通じて、世界で活躍できる人材の育成を支援します。</span>
+              <span class="panel__more">View More <svg viewBox="0 0 16 16" fill="none" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+            </span>
+          </a>
 
-          <!-- 02 Creative → biz-01-creative.jpg -->
-          <article class="biz-card" role="listitem">
-            <div class="biz-card__photo">
-              <img
-                src="img/biz/biz-01-creative.jpg"
-                alt="クリエイティブ事業 — デザイン・映像・Webの制作現場"
-                width="900"
-                height="1200"
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
-            <div class="biz-card__body">
-              <div class="biz-card__meta">
-                <span class="biz-card__num">02</span>
-                <span class="biz-card__tag">Creative</span>
-              </div>
-              <h3 class="biz-card__name">クリエイティブ事業</h3>
-              <p class="biz-card__desc">アイデアを、価値に変える。デザイン・映像・Web・SNSを通じて、企業やサービスが持つ本来の魅力を届けます。</p>
-              <a href="business/creative.html" class="biz-card__link" aria-label="クリエイティブ事業の詳細">
-                View More
-                <svg viewBox="0 0 16 16" fill="none" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-              </a>
-            </div>
-          </article>
+          <a class="panel" href="business/creative.html" role="listitem" aria-label="クリエイティブ事業の詳細">
+            <img class="panel__img" src="img/biz/biz-01-creative.jpg" alt="クリエイティブ事業" width="900" height="1200" loading="lazy" decoding="async" />
+            <span class="panel__label"><span class="panel__num">02</span><span class="panel__tagv">Creative</span></span>
+            <span class="panel__full">
+              <span class="panel__kicker">02 / Creative</span>
+              <span class="panel__name">クリエイティブ事業</span>
+              <span class="panel__desc">アイデアを、価値に変える。デザイン・映像・Web・SNSを通じて、企業やサービスが持つ本来の魅力を届けます。</span>
+              <span class="panel__more">View More <svg viewBox="0 0 16 16" fill="none" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+            </span>
+          </a>
 
-          <!-- 03 HR Services → biz-03-hr.jpg -->
-          <article class="biz-card" role="listitem">
-            <div class="biz-card__photo">
-              <img
-                src="img/biz/biz-03-hr.jpg"
-                alt="人材サービス事業 — キャリアカウンセリングと採用支援"
-                width="900"
-                height="1200"
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
-            <div class="biz-card__body">
-              <div class="biz-card__meta">
-                <span class="biz-card__num">03</span>
-                <span class="biz-card__tag">HR Services</span>
-              </div>
-              <h3 class="biz-card__name">人材サービス事業</h3>
-              <p class="biz-card__desc">人と企業の、その先の成長へ。一人ひとりの想いに向き合いながら、新しいキャリアとの出会いを創出します。</p>
-              <a href="business/hr.html" class="biz-card__link" aria-label="人材サービス事業の詳細">
-                View More
-                <svg viewBox="0 0 16 16" fill="none" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-              </a>
-            </div>
-          </article>
+          <a class="panel" href="business/hr.html" role="listitem" aria-label="人材サービス事業の詳細">
+            <img class="panel__img" src="img/biz/biz-03-hr.jpg" alt="人材サービス事業" width="900" height="1200" loading="lazy" decoding="async" />
+            <span class="panel__label"><span class="panel__num">03</span><span class="panel__tagv">HR Services</span></span>
+            <span class="panel__full">
+              <span class="panel__kicker">03 / HR Services</span>
+              <span class="panel__name">人材サービス事業</span>
+              <span class="panel__desc">人と企業の、その先の成長へ。一人ひとりの想いに向き合いながら、新しいキャリアとの出会いを創出します。</span>
+              <span class="panel__more">View More <svg viewBox="0 0 16 16" fill="none" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+            </span>
+          </a>
 
-          <!-- 04 BPO → biz-04-bpo.jpg -->
-          <article class="biz-card" role="listitem">
-            <div class="biz-card__photo">
-              <img
-                src="img/biz/biz-04-bpo.jpg"
-                alt="BPO事業 — 業務効率化・アウトソーシングの現場"
-                width="900"
-                height="1200"
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
-            <div class="biz-card__body">
-              <div class="biz-card__meta">
-                <span class="biz-card__num">04</span>
-                <span class="biz-card__tag">BPO</span>
-              </div>
-              <h3 class="biz-card__name">BPO事業</h3>
-              <p class="biz-card__desc">成長に集中できる環境をつくる。業務の効率化と最適化を通じて、企業の挑戦と成長を支援します。</p>
-              <a href="business/bpo.html" class="biz-card__link" aria-label="BPO事業の詳細">
-                View More
-                <svg viewBox="0 0 16 16" fill="none" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-              </a>
-            </div>
-          </article>
+          <a class="panel" href="business/bpo.html" role="listitem" aria-label="BPO事業の詳細">
+            <img class="panel__img" src="img/biz/biz-04-bpo.jpg" alt="BPO事業" width="900" height="1200" loading="lazy" decoding="async" />
+            <span class="panel__label"><span class="panel__num">04</span><span class="panel__tagv">BPO</span></span>
+            <span class="panel__full">
+              <span class="panel__kicker">04 / BPO</span>
+              <span class="panel__name">BPO事業</span>
+              <span class="panel__desc">成長に集中できる環境をつくる。業務の効率化と最適化を通じて、企業の挑戦と成長を支援します。</span>
+              <span class="panel__more">View More <svg viewBox="0 0 16 16" fill="none" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+            </span>
+          </a>
 
-          <!-- 05 F&B Overseas → biz-05-food.jpg -->
-          <article class="biz-card" role="listitem">
-            <div class="biz-card__photo">
-              <img
-                src="img/biz/biz-05-food.jpg"
-                alt="海外飲食事業 — 日本食文化とおもてなしを海外へ"
-                width="900"
-                height="1200"
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
-            <div class="biz-card__body">
-              <div class="biz-card__meta">
-                <span class="biz-card__num">05</span>
-                <span class="biz-card__tag">F&amp;B Overseas</span>
-              </div>
-              <h3 class="biz-card__name">海外飲食事業</h3>
-              <p class="biz-card__desc">「日本の食文化とおもてなしを世界へ届ける」。国や文化を越えて人を笑顔にすることを目指します。</p>
-              <a href="business/food.html" class="biz-card__link" aria-label="海外飲食事業の詳細">
-                View More
-                <svg viewBox="0 0 16 16" fill="none" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-              </a>
-            </div>
-          </article>
+          <a class="panel" href="business/food.html" role="listitem" aria-label="海外飲食事業の詳細">
+            <img class="panel__img" src="img/biz/biz-05-food.jpg" alt="海外飲食事業" width="900" height="1200" loading="lazy" decoding="async" />
+            <span class="panel__label"><span class="panel__num">05</span><span class="panel__tagv">F&amp;B Overseas</span></span>
+            <span class="panel__full">
+              <span class="panel__kicker">05 / F&amp;B Overseas</span>
+              <span class="panel__name">海外飲食事業</span>
+              <span class="panel__desc">「日本の食文化とおもてなしを世界へ届ける」。国や文化を越えて人を笑顔にすることを目指します。</span>
+              <span class="panel__more">View More <svg viewBox="0 0 16 16" fill="none" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+            </span>
+          </a>
 
-          <!-- 06 Spirits → biz-06-spirits.jpg -->
-          <article class="biz-card" role="listitem">
-            <div class="biz-card__photo">
-              <img
-                src="img/biz/biz-06-spirits.jpg"
-                alt="酒類マーケティング・クリエイティブ事業 — ブランドの物語を設計する"
-                width="900"
-                height="1200"
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
-            <div class="biz-card__body">
-              <div class="biz-card__meta">
-                <span class="biz-card__num">06</span>
-                <span class="biz-card__tag">Spirits</span>
-              </div>
-              <h3 class="biz-card__name">酒類マーケティング・クリエイティブ事業</h3>
-              <p class="biz-card__desc">酒類ブランドの戦略から、ビジュアル・コピー・体験設計まで一気通貫で。「飲む」を「物語」に変えます。</p>
-              <a href="business/spirits.html" class="biz-card__link" aria-label="酒類マーケティング・クリエイティブ事業の詳細">
-                View More
-                <svg viewBox="0 0 16 16" fill="none" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-              </a>
-            </div>
-          </article>
+          <a class="panel" href="business/spirits.html" role="listitem" aria-label="酒類マーケティング・クリエイティブ事業の詳細">
+            <img class="panel__img" src="img/biz/biz-06-spirits.jpg" alt="酒類マーケティング・クリエイティブ事業" width="900" height="1200" loading="lazy" decoding="async" />
+            <span class="panel__label"><span class="panel__num">06</span><span class="panel__tagv">Spirits</span></span>
+            <span class="panel__full">
+              <span class="panel__kicker">06 / Spirits</span>
+              <span class="panel__name">酒類マーケティング・クリエイティブ事業</span>
+              <span class="panel__desc">酒類ブランドの戦略から、ビジュアル・コピー・体験設計まで一気通貫で。「飲む」を「物語」に変えます。</span>
+              <span class="panel__more">View More <svg viewBox="0 0 16 16" fill="none" stroke-width="2" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+            </span>
+          </a>
 
         </div>
       </div>
