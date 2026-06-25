@@ -1614,6 +1614,63 @@
       opacity: 1;
       transform: translateY(0);
     }
+
+    /* ── 3 Cores ring animation ── */
+    .ringviz { margin-top: clamp(2.5rem, 4vw, 4rem); }
+    .ringviz__head {
+      margin-bottom: 0.5rem;
+      opacity: 0; transform: translateY(-10px);
+    }
+    .ringviz.go .ringviz__head {
+      animation: rvDown 0.8s var(--ease-out) 0.1s forwards;
+    }
+    .ringviz__brand {
+      font-family: var(--font-display);
+      font-weight: 600; font-size: 1.5rem;
+      color: var(--text-dark); letter-spacing: 0.01em;
+    }
+    .ringviz__sub {
+      display: block; margin-top: 3px;
+      font-size: 9px; letter-spacing: 0.3em;
+      text-transform: uppercase; font-weight: 600;
+      color: var(--accent);
+    }
+    .ringviz svg { width: 300px; max-width: 100%; height: 200px; overflow: visible; display: block; }
+    .ringviz__ring {
+      fill: none; opacity: 0;
+      stroke-dasharray: 440; stroke-dashoffset: 440;
+      stroke-linecap: round;
+    }
+    #rv-a { stroke: #15161a; }
+    #rv-b { stroke: #d8d3ca; }
+    #rv-c { stroke: url(#rvgrad); }
+    .ringviz.go #rv-a { animation: rvDraw 1s var(--ease-out) 0.3s forwards; }
+    .ringviz.go #rv-b { animation: rvDraw 1s var(--ease-out) 1.5s forwards; }
+    .ringviz.go #rv-c { animation: rvDraw 1s var(--ease-out) 2.7s forwards; }
+    .ringviz__labels { display: flex; gap: 42px; margin-top: 14px; }
+    .ringviz__it {
+      opacity: 0; transform: translateY(12px);
+    }
+    .ringviz__it b {
+      display: block; font-family: var(--font-body);
+      font-weight: 700; font-size: 17px; color: var(--text-dark);
+    }
+    .ringviz__it span {
+      display: block; margin-top: 3px;
+      font-size: 8px; letter-spacing: 0.22em;
+      text-transform: uppercase; font-weight: 600; color: #9a9a9a;
+    }
+    .ringviz__it--c b { color: var(--accent); }
+    .ringviz.go .ringviz__it--a { animation: rvUp 0.6s var(--ease-out) 1.0s forwards; }
+    .ringviz.go .ringviz__it--b { animation: rvUp 0.6s var(--ease-out) 2.2s forwards; }
+    .ringviz.go .ringviz__it--c { animation: rvUp 0.6s var(--ease-out) 3.4s forwards; }
+    @keyframes rvDown { to { opacity: 1; transform: translateY(0); } }
+    @keyframes rvUp { to { opacity: 1; transform: translateY(0); } }
+    @keyframes rvDraw { 0% { opacity: 1; stroke-dashoffset: 440; } 100% { opacity: 1; stroke-dashoffset: 0; } }
+    @media (prefers-reduced-motion: reduce) {
+      .ringviz__ring { opacity: 1; stroke-dashoffset: 0; }
+      .ringviz__it, .ringviz__head { opacity: 1; transform: none; }
+    }
   </style>
 </head>
 <body>
@@ -1707,6 +1764,28 @@
             <h2 class="about__title fade-in fade-in--delay-1" id="about-heading">
               未来は、挑戦した人から変わっていく
             </h2>
+
+            <div class="ringviz" id="ringviz" aria-hidden="true">
+              <div class="ringviz__head">
+                <span class="ringviz__brand">Growell</span>
+                <span class="ringviz__sub">3 Cores</span>
+              </div>
+              <svg viewBox="0 0 340 220" fill="none" stroke-width="24">
+                <defs>
+                  <linearGradient id="rvgrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#ffa86a"/><stop offset="1" stop-color="#e8531a"/>
+                  </linearGradient>
+                </defs>
+                <circle id="rv-a" class="ringviz__ring" cx="118" cy="110" r="70" fill="none" stroke-dasharray="440" stroke-dashoffset="440"/>
+                <circle id="rv-b" class="ringviz__ring" cx="170" cy="110" r="70" fill="none" stroke-dasharray="440" stroke-dashoffset="440"/>
+                <circle id="rv-c" class="ringviz__ring" cx="222" cy="110" r="70" fill="none" stroke-dasharray="440" stroke-dashoffset="440"/>
+              </svg>
+              <div class="ringviz__labels">
+                <div class="ringviz__it ringviz__it--a"><b>挑戦</b><span>Challenge</span></div>
+                <div class="ringviz__it ringviz__it--b"><b>成長</b><span>Growth</span></div>
+                <div class="ringviz__it ringviz__it--c"><b>可能性</b><span>Possibility</span></div>
+              </div>
+            </div>
           </div>
 
           <div class="about__body fade-in fade-in--delay-2">
@@ -2317,6 +2396,22 @@
       } else {
         start();
       }
+    })();
+
+    // 3 Cores ring animation — replay on scroll into view
+    (function () {
+      var viz = document.getElementById('ringviz');
+      if (!viz) return;
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            viz.classList.remove('go');
+            void viz.offsetWidth;
+            viz.classList.add('go');
+          }
+        });
+      }, { threshold: 0.4 });
+      io.observe(viz);
     })();
   </script>
 </body>
