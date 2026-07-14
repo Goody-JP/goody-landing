@@ -1653,16 +1653,16 @@
       width: 100%; max-width: 400px;
       aspect-ratio: 400 / 330;
     }
+    /* Glow is baked into the gradient (no filter: blur — Safari clips blurred elements into boxes) */
     .ringviz__orb {
       position: absolute;
-      width: 37.5%; aspect-ratio: 1;
+      width: 60%; aspect-ratio: 1;
       border-radius: 50%;
-      filter: blur(34px);
       opacity: 0;
     }
-    .ringviz__orb--a { left: 30.5%; top: 2.4%;  background: radial-gradient(circle at 40% 35%, #3a3d46, #15161a); }
-    .ringviz__orb--b { left: 7%;    top: 44.8%; background: radial-gradient(circle at 40% 35%, #e8e3d8, #cfc7b8); }
-    .ringviz__orb--c { left: 55.5%; top: 44.8%; background: radial-gradient(circle at 40% 35%, #ffa86a, #e8531a); }
+    .ringviz__orb--a { left: 19.25%; top: -11.2%; background: radial-gradient(circle, #3a3d46 0%, #191a1f 30%, rgba(21,22,26,0.55) 55%, rgba(21,22,26,0) 82%); }
+    .ringviz__orb--b { left: -4.25%; top: 31.2%;  background: radial-gradient(circle, #ece7dc 0%, #d8d2c4 30%, rgba(207,199,184,0.55) 55%, rgba(207,199,184,0) 82%); }
+    .ringviz__orb--c { left: 44.25%; top: 31.2%;  background: radial-gradient(circle, #ffa86a 0%, #ef6a2e 30%, rgba(232,83,26,0.55) 55%, rgba(232,83,26,0) 82%); }
     .ringviz__val {
       position: absolute; width: 27.5%;
       text-align: center; opacity: 0;
@@ -1699,13 +1699,13 @@
       text-transform: uppercase; font-weight: 600;
       color: var(--accent);
     }
-    .ringviz.go .ringviz__orb--a { animation: rvOrbIn 1.4s var(--ease-out) 0.2s forwards, rvDriftA 14s ease-in-out 1.6s infinite; }
-    .ringviz.go .ringviz__orb--b { animation: rvOrbIn 1.4s var(--ease-out) 0.4s forwards, rvDriftB 17s ease-in-out 1.6s infinite; }
-    .ringviz.go .ringviz__orb--c { animation: rvOrbIn 1.4s var(--ease-out) 0.6s forwards, rvDriftC 15s ease-in-out 1.6s infinite; }
-    .ringviz.go .ringviz__val--a { animation: rvUp 0.8s var(--ease-out) 0.8s forwards, rvDriftA 14s ease-in-out 1.6s infinite; }
-    .ringviz.go .ringviz__val--b { animation: rvUp 0.8s var(--ease-out) 1.0s forwards, rvDriftB 17s ease-in-out 1.6s infinite; }
-    .ringviz.go .ringviz__val--c { animation: rvUp 0.8s var(--ease-out) 1.2s forwards, rvDriftC 15s ease-in-out 1.6s infinite; }
-    .ringviz.go .ringviz__core   { animation: rvCoreIn 0.9s var(--ease-out) 1.3s forwards; }
+    .ringviz.go .ringviz__orb--a { animation: rvOrbIn 1s var(--ease-out) 0s forwards, rvDriftA 14s ease-in-out 1s infinite; }
+    .ringviz.go .ringviz__orb--b { animation: rvOrbIn 1s var(--ease-out) 0.15s forwards, rvDriftB 17s ease-in-out 1s infinite; }
+    .ringviz.go .ringviz__orb--c { animation: rvOrbIn 1s var(--ease-out) 0.3s forwards, rvDriftC 15s ease-in-out 1s infinite; }
+    .ringviz.go .ringviz__val--a { animation: rvUp 0.6s var(--ease-out) 0.35s forwards, rvDriftA 14s ease-in-out 1s infinite; }
+    .ringviz.go .ringviz__val--b { animation: rvUp 0.6s var(--ease-out) 0.5s forwards, rvDriftB 17s ease-in-out 1s infinite; }
+    .ringviz.go .ringviz__val--c { animation: rvUp 0.6s var(--ease-out) 0.65s forwards, rvDriftC 15s ease-in-out 1s infinite; }
+    .ringviz.go .ringviz__core   { animation: rvCoreIn 0.7s var(--ease-out) 0.7s forwards; }
     @keyframes rvOrbIn { from { opacity: 0; } to { opacity: 0.9; } }
     @keyframes rvUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes rvCoreIn { from { opacity: 0; transform: translateX(-50%) scale(0.88); } to { opacity: 1; transform: translateX(-50%) scale(1); } }
@@ -2269,19 +2269,18 @@
       }
     })();
 
-    // 3 Cores ring animation — replay on scroll into view
+    // 3 Cores aura — animate once, as soon as it starts entering the viewport
     (function () {
       var viz = document.getElementById('ringviz');
       if (!viz) return;
       var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (e) {
           if (e.isIntersecting) {
-            viz.classList.remove('go');
-            void viz.offsetWidth;
             viz.classList.add('go');
+            io.unobserve(viz);
           }
         });
-      }, { threshold: 0.4 });
+      }, { threshold: 0.15 });
       io.observe(viz);
     })();
   </script>
