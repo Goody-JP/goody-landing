@@ -335,12 +335,26 @@
       z-index: 0;
       background: #0d0d10 url('video/hero-tokyo-poster.jpg') center 45% / cover no-repeat;
     }
-    .hero__photo img,
-    .hero__photo video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center 45%;
+    .hero__slide {
+      position: absolute;
+      inset: 0;
+      background-position: center 45%;
+      background-size: cover;
+      background-repeat: no-repeat;
+      opacity: 0;
+      transition: opacity 1.6s ease;
+      will-change: opacity, transform;
+    }
+    .hero__slide.is-active {
+      opacity: 1;
+      animation: heroKenBurns 9s ease-out forwards;
+    }
+    @keyframes heroKenBurns {
+      from { transform: scale(1); }
+      to   { transform: scale(1.07); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero__slide { transition: none; animation: none !important; }
     }
 
     /* Dark gradient overlay for legibility */
@@ -1632,61 +1646,75 @@
       transform: translateY(0);
     }
 
-    /* ── 3 Cores ring animation ── */
+    /* ── 3 Cores aura animation (V7): Growell centre, 3 soft light orbs ── */
     .ringviz { margin-top: clamp(2.5rem, 4vw, 4rem); }
-    .ringviz__head {
-      margin-bottom: 0.5rem;
-      opacity: 0; transform: translateY(-10px);
+    .ringviz__stage {
+      position: relative;
+      width: 100%; max-width: 400px;
+      aspect-ratio: 400 / 330;
     }
-    .ringviz.go .ringviz__head {
-      animation: rvDown 0.8s var(--ease-out) 0.1s forwards;
+    .ringviz__orb {
+      position: absolute;
+      width: 37.5%; aspect-ratio: 1;
+      border-radius: 50%;
+      filter: blur(34px);
+      opacity: 0;
     }
-    .ringviz__brand {
+    .ringviz__orb--a { left: 30.5%; top: 2.4%;  background: radial-gradient(circle at 40% 35%, #3a3d46, #15161a); }
+    .ringviz__orb--b { left: 7%;    top: 44.8%; background: radial-gradient(circle at 40% 35%, #e8e3d8, #cfc7b8); }
+    .ringviz__orb--c { left: 55.5%; top: 44.8%; background: radial-gradient(circle at 40% 35%, #ffa86a, #e8531a); }
+    .ringviz__val {
+      position: absolute; width: 27.5%;
+      text-align: center; opacity: 0;
+    }
+    .ringviz__val b {
+      display: block; font-family: var(--font-body);
+      font-weight: 700; font-size: clamp(14px, 4.2vw, 17px); color: var(--text-dark);
+    }
+    .ringviz__val span {
+      display: block; margin-top: 2px;
+      font-size: 7px; letter-spacing: 0.22em;
+      text-transform: uppercase; font-weight: 600; color: #9a9a9a;
+    }
+    .ringviz__val--a { left: 35.5%; top: 18.8%; }
+    .ringviz__val--a b { color: #fff; }
+    .ringviz__val--a span { color: rgba(255,255,255,0.65); }
+    .ringviz__val--b { left: 12%; top: 61.2%; }
+    .ringviz__val--c { left: 60.5%; top: 61.2%; }
+    .ringviz__val--c b { color: #fff; }
+    .ringviz__val--c span { color: rgba(255,255,255,0.75); }
+    .ringviz__core {
+      position: absolute; left: 50%; top: 47.9%;
+      transform: translateX(-50%);
+      text-align: center; opacity: 0;
+    }
+    .ringviz__core b {
       font-family: var(--font-display);
-      font-weight: 600; font-size: 1.5rem;
+      font-weight: 600; font-size: clamp(21px, 6.2vw, 26px);
       color: var(--text-dark); letter-spacing: 0.01em;
     }
-    .ringviz__sub {
-      display: block; margin-top: 3px;
-      font-size: 9px; letter-spacing: 0.3em;
+    .ringviz__core span {
+      display: block; margin-top: 2px;
+      font-size: 8px; letter-spacing: 0.32em;
       text-transform: uppercase; font-weight: 600;
       color: var(--accent);
     }
-    .ringviz svg { width: 300px; max-width: 100%; height: 200px; overflow: visible; display: block; }
-    .ringviz__ring {
-      fill: none; opacity: 0;
-      stroke-dasharray: 440; stroke-dashoffset: 440;
-      stroke-linecap: round;
-    }
-    #rv-a { stroke: #15161a; }
-    #rv-b { stroke: #d8d3ca; }
-    #rv-c { stroke: url(#rvgrad); }
-    .ringviz.go #rv-a { animation: rvDraw 1s var(--ease-out) 0.3s forwards; }
-    .ringviz.go #rv-b { animation: rvDraw 1s var(--ease-out) 1.5s forwards; }
-    .ringviz.go #rv-c { animation: rvDraw 1s var(--ease-out) 2.7s forwards; }
-    .ringviz__labels { display: flex; gap: 42px; margin-top: 14px; }
-    .ringviz__it {
-      opacity: 0; transform: translateY(12px);
-    }
-    .ringviz__it b {
-      display: block; font-family: var(--font-body);
-      font-weight: 700; font-size: 17px; color: var(--text-dark);
-    }
-    .ringviz__it span {
-      display: block; margin-top: 3px;
-      font-size: 8px; letter-spacing: 0.22em;
-      text-transform: uppercase; font-weight: 600; color: #9a9a9a;
-    }
-    .ringviz__it--c b { color: var(--accent); }
-    .ringviz.go .ringviz__it--a { animation: rvUp 0.6s var(--ease-out) 1.0s forwards; }
-    .ringviz.go .ringviz__it--b { animation: rvUp 0.6s var(--ease-out) 2.2s forwards; }
-    .ringviz.go .ringviz__it--c { animation: rvUp 0.6s var(--ease-out) 3.4s forwards; }
-    @keyframes rvDown { to { opacity: 1; transform: translateY(0); } }
-    @keyframes rvUp { to { opacity: 1; transform: translateY(0); } }
-    @keyframes rvDraw { 0% { opacity: 1; stroke-dashoffset: 440; } 100% { opacity: 1; stroke-dashoffset: 0; } }
+    .ringviz.go .ringviz__orb--a { animation: rvOrbIn 1.4s var(--ease-out) 0.2s forwards, rvDriftA 14s ease-in-out 1.6s infinite; }
+    .ringviz.go .ringviz__orb--b { animation: rvOrbIn 1.4s var(--ease-out) 0.4s forwards, rvDriftB 17s ease-in-out 1.6s infinite; }
+    .ringviz.go .ringviz__orb--c { animation: rvOrbIn 1.4s var(--ease-out) 0.6s forwards, rvDriftC 15s ease-in-out 1.6s infinite; }
+    .ringviz.go .ringviz__val--a { animation: rvUp 0.8s var(--ease-out) 0.8s forwards, rvDriftA 14s ease-in-out 1.6s infinite; }
+    .ringviz.go .ringviz__val--b { animation: rvUp 0.8s var(--ease-out) 1.0s forwards, rvDriftB 17s ease-in-out 1.6s infinite; }
+    .ringviz.go .ringviz__val--c { animation: rvUp 0.8s var(--ease-out) 1.2s forwards, rvDriftC 15s ease-in-out 1.6s infinite; }
+    .ringviz.go .ringviz__core   { animation: rvCoreIn 0.9s var(--ease-out) 1.3s forwards; }
+    @keyframes rvOrbIn { from { opacity: 0; } to { opacity: 0.9; } }
+    @keyframes rvUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes rvCoreIn { from { opacity: 0; transform: translateX(-50%) scale(0.88); } to { opacity: 1; transform: translateX(-50%) scale(1); } }
+    @keyframes rvDriftA { 0%, 100% { margin-top: 0; margin-left: 0; } 50% { margin-top: 12px; margin-left: -8px; } }
+    @keyframes rvDriftB { 0%, 100% { margin-top: 0; margin-left: 0; } 50% { margin-top: -10px; margin-left: 10px; } }
+    @keyframes rvDriftC { 0%, 100% { margin-top: 0; margin-left: 0; } 50% { margin-top: -12px; margin-left: -10px; } }
     @media (prefers-reduced-motion: reduce) {
-      .ringviz__ring { opacity: 1; stroke-dashoffset: 0; }
-      .ringviz__it, .ringviz__head { opacity: 1; transform: none; }
+      .ringviz__orb, .ringviz__val, .ringviz__core { opacity: 1 !important; animation: none !important; }
+      .ringviz__orb { opacity: 0.9 !important; }
     }
   </style>
 </head>
@@ -1735,17 +1763,8 @@
     <section class="hero" aria-labelledby="hero-heading">
       <!-- Full-bleed photo layer -->
       <div class="hero__photo" aria-hidden="true">
-        <video
-          class="hero__video"
-          autoplay
-          muted
-          loop
-          playsinline
-          preload="auto"
-          poster="video/hero-tokyo-poster.jpg"
-        >
-          <source src="video/hero-tokyo.mp4" type="video/mp4" />
-        </video>
+        <div class="hero__slide is-active" style="background-image: url('video/hero-tokyo-poster.jpg')"></div>
+        <div class="hero__slide" style="background-image: url('img/hero/4-sunrise-mountains.jpg')"></div>
       </div>
 
       <!-- Coral glow + grain on top of photo -->
@@ -1783,24 +1802,14 @@
             </h2>
 
             <div class="ringviz" id="ringviz" aria-hidden="true">
-              <div class="ringviz__head">
-                <span class="ringviz__brand">Growell</span>
-                <span class="ringviz__sub">3 Cores</span>
-              </div>
-              <svg viewBox="0 0 340 220" fill="none" stroke-width="24">
-                <defs>
-                  <linearGradient id="rvgrad" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0" stop-color="#ffa86a"/><stop offset="1" stop-color="#e8531a"/>
-                  </linearGradient>
-                </defs>
-                <circle id="rv-a" class="ringviz__ring" cx="118" cy="110" r="70" fill="none" stroke-dasharray="440" stroke-dashoffset="440"/>
-                <circle id="rv-b" class="ringviz__ring" cx="170" cy="110" r="70" fill="none" stroke-dasharray="440" stroke-dashoffset="440"/>
-                <circle id="rv-c" class="ringviz__ring" cx="222" cy="110" r="70" fill="none" stroke-dasharray="440" stroke-dashoffset="440"/>
-              </svg>
-              <div class="ringviz__labels">
-                <div class="ringviz__it ringviz__it--a"><b>挑戦</b><span>Challenge</span></div>
-                <div class="ringviz__it ringviz__it--b"><b>成長</b><span>Growth</span></div>
-                <div class="ringviz__it ringviz__it--c"><b>可能性</b><span>Possibility</span></div>
+              <div class="ringviz__stage">
+                <div class="ringviz__orb ringviz__orb--a"></div>
+                <div class="ringviz__orb ringviz__orb--b"></div>
+                <div class="ringviz__orb ringviz__orb--c"></div>
+                <div class="ringviz__val ringviz__val--a"><b>挑戦</b><span>Challenge</span></div>
+                <div class="ringviz__val ringviz__val--b"><b>成長</b><span>Growth</span></div>
+                <div class="ringviz__val ringviz__val--c"><b>可能性</b><span>Possibility</span></div>
+                <div class="ringviz__core"><b>Growell</b><span>3 Cores</span></div>
               </div>
             </div>
           </div>
@@ -2192,13 +2201,17 @@
       });
     }
 
-    /* Hero video: play unless the visitor prefers reduced motion (poster stays otherwise) */
+    /* Hero carousel: crossfade slides unless the visitor prefers reduced motion (first slide stays otherwise) */
     (function () {
-      var v = document.querySelector('.hero__video');
-      if (!v) return;
+      var slides = document.querySelectorAll('.hero__slide');
+      if (slides.length < 2) return;
       if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      var go = function () { var p = v.play(); if (p && p.catch) p.catch(function () {}); };
-      if (v.readyState >= 2) go(); else v.addEventListener('loadeddata', go, { once: true });
+      var current = 0;
+      setInterval(function () {
+        slides[current].classList.remove('is-active');
+        current = (current + 1) % slides.length;
+        slides[current].classList.add('is-active');
+      }, 7000);
     })();
 
     /* FUTURE section: auto-rotating tabs (box + graphic change together) */
