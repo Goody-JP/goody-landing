@@ -86,3 +86,9 @@ img{display:block;max-width:100%}
 .footer-note{font-family:var(--en);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-mute)}
 .footer-back{display:inline-flex;align-items:center;gap:10px;font-family:var(--en);font-weight:700;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--paper)}
 .footer-back svg{width:16px;height:16px}
+
+/* ── Curtain scroll (like home page): hero stays pinned, content slides up over it ── */
+@media (min-width: 901px) {
+  .hero { position: sticky; top: 0; min-height: 100vh; }
+  .services, .why, .cta-block, .footer { position: relative; z-index: 2; }
+}
