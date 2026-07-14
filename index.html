@@ -1650,47 +1650,52 @@
     .ringviz { margin-top: clamp(2.5rem, 4vw, 4rem); }
     .ringviz__stage {
       position: relative;
-      width: 100%; max-width: 400px;
-      aspect-ratio: 400 / 330;
+      width: 400px;
+      height: 330px;
     }
-    /* Glow is baked into the gradient (no filter: blur — Safari clips blurred elements into boxes) */
+    @media (max-width: 460px) { .ringviz__stage { zoom: 0.8; } }
+    @media (max-width: 380px) { .ringviz__stage { zoom: 0.7; } }
+    /* Mockup-exact V7 orbs. Drift uses transform (not margins): margin animation makes
+       Safari re-rasterize the blurred layer every frame → visible box-shaped clipping. */
     .ringviz__orb {
       position: absolute;
-      width: 60%; aspect-ratio: 1;
+      width: 150px; height: 150px;
       border-radius: 50%;
+      filter: blur(34px);
+      transform: translateZ(0);
       opacity: 0;
     }
-    .ringviz__orb--a { left: 19.25%; top: -11.2%; background: radial-gradient(circle, #3a3d46 0%, #191a1f 30%, rgba(21,22,26,0.55) 55%, rgba(21,22,26,0) 82%); }
-    .ringviz__orb--b { left: -4.25%; top: 31.2%;  background: radial-gradient(circle, #ece7dc 0%, #d8d2c4 30%, rgba(207,199,184,0.55) 55%, rgba(207,199,184,0) 82%); }
-    .ringviz__orb--c { left: 44.25%; top: 31.2%;  background: radial-gradient(circle, #ffa86a 0%, #ef6a2e 30%, rgba(232,83,26,0.55) 55%, rgba(232,83,26,0) 82%); }
+    .ringviz__orb--a { left: 122px; top: 8px;   background: radial-gradient(circle at 40% 35%, #3a3d46, #15161a); }
+    .ringviz__orb--b { left: 28px;  top: 148px; background: radial-gradient(circle at 40% 35%, #e8e3d8, #cfc7b8); }
+    .ringviz__orb--c { left: 222px; top: 148px; background: radial-gradient(circle at 40% 35%, #ffa86a, #e8531a); }
     .ringviz__val {
-      position: absolute; width: 27.5%;
+      position: absolute; width: 110px;
       text-align: center; opacity: 0;
     }
     .ringviz__val b {
       display: block; font-family: var(--font-body);
-      font-weight: 700; font-size: clamp(14px, 4.2vw, 17px); color: var(--text-dark);
+      font-weight: 700; font-size: 17px; color: var(--text-dark);
     }
     .ringviz__val span {
       display: block; margin-top: 2px;
       font-size: 7px; letter-spacing: 0.22em;
       text-transform: uppercase; font-weight: 600; color: #9a9a9a;
     }
-    .ringviz__val--a { left: 35.5%; top: 18.8%; }
+    .ringviz__val--a { left: 142px; top: 62px; }
     .ringviz__val--a b { color: #fff; }
     .ringviz__val--a span { color: rgba(255,255,255,0.65); }
-    .ringviz__val--b { left: 12%; top: 61.2%; }
-    .ringviz__val--c { left: 60.5%; top: 61.2%; }
+    .ringviz__val--b { left: 48px; top: 202px; }
+    .ringviz__val--c { left: 242px; top: 202px; }
     .ringviz__val--c b { color: #fff; }
     .ringviz__val--c span { color: rgba(255,255,255,0.75); }
     .ringviz__core {
-      position: absolute; left: 50%; top: 47.9%;
+      position: absolute; left: 50%; top: 158px;
       transform: translateX(-50%);
       text-align: center; opacity: 0;
     }
     .ringviz__core b {
       font-family: var(--font-display);
-      font-weight: 600; font-size: clamp(21px, 6.2vw, 26px);
+      font-weight: 600; font-size: 26px;
       color: var(--text-dark); letter-spacing: 0.01em;
     }
     .ringviz__core span {
@@ -1709,9 +1714,9 @@
     @keyframes rvOrbIn { from { opacity: 0; } to { opacity: 0.9; } }
     @keyframes rvUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes rvCoreIn { from { opacity: 0; transform: translateX(-50%) scale(0.88); } to { opacity: 1; transform: translateX(-50%) scale(1); } }
-    @keyframes rvDriftA { 0%, 100% { margin-top: 0; margin-left: 0; } 50% { margin-top: 12px; margin-left: -8px; } }
-    @keyframes rvDriftB { 0%, 100% { margin-top: 0; margin-left: 0; } 50% { margin-top: -10px; margin-left: 10px; } }
-    @keyframes rvDriftC { 0%, 100% { margin-top: 0; margin-left: 0; } 50% { margin-top: -12px; margin-left: -10px; } }
+    @keyframes rvDriftA { 0%, 100% { transform: translate3d(0,0,0); } 50% { transform: translate3d(-8px,12px,0); } }
+    @keyframes rvDriftB { 0%, 100% { transform: translate3d(0,0,0); } 50% { transform: translate3d(10px,-10px,0); } }
+    @keyframes rvDriftC { 0%, 100% { transform: translate3d(0,0,0); } 50% { transform: translate3d(-10px,-12px,0); } }
     @media (prefers-reduced-motion: reduce) {
       .ringviz__orb, .ringviz__val, .ringviz__core { opacity: 1 !important; animation: none !important; }
       .ringviz__orb { opacity: 0.9 !important; }
