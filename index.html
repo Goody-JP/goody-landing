@@ -319,7 +319,7 @@
       transform: none;
       animation: none;
     }
-    .hero__lead { animation-delay: 1.35s; }
+    .hero__lead { animation-delay: 2s; }
     @keyframes heroRise {
       to { opacity: 1; transform: translateY(0); }
     }
@@ -332,7 +332,7 @@
     .hero__headline.flow .ch {
       opacity: 1;
       transform: scale(1) translate3d(0, 0, 0);
-      transition: opacity 0.5s ease var(--chd, 0s), transform 0.5s ease-out var(--chd, 0s);
+      transition: opacity 0.9s ease var(--chd, 0s), transform 0.9s ease-out var(--chd, 0s);
     }
     @media (prefers-reduced-motion: reduce) {
       .hero__content > * { opacity: 1; transform: none; animation: none; }
@@ -2222,7 +2222,7 @@
       var h = document.querySelector('.hero__headline');
       if (!h) return;
       var frag = document.createDocumentFragment();
-      var delay = 0.4;
+      var delay = 0.5;
       Array.prototype.slice.call(h.childNodes).forEach(function (node) {
         if (node.nodeName === 'BR') { frag.appendChild(document.createElement('br')); return; }
         (node.textContent || '').trim().split('').forEach(function (chr) {
@@ -2231,7 +2231,7 @@
           s.style.setProperty('--chd', delay.toFixed(2) + 's');
           s.textContent = chr;
           frag.appendChild(s);
-          delay += 0.07;
+          delay += 0.12;
         });
       });
       while (h.firstChild) h.removeChild(h.firstChild);
