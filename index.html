@@ -319,7 +319,12 @@
       transform: none;
       animation: none;
     }
-    .hero__lead { animation-delay: 2s; }
+    /* Lead block shows instantly — its characters carry the motion */
+    .hero__lead {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
     @keyframes heroRise {
       to { opacity: 1; transform: translateY(0); }
     }
@@ -334,9 +339,21 @@
       transform: scale(1) translate3d(0, 0, 0);
       transition: opacity 0.9s ease var(--chd, 0s), transform 0.9s ease-out var(--chd, 0s);
     }
+    /* Lead: same flow, gentler and quicker per char (body text) */
+    .hero__lead .ch {
+      display: inline-block;
+      opacity: 0;
+      transform: translate3d(10px, 10px, 0);
+    }
+    .hero__lead.flow .ch {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+      transition: opacity 0.6s ease var(--chd, 0s), transform 0.6s ease-out var(--chd, 0s);
+    }
+    .hero__lead .wd { display: inline-block; white-space: nowrap; }
     @media (prefers-reduced-motion: reduce) {
       .hero__content > * { opacity: 1; transform: none; animation: none; }
-      .hero__headline .ch { opacity: 1; transform: none; transition: none; }
+      .hero__headline .ch, .hero__lead .ch { opacity: 1; transform: none; transition: none; }
     }
 
     /* Photo layer */
@@ -2217,28 +2234,45 @@
       });
     }
 
-    /* Hero headline: flowing per-character reveal (purutania-style), static text stays in markup */
+    /* Flowing per-character reveal (purutania-style) for headline + lead; text stays real in markup */
     (function () {
-      var h = document.querySelector('.hero__headline');
-      if (!h) return;
-      var frag = document.createDocumentFragment();
-      var delay = 0.5;
-      Array.prototype.slice.call(h.childNodes).forEach(function (node) {
-        if (node.nodeName === 'BR') { frag.appendChild(document.createElement('br')); return; }
-        (node.textContent || '').trim().split('').forEach(function (chr) {
+      function splitFlow(el, start, step) {
+        if (!el) return;
+        var frag = document.createDocumentFragment();
+        var delay = start;
+        function makeCh(chr) {
           var s = document.createElement('span');
           s.className = 'ch';
-          s.style.setProperty('--chd', delay.toFixed(2) + 's');
+          s.style.setProperty('--chd', delay.toFixed(3) + 's');
           s.textContent = chr;
-          frag.appendChild(s);
-          delay += 0.12;
+          delay += step;
+          return s;
+        }
+        Array.prototype.slice.call(el.childNodes).forEach(function (node) {
+          if (node.nodeName === 'BR') { frag.appendChild(document.createElement('br')); return; }
+          var text = (node.textContent || '').replace(/\s+/g, ' ').trim();
+          (text.match(/[A-Za-z0-9]+|./g) || []).forEach(function (run) {
+            if (/^[A-Za-z0-9]{2,}$/.test(run)) {
+              /* keep latin words (e.g. Growell) unbreakable across lines */
+              var wd = document.createElement('span');
+              wd.className = 'wd';
+              run.split('').forEach(function (c) { wd.appendChild(makeCh(c)); });
+              frag.appendChild(wd);
+            } else if (run === ' ') {
+              frag.appendChild(document.createTextNode(' '));
+            } else {
+              frag.appendChild(makeCh(run));
+            }
+          });
         });
-      });
-      while (h.firstChild) h.removeChild(h.firstChild);
-      h.appendChild(frag);
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () { h.classList.add('flow'); });
-      });
+        while (el.firstChild) el.removeChild(el.firstChild);
+        el.appendChild(frag);
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () { el.classList.add('flow'); });
+        });
+      }
+      splitFlow(document.querySelector('.hero__headline'), 0.5, 0.12);
+      splitFlow(document.querySelector('.hero__lead'), 2.3, 0.018);
     })();
 
     /* Hero carousel: crossfade slides unless the visitor prefers reduced motion (first slide stays otherwise) */
