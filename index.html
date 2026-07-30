@@ -1547,6 +1547,78 @@
     }
 
     /* ─────────────────────────────────────────
+       COMPANY — 会社概要
+    ───────────────────────────────────────── */
+    .company__grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.6fr);
+      gap: clamp(2.5rem, 6vw, 6rem);
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      .company__grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    }
+    .company__title {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: 900;
+      line-height: 1.4;
+      margin-top: 1.25rem;
+      letter-spacing: 0.02em;
+    }
+    .company__note {
+      margin-top: 1.5rem;
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      line-height: 1.9;
+    }
+    .company__table {
+      width: 100%;
+      border-collapse: collapse;
+      border-top: 2px solid var(--text-dark);
+    }
+    .company__table th,
+    .company__table td {
+      padding: 1.35rem 0.5rem;
+      border-bottom: 1px solid rgba(13,13,16,0.12);
+      font-size: var(--text-base);
+      line-height: 1.9;
+      vertical-align: top;
+      text-align: left;
+    }
+    .company__table th {
+      width: 9.5em;
+      font-weight: 700;
+      white-space: nowrap;
+      color: var(--text-dark);
+    }
+    .company__table td { color: rgba(13,13,16,0.82); }
+    .company__table .is-pending { color: var(--text-muted); }
+    .company__biz {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 0.35rem 2rem;
+    }
+    @media (max-width: 640px) {
+      .company__biz { grid-template-columns: 1fr; }
+      .company__table th { width: 6.5em; white-space: normal; }
+    }
+    .company__biz li { position: relative; padding-left: 1.1em; }
+    .company__biz li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.85em;
+      width: 0.45em;
+      height: 0.45em;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    /* ─────────────────────────────────────────
        FOOTER
     ───────────────────────────────────────── */
     .footer {
@@ -1763,6 +1835,7 @@
           <li><a href="#about">About Us</a></li>
           <li><a href="#service">Service</a></li>
           <li><a href="#future">Future</a></li>
+          <li><a href="#company">Company</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
 
@@ -1785,6 +1858,7 @@
       <a href="#about" class="nav__mobile-link">About Us</a>
       <a href="#service" class="nav__mobile-link">Service</a>
       <a href="#future" class="nav__mobile-link">Future</a>
+      <a href="#company" class="nav__mobile-link">Company</a>
       <a href="#contact" class="nav__mobile-link">Contact</a>
       <a href="#" class="btn btn--primary">登録する</a>
     </div>
@@ -2077,6 +2151,73 @@
       </div>
     </section>
 
+    <!-- ══════════ COMPANY — 会社概要 ══════════ -->
+    <section class="section section--mid" id="company" aria-labelledby="company-heading">
+      <div class="section__inner">
+        <div class="company__grid">
+          <div>
+            <p class="eyebrow eyebrow--dark fade-in">Company · 会社概要</p>
+            <h2 class="company__title fade-in fade-in--delay-1" id="company-heading">
+              会社情報
+            </h2>
+          </div>
+
+          <div class="fade-in fade-in--delay-2">
+            <table class="company__table">
+              <tbody>
+                <tr>
+                  <th scope="row">会社名</th>
+                  <td>Growell株式会社（グロウェル）</td>
+                </tr>
+                <tr>
+                  <th scope="row">代表者</th>
+                  <!-- TODO: 確認後に差し替え -->
+                  <td class="is-pending">確認中</td>
+                </tr>
+                <tr>
+                  <th scope="row">設立</th>
+                  <!-- TODO: 確認後に差し替え -->
+                  <td class="is-pending">確認中</td>
+                </tr>
+                <tr>
+                  <th scope="row">資本金</th>
+                  <!-- TODO: 確認後に差し替え -->
+                  <td class="is-pending">確認中</td>
+                </tr>
+                <tr>
+                  <th scope="row">従業員数</th>
+                  <!-- TODO: 確認後に差し替え -->
+                  <td class="is-pending">確認中</td>
+                </tr>
+                <tr>
+                  <th scope="row">所在地</th>
+                  <!-- TODO: 〒・住所を確認後に差し替え -->
+                  <td class="is-pending">東京都（詳細確認中）</td>
+                </tr>
+                <tr>
+                  <th scope="row">事業内容</th>
+                  <td>
+                    <ul class="company__biz" role="list">
+                      <li>クリエイティブ事業</li>
+                      <li>グローバル人材育成事業</li>
+                      <li>人材サービス事業</li>
+                      <li>BPO事業</li>
+                      <li>海外飲食事業</li>
+                      <li>酒類マーケティング・クリエイティブ事業</li>
+                    </ul>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">お問い合わせ</th>
+                  <td><a href="mailto:hello@gro-well.co.jp" style="color:var(--accent);font-weight:700;text-decoration:none;">hello@gro-well.co.jp</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ══════════ CONTACT BAND ══════════ -->
     <section class="contact-band" id="contact" aria-labelledby="contact-heading">
       <div class="contact-band__inner">
@@ -2089,7 +2230,7 @@
             何者でもない今から、誰かに必要とされる人へ。<br />
             Growellは、その挑戦と成長に寄り添います。
           </p>
-          <a href="mailto:hello@growell.jp" class="contact-band__email">hello@growell.jp</a>
+          <a href="mailto:hello@gro-well.co.jp" class="contact-band__email">hello@gro-well.co.jp</a>
         </div>
         <div class="contact-band__right fade-in fade-in--delay-1">
           <a href="#" class="btn btn--white" style="font-size:1rem;padding:1rem 2.5rem;">
@@ -2120,6 +2261,7 @@
           <ul class="footer__links" role="list">
             <li><a href="#about">私たちについて</a></li>
             <li><a href="#service">事業内容</a></li>
+            <li><a href="#company">会社概要</a></li>
             <li><a href="#future">Future</a></li>
             <li><a href="sustainability.html">サステナビリティ</a></li>
             <li><a href="#">採用情報</a></li>
@@ -2139,7 +2281,7 @@
         <div>
           <p class="footer__col-title">Contact</p>
           <ul class="footer__links" role="list">
-            <li><a href="mailto:hello@growell.jp">hello@growell.jp</a></li>
+            <li><a href="mailto:hello@gro-well.co.jp">hello@gro-well.co.jp</a></li>
             <li><a href="#">東京 / Tokyo</a></li>
             <li><a href="#" style="color:var(--accent);font-weight:700;">登録する →</a></li>
           </ul>
