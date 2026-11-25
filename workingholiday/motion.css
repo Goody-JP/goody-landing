@@ -1,0 +1,80 @@
+/* One-shot entrance and scroll animations; original layout transforms stay intact. */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+
+  .motion-ready .brand-bar {
+    animation: entrance 500ms cubic-bezier(.2,.75,.25,1) both;
+  }
+  .motion-ready .hero-copy {
+    animation: entrance 650ms cubic-bezier(.2,.75,.25,1) 80ms both;
+  }
+  .motion-ready .hero-summary {
+    animation: entrance 550ms cubic-bezier(.2,.75,.25,1) 240ms both;
+  }
+  .motion-ready .hero-benefits > li {
+    animation: entrance 520ms cubic-bezier(.2,.75,.25,1) both;
+    animation-delay: calc(320ms + var(--pill-order, 0) * 65ms);
+  }
+  .hero-benefits > li:nth-child(2) { --pill-order: 1; }
+  .hero-benefits > li:nth-child(3) { --pill-order: 2; }
+  .hero-benefits > li:nth-child(4) { --pill-order: 3; }
+  .motion-ready .hero-underline {
+    transform-origin: left center;
+    animation: underline-draw 650ms cubic-bezier(.2,.75,.25,1) 220ms both;
+  }
+  .motion-ready .hero-plane {
+    animation: takeoff 850ms cubic-bezier(.2,.75,.25,1) 300ms both;
+  }
+
+  .reveal-pending {
+    opacity: 0;
+    translate: 0 16px;
+    transition:
+      opacity 550ms cubic-bezier(.2,.75,.25,1) var(--reveal-delay, 0ms),
+      translate 550ms cubic-bezier(.2,.75,.25,1) var(--reveal-delay, 0ms),
+      transform 220ms ease,
+      box-shadow 220ms ease,
+      rotate 250ms ease;
+  }
+  .reveal-pending.is-revealed,
+  .reveal-pending:focus-within {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  @keyframes entrance {
+    from { opacity: 0; translate: 0 12px; }
+    to { opacity: 1; translate: 0 0; }
+  }
+  @keyframes underline-draw {
+    from { scale: 0 1; }
+    to { scale: 1 1; }
+  }
+  @keyframes takeoff {
+    from { opacity: 0; translate: -18px 16px; }
+    to { opacity: 1; translate: 0 0; }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .icon-circle { transition: rotate 220ms ease, scale 220ms ease; }
+    .hero-benefits > li:hover .icon-circle { rotate: -6deg; scale: 1.04; }
+    .postcard:hover { rotate: -2deg; }
+    .line-button .cta-chevron { transition: translate 220ms ease; }
+    .line-button:hover .cta-chevron { translate: 5px 0; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal-pending { opacity: 1 !important; translate: none !important; }
+  .steps li:hover, .line-button:hover { transform: none; }
+}
+
+@media print {
+  .reveal-pending { opacity: 1 !important; translate: none !important; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
