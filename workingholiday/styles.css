@@ -106,7 +106,7 @@
 /* Soft paper texture separates the white cards from the page. */
 .page-content {
   background-color: #eef5fc;
-  background-image: url("./assets/paper-grain.svg"), radial-gradient(circle, #729cc42b .65px, transparent .9px), linear-gradient(125deg, #f8fbff, #eaf2fa 48%, #f8fbff);
+  background-image: url("./assets/paper-grain.svg?v=032cf09"), radial-gradient(circle, #729cc42b .65px, transparent .9px), linear-gradient(125deg, #f8fbff, #eaf2fa 48%, #f8fbff);
   background-size: 160px 160px, 12px 12px, 100% 100%;
 }
 .audience-list, .program-benefits { border: 1px solid #bfd3e7; box-shadow: 0 5px 18px #174a7b12; }
